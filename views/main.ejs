@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="icon" href="./files/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <style>
+        /* Keep existing styles and add/modify these styles */
+        body {
+            background: rgba(0, 20, 40, 0.95);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding-top: 80px; /* Add padding to account for fixed navbar */
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 20, 40, 0.95);
+            color: white;
+            padding: 0.5rem 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            height: 70px; /* Explicitly set navbar height */
+        }
+
+         /* General styles */
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+        text-decoration: none;
+        list-style: none;
+        scroll-behavior: smooth;
+    }/* General Reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+}
+
+.website-name {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    margin-top: 7px;
+}
+
+.highlight-food {
+    color: #007bff;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 5px 10px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #0a0a0a;
+    background: #007bff;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+}
+
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.hamburger .line {
+    width: 30px;
+    height: 4px;
+    background: white;
+    border-radius: 2px;
+}
+
+
+
+/* Simplified Style for Links */
+.navbar-links a {
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+        /* Add styles for user details section */
+        .user-details-section {
+            margin-top: 2rem; /* Add space between navbar and user details */
+            background-color: rgba(17, 24, 39, 0.95);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Update container spacing */
+        .container {
+            margin-top: 2.5rem;
+            width: 100%;
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+
+        .alert {
+            background-color: #FDE047; /* Bright yellow for alerts */
+            color: #1E293B; /* Dark text for readability */
+            border-left: 6px solid #FACC15; /* Accent yellow border */
+        }
+
+        .btn-primary {
+            background-color: #3B82F6; /* Blue button */
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563EB;
+            transform: scale(1.05);
+        }
+
+        table th {
+            background-color: #1E293B; /* Dark header for contrast */
+            color: #60A5FA; /* Blue header text */
+            text-transform: uppercase;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #2A2A2A; /* Alternating row colors */
+        }
+
+        table tr:nth-child(odd) {
+            background-color: #1F1F1F;
+        }
+
+        /* Fade Animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+        table td {
+            color: #E5E7EB; /* Light text */
+        }
+
+        h2 {
+            color: #60A5FA; /* Accent blue for headings */
+        }
+
+        input[type="text"], input[type="number"], input[type="date"] {
+            color: #000000; /* Dark text for visibility */
+            background-color: #F3F4F6; /* Light background */
+        }
+
+        input[type="text"]::placeholder, input[type="number"]::placeholder, input[type="date"]::placeholder {
+            color: #6B7280; /* Gray for placeholder text */
+        }
+
+
+        .footer {
+    background-color: #001529;
+    padding-bottom: 13px;
+    margin-top: auto; /* Push footer to bottom */
+    width: 100%;
+}
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px 0;
+        }
+
+        .footlinks h4,
+        .footlinkss h4 {
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .footlinks h4::before,
+        .footlinkss h4::before {
+            content: "";
+            position: absolute;
+            height: 2px;
+            width: 70px;
+            left: 0;
+            bottom: -7px;
+            background: #007bff;
+        }
+
+        .footlinks a {
+            color: #a0a0a0;
+            transition: all 0.3s ease;
+        }
+
+        .footlinks a:hover {
+            color: #007bff;
+            padding-left: 8px;
+        }
+
+        .social a {
+            font-size: 25px;
+            margin: 4px;
+            height: 40px;
+            width: 40px;
+            color: #001529;
+            background-color: #007bff;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .social a:hover {
+            transform: scale(1.2);
+            background-color: white;
+            color: #007bff;
+        }
+
+        .end {
+            text-align: center;
+            padding-top: 20px;
+            color: #a0a0a0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <img src="files/logo.png" alt="Logo" class="logo">
+            <span class="website-name">Food<span class="highlight-food">Yield</span></span>
+        </div>
+        <div class="navbar-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/donate" class="nav-link">Donate</a>
+            <a href="/reqfood" class="nav-link">Ask for Donate</a>
+            <a href="/viewrequests" class="nav-link">Requests</a>
+            <a href="/donations" class="nav-link">Available Donations</a>
+            <a href="/register" class="nav-link">Administration</a>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </button>
+    </nav>
+
+    <!-- Updated user details section with new class -->
+    <div class="user-details-section">
+        <div class="container mx-auto">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-blue-500 rounded-full p-2">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold"><%= user.username %></h2>
+                        <div class="text-sm text-gray-300">
+                            <span><%= user.companyName %></span>
+                            <span class="mx-2">•</span>
+                            <span><%= user.email %></span>
+                        </div>
+                    </div>
+                </div>
+                <form action="/logout" method="POST" class="inline">
+                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-colors">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- Expiring Products Alert -->
+        <!-- Updated Alert Section in main.ejs -->
+<% if (expiringProducts.length > 0) { %>
+    <div class="alert p-4 mb-8 rounded-lg shadow-md">
+        <div class="flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center">
+                    <svg class="h-6 w-6 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                    </svg>
+                    <h3 class="text-lg font-bold ml-2">Products Expiring Soon</h3>
+                </div>
+                <div class="flex space-x-2">
+                    <form action="/manage-all-products" method="POST" class="inline">
+                        <button type="submit" 
+                                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors">
+                            Manage All
+                        </button>
+                    </form>
+                    <button onclick="showDisposeModal()"
+                            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">
+                        Dispose
+                    </button>
+                </div>
+            </div>
+            <ul class="space-y-1 list-disc pl-5">
+                <% expiringProducts.forEach(product => { %>
+                <li>
+                    <%= product.productName %> - Expires in 
+                    <%= Math.ceil((product.expiryDate - new Date()) / (1000 * 60 * 60 * 24)) %> days
+                    (Quantity: <%= product.quantity %>)
+                </li>
+                <% }); %>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Dispose Modal -->
+    <div id="disposeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-6 w-96">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Dispose Products</h3>
+            <form id="disposeForm" action="/dispose-products" method="POST">
+                <% expiringProducts.forEach(product => { %>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        <%= product.productName %> (Max: <%= product.quantity %>)
+                    </label>
+                    <input type="number" name="quantities[<%= product._id %>]" 
+                           max="<%= product.quantity %>" min="0"
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <% }); %>
+                <div class="flex justify-end space-x-2">
+                    <button type="button" onclick="hideDisposeModal()"
+                            class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">
+                        Dispose
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    
+    <script>
+        function showDisposeModal() {
+            document.getElementById('disposeModal').classList.remove('hidden');
+        }
+    
+        function hideDisposeModal() {
+            document.getElementById('disposeModal').classList.add('hidden');
+        }
+    </script>
+    <% } %>
+        <!-- Add Product Form -->
+        <div class="bg-gray-900 text-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-6">Add New Product</h2>
+            <form action="/add-product" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm mb-2">Product Name</label>
+                    <input type="text" name="productName" placeholder="Enter the Product Name" required 
+                           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-sm mb-2">Quantity(Kg)/Items</label>
+                    <input type="number" name="quantity" placeholder="Enter Quantity" 
+                           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-sm mb-2">Location</label>
+                    <input type="text" name="manufacturer" placeholder="Enter the Product's Location" 
+                           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-sm mb-2">Expiry Date</label>
+                    <input type="date" name="expiryDate" required 
+                           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                
+                <div class="md:col-span-2">
+                    <button type="submit" 
+                            class="btn-primary w-full py-3">
+                        Add Product
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Products List -->
+     <!-- Replace the Products List section in main.ejs -->
+<div class="bg-gray-900 text-white rounded-lg shadow-lg p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">Product Inventory</h2>
+        <input type="text" id="searchInput" 
+               placeholder="Search products..." 
+               class="px-4 py-2 border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+    <div class="overflow-x-auto">
+        <table class="min-w-full table-auto">
+            <thead>
+                <tr>
+                    <th class="px-6 py-3 text-left">Product Name</th>
+                    <th class="px-6 py-3 text-left">Quantity</th>
+                    <th class="px-6 py-3 text-left">Location</th>
+                    <th class="px-6 py-3 text-left">Expiry Date</th>
+                    <th class="px-6 py-3 text-left">Days Until Expiry</th>
+                    <th class="px-6 py-3 text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="productTableBody">
+                <% products.forEach(product => { %>
+                <tr class="border-b border-gray-800 product-row">
+                    <td class="px-6 py-4 product-name"><%= product.productName %></td>
+                    <td class="px-6 py-4"><%= product.quantity %></td>
+                    <td class="px-6 py-4"><%= product.manufacturer %></td>
+                    <td class="px-6 py-4"><%= product.expiryDate.toLocaleDateString() %></td>
+                    <td class="px-6 py-4">
+                        <%= Math.ceil((product.expiryDate - new Date()) / (1000 * 60 * 60 * 24)) %>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="relative flex justify-center">
+                            <button onclick="toggleDropdown('<%= product._id %>')" 
+                                    class="text-white text-xl font-bold hover:bg-gray-700 rounded-full h-8 w-8 flex items-center justify-center">⋮</button>
+                            <div id="dropdown-<%= product._id %>" 
+                                 class="hidden absolute right-0 mt-8 w-48 bg-white rounded-md shadow-lg z-10">
+                                <form action="/manage-product/<%= product._id %>" method="POST">
+                                    <button type="submit" 
+                                            class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
+                                        Manage
+                                    </button>
+                                </form>
+                                <button onclick="showProductDisposeModal('<%= product._id %>', '<%= product.productName %>', '<%= product.quantity %>')"
+                                        class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
+                                    Dispose
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Single Product Dispose Modal -->
+<div id="productDisposeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-6 w-96">
+        <h3 class="text-xl font-bold text-gray-900 mb-4">Dispose Product</h3>
+        <p id="productDisposeText" class="text-gray-700 mb-4"></p>
+        <form id="productDisposeForm" action="/dispose-product" method="POST">
+            <input type="hidden" id="productDisposeId" name="productId">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="productDisposeQuantity">
+                    Quantity to Dispose
+                </label>
+                <input type="number" id="productDisposeQuantity" name="quantity" required
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700">
+            </div>
+            <div class="flex justify-end space-x-2">
+                <button type="button" onclick="hideProductDisposeModal()"
+                        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                    Cancel
+                </button>
+                <button type="submit"
+                        class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                    Dispose
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+<section class="footer">
+    <div class="footer-content">
+        <div class="footlinks">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="/donate">Donate</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/contact">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="footlinkss">
+            <h4>Connect</h4>
+            <div class="social">
+                <a href="#"><i class='bx bxl-facebook'></i></a>
+                <a href="#"><i class='bx bxl-instagram'></i></a>
+                <a href="#"><i class='bx bxl-twitter'></i></a>
+                <a href="#"><i class='bx bxl-linkedin'></i></a>
+                <a href="#"><i class='bx bxl-youtube'></i></a>
+                <a href="#"><i class='bx bxl-github'></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="end">
+        <p>Copyright © 2023 FoodYield | All Rights Reserved.</p>
+    </div>
+</section>
+
+<script>
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const rows = document.querySelectorAll('.product-row');
+        rows.forEach(row => {
+            const productName = row.querySelector('.product-name').textContent.toLowerCase();
+            row.style.display = productName.includes(searchTerm) ? '' : 'none';
+        });
+    });
+
+    // Dropdown toggle
+    function toggleDropdown(productId) {
+        event.stopPropagation(); // Prevent event bubbling
+        const dropdown = document.getElementById(`dropdown-${productId}`);
+        // Close all other dropdowns first
+        document.querySelectorAll('[id^="dropdown-"]').forEach(d => {
+            if (d.id !== `dropdown-${productId}`) d.classList.add('hidden');
+        });
+        dropdown.classList.toggle('hidden');
+    }
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.relative')) {
+            document.querySelectorAll('[id^="dropdown-"]').forEach(d => {
+                d.classList.add('hidden');
+            });
+        }
+    });
+
+    // Product dispose modal functions
+    function showProductDisposeModal(productId, productName, maxQuantity) {
+        // Close any open dropdowns
+        document.querySelectorAll('[id^="dropdown-"]').forEach(d => {
+            d.classList.add('hidden');
+        });
+        
+        const modal = document.getElementById('productDisposeModal');
+        const quantityInput = document.getElementById('productDisposeQuantity');
+        
+        document.getElementById('productDisposeId').value = productId;
+        document.getElementById('productDisposeText').textContent = `Dispose ${productName}`;
+        quantityInput.max = maxQuantity;
+        quantityInput.value = ''; // Clear previous value
+        quantityInput.placeholder = `Max: ${maxQuantity}`;
+        
+        modal.classList.remove('hidden');
+    }
+
+    function hideProductDisposeModal() {
+        document.getElementById('productDisposeModal').classList.add('hidden');
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('productDisposeModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            hideProductDisposeModal();
+        }
+    });
+
+    // Fade-in animation
+    document.addEventListener("DOMContentLoaded", () => {
+            const fadeInElements = document.querySelectorAll('.fade-in');
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeInElements.forEach(el => observer.observe(el));
+        });
+
+
+</script>
+    
+</body>
+</html>

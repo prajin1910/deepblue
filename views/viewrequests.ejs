@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Requests - FoodYield</title>
+    <link rel="icon" href="./files/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none;
+            list-style: none;
+        }
+
+        :root {
+            --primary-blue: #007bff;
+            --dark-blue: #001529;
+            --bg-dark: #0a0a0a;
+            --text-light: #ffffff;
+            --text-gray: #a0a0a0;
+            --border-color: #1a2635;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* Improved Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 20, 40, 0.98);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 45px;
+            height: 45px;
+        }
+
+        .website-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .highlight-food {
+            color: var(--primary-blue);
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--bg-dark);
+            background: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content Section */
+        .request-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 120px 2rem 4rem;
+        }
+
+        .request-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .request-section h1 span {
+            color: var(--primary-blue);
+        }
+
+        /* Enhanced Table Styles */
+        .table-container {
+            background: rgba(0, 20, 40, 0.4);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--dark-blue);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: var(--primary-blue);
+            color: var(--text-light);
+            font-weight: 600;
+            text-align: left;
+            padding: 1rem 1.5rem;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: rgba(0, 123, 255, 0.05);
+        }
+
+        .delete-btn {
+            background: var(--primary-blue);
+            color: var(--text-light);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+        }
+
+        .no-requests {
+            text-align: center;
+            padding: 2rem;
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+            background: rgba(0, 123, 255, 0.1);
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .footer {
+            background-color: #001529;
+            padding-bottom: 13px;
+            margin-top: 0;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px 0;
+        }
+
+        .footlinks h4,
+        .footlinkss h4 {
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .footlinks h4::before,
+        .footlinkss h4::before {
+            content: "";
+            position: absolute;
+            height: 2px;
+            width: 70px;
+            left: 0;
+            bottom: -7px;
+            background: #007bff;
+        }
+        /* Fade Animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+        .footlinks a {
+            color: #a0a0a0;
+            transition: all 0.3s ease;
+        }
+
+        .footlinks a:hover {
+            color: #007bff;
+            padding-left: 8px;
+        }
+
+        .social a {
+            font-size: 25px;
+            margin: 4px;
+            height: 40px;
+            width: 40px;
+            color: #001529;
+            background-color: #007bff;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .social a:hover {
+            transform: scale(1.2);
+            background-color: white;
+            color: #007bff;
+        }
+
+        .end {
+            text-align: center;
+            padding-top: 20px;
+            color: #a0a0a0;
+        }
+
+       
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .navbar-container,
+            .request-section,
+            .footer-content {
+                padding: 0 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-links {
+                display: none;
+            }
+
+            .request-section {
+                padding: 100px 1rem 2rem;
+            }
+
+            .request-section h1 {
+                font-size: 2rem;
+                text-align: center;
+            }
+
+            .table-container {
+                padding: 1rem;
+            }
+
+            th, td {
+                padding: 0.75rem;
+                font-size: 0.85rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .footlinks h4::after,
+            .footlinkss h4::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .social {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar fade-in">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <img src="files/logo.png" alt="Logo" class="logo">
+                <span class="website-name">Food<span class="highlight-food">Yield</span></span>
+            </div>
+            <div class="navbar-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/donate" class="nav-link">Donate</a>
+                <a href="/reqfood" class="nav-link">Ask for Donate</a>
+                <a href="/viewrequests" class="nav-link">Requests</a>
+                <a href="/donations" class="nav-link">Available Donations</a>
+                <a href="/register" class="nav-link">Administration</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="request-section fade-in">
+        <h1>Food <span>Requests</span></h1>
+        <div class="table-container">
+            <% if (requests.length === 0) { %>
+                <p class="no-requests">No food requests are currently available.</p>
+            <% } else { %>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Organization</th>
+                            <th>Address</th>
+                            <th>Contact</th>
+                            <th>Members</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% requests.forEach(request => { %>
+                            <tr id="request-<%= request._id %>">
+                                <td><%= request.orgName %></td>
+                                <td><%= request.address %></td>
+                                <td><%= request.contactDetails %></td>
+                                <td><%= request.membersCount %></td>
+                                <td><%= request.description || 'N/A' %></td>
+                                <td><%= formatDate(request.createdAt) %></td>
+                                <td>
+                                    <button class="delete-btn" onclick="deleteRequest('<%= request._id %>')">Delete</button>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } %>
+        </div>
+    </main>
+
+    <section class="footer fade-in">
+        <div class="footer-content">
+            <div class="footlinks">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/donate">Donate</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footlinkss">
+                <h4>Connect</h4>
+                <div class="social">
+                    <a href="#"><i class='bx bxl-facebook'></i></a>
+                    <a href="#"><i class='bx bxl-instagram'></i></a>
+                    <a href="#"><i class='bx bxl-twitter'></i></a>
+                    <a href="#"><i class='bx bxl-linkedin'></i></a>
+                    <a href="#"><i class='bx bxl-youtube'></i></a>
+                    <a href="#"><i class='bx bxl-github'></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="end fade-in">
+            <p>Copyright © 2023 FoodYield | All Rights Reserved.</p>
+        </div>
+    </section>
+
+    <script>
+        async function deleteRequest(requestId) {
+            const confirmed = confirm("Are you sure you want to delete this request?");
+            if (confirmed) {
+                try {
+                    const response = await fetch(`/requests/${requestId}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (response.ok) {
+                        const row = document.getElementById(`request-${requestId}`);
+                        row.style.opacity = '0';
+                        setTimeout(() => {
+                            row.remove();
+                            if (document.querySelector('tbody').children.length === 0) {
+                                location.reload();
+                            }
+                        }, 300);
+                    } else {
+                        alert("Error deleting request. Please try again.");
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert("Error deleting request. Please try again.");
+                }
+            }
+        }
+
+        // Fade-in animation
+        document.addEventListener("DOMContentLoaded", () => {
+            const fadeInElements = document.querySelectorAll('.fade-in');
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeInElements.forEach(el => observer.observe(el));
+        });
+
+    </script>
+</body>
+</html>
