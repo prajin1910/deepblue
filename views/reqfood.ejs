@@ -11,15 +11,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
     <style>
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            text-decoration: none;
-            list-style: none;
-            scroll-behavior: smooth;
-        }
+* {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+        text-decoration: none;
+        list-style: none;
+        scroll-behavior: smooth;
+    }
 
         body {
             background-color: #0a0a0a;
@@ -203,6 +203,22 @@ body, html {
             padding: 20px 0;
         }
 
+.footlinks ul li {
+    margin-bottom: 15px;
+}
+
+.footlinks ul li a {
+    font-size: 17px;
+    color: #dddddd;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.footlinks ul li a:hover {
+    transform: translateX(6px);
+    color: #007bff;
+}
+
         .footlinks h4,
         .footlinkss h4 {
             margin-top: 30px;
@@ -270,10 +286,44 @@ body, html {
             padding-top: 20px;
             color: #a0a0a0;
         }
+        /* Responsive Design */
+@media screen and (max-width: 768px) {
+    .navbar-links {
+        display: none;
+        flex-direction: column;
+        gap: 1rem;
+        position: absolute;
+        top: 60px;
+        right: 10px;
+        background: rgba(0, 20, 40, 0.95);
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        width: auto;
+        text-align: left;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease-out;
+    }
+
+    .navbar-links.active {
+        display: flex;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .footlinkss h4 {
+        margin-left: 100px;
+    }
+}
     </style>
 </head>
 <body>
-    <nav class="navbar fade-in">
+    <nav class="navbar">
         <div class="navbar-logo">
             <img src="files/logo.png" alt="Logo" class="logo">
             <span class="website-name">Food<span class="highlight-food">Yield</span></span>
@@ -286,7 +336,7 @@ body, html {
             <a href="/donations" class="nav-link">Available Donations</a>
             <a href="/register" class="nav-link">Administration</a>
         </div>
-        <button class="hamburger">
+        <button class="hamburger" onclick="toggleMenu()">
             <div class="line"></div>
             <div class="line"></div>
             <div class="line"></div>
@@ -307,14 +357,14 @@ body, html {
         <div id="message" style="margin-top: 20px; font-size: 18px;"></div>
     </div>
 
-    <section class="footer fade-in">
+    <section class="footer">
         <div class="footer-content">
             <div class="footlinks">
                 <h4>Quick Links</h4>
                 <ul>
                     <li><a href="donate.ejs">Donate</a></li>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
                 </ul>
             </div>
             <div class="footlinkss">
@@ -335,6 +385,23 @@ body, html {
     </section>
 
     <script>
+         // Hamburger menu toggle function
+         function toggleMenu() {
+            const navbarLinks = document.querySelector('.navbar-links');
+            navbarLinks.classList.toggle('active');
+        }
+
+        // Click outside to close menu
+        document.addEventListener('click', function(event) {
+            const navbar = document.querySelector('.navbar');
+            const navbarLinks = document.querySelector('.navbar-links');
+            const hamburger = document.querySelector('.hamburger');
+
+            if (!navbar.contains(event.target) && !hamburger.contains(event.target)) {
+                navbarLinks.classList.remove('active');
+            }
+        });
+
         document.getElementById('requestForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);

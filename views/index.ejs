@@ -27,7 +27,6 @@ body, html {
     font-family: 'Poppins', sans-serif;
     box-sizing: border-box;
 }
-
 /* Navbar */
 .navbar {
     position: fixed;
@@ -533,16 +532,6 @@ body, html {
             font-size: 6vh;
         }
 
-        .navbar {
-            flex-direction: column;
-            align-items: center;
-            margin-right: 0;
-        }
-
-        .navbar a {
-            margin: 10px 0;
-        }
-
         .container-box {
             width: 100%;
             margin-bottom: 20px;
@@ -665,18 +654,52 @@ body, html {
         transform: translateY(0);
     }
 }
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .navbar-links {
+        display: none;
+        flex-direction: column;
+        gap: 1rem;
+        position: absolute;
+        top: 60px;
+        right: 10px;
+        background: rgba(0, 20, 40, 0.95);
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        width: auto;
+        text-align: left;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease-out;
+    }
+
+    .navbar-links.active {
+        display: flex;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .footlinkss h4 {
+        margin-left: 130px;
+    }
+}
 
     </style>
 </head>
 <body>
-    <nav class="navbar fade-in">
+    <nav class="navbar">
         <div class="navbar-logo">
             <img src="files/logo.png" alt="Logo" class="logo">
             <span class="website-name">Food<span class="highlight-food">Yield</span></span>
         </div>
         <div class="navbar-links">
             <a href="/" class="nav-link">Home</a>
-            <a href="/info.html" class="nav-link">Donate</a>
+            <a href="/donate" class="nav-link">Donate</a>
             <a href="/reqfood" class="nav-link">Ask for Donate</a>
             <a href="/viewrequests" class="nav-link">Requests</a>
             <a href="/donations" class="nav-link">Available Donations</a>
