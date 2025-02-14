@@ -408,7 +408,7 @@ body, html {
             const data = Object.fromEntries(formData.entries());
 
             try {
-                const response = await fetch('/api/requests', {
+                const response = await fetch('/requests', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

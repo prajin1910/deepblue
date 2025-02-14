@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-const port = process.env.PORT // Correct way
+const port = process.env.PORT || 3000// Correct way
 const app = express();
 const JWT_SECRET = 'your-secret-key'; // Use environment variable in production
 
@@ -335,21 +335,24 @@ app.get('/reqfood', (req, res) => {
 app.post('/requests', async (req, res) => {
     try {
         const request = new Request({
-            orgName: req.body.org_name,
+            orgName: req.body.orgName,  // Changed from org_name to orgName
             address: req.body.address,
-            contactDetails: req.body.contact_details,
-            membersCount: req.body.members,
+            contactDetails: req.body.contactDetails,  // Changed from contact_details to contactDetails
+            membersCount: parseInt(req.body.membersCount),
             description: req.body.description
         });
 
         await request.save();
         res.json({ success: true, message: 'Request submitted successfully!' });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: 'Error submitting request' });
+        console.error('Request submission error:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Error submitting request',
+            error: error.message
+        });
     }
 });
-
 app.get('/viewrequests', async (req, res) => {
     try {
         const requests = await Request.find().sort({ createdAt: -1 });
