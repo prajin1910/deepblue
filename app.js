@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-const port = process.env.PORT || 4000; // Correct way
+const port = process.env.PORT // Correct way
 const app = express();
 const JWT_SECRET = 'your-secret-key'; // Use environment variable in production
 
