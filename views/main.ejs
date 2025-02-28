@@ -13,695 +13,691 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="styles.css">
     <style>
+        /* General styles */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  text-decoration: none;
+  list-style: none;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: rgba(0, 20, 40, 0.95);
+  color: white;
+  font-family: 'Arial', sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Navbar styles */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 20, 40, 0.95);
+  color: white;
+  padding: 0.5rem 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  height: 70px;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+}
+
+.website-name {
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  margin-top: 7px;
+}
+
+.highlight-food {
+  color: #007bff;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #0a0a0a;
+  background: #007bff;
+  border-radius: 5px;
+  box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+}
+
+/* Previous styles remain the same until the User Details Section */
+
+/* User Details Section Styles */
+.user-details-section {
+  background: rgba(17, 24, 39, 0.95);
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 70px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.user-details-section .container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.user-details-section .flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Modified - Removed default gap */
+.user-details-section .flex .items-center {
+  display: flex;
+  align-items: center;
+  gap: 0; /* Remove default gap */
+}
+
+.user-details-section .bg-blue-500 {
+  background: #3B82F6;
+  padding: 0.75rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+/* Added margin to the text container */
+.user-details-section .flex .items-center > div:last-child {
+  margin-left: 0.5rem; /* Add small margin between icon and text */
+}
+
+/* Modified for larger screens */
+@media screen and (min-width: 769px) {
+  .bg-gray-900 .flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+
+  .bg-gray-900 #searchInput {
+      width: 200px;
+  }
+  
+  /* Maintain slightly larger gap on bigger screens */
+  .user-details-section .flex .items-center > div:last-child {
+      margin-left: 1rem;
+  }
+}
+
+/* Modified for smaller screens */
+@media screen and (max-width: 768px) {
+  .user-details-section .flex .items-center > div:last-child {
+      margin-left: 0.25rem; /* Minimal gap on mobile */
+  }
+  
+  .user-details-section .bg-blue-500 {
+      padding: 0.4rem;
+  }
+}
+
+/* Rest of the styles remain the same... */
+
+.user-details-section .bg-blue-500 {
+  background: #3B82F6;
+  padding: 0.75rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.user-details-section .text-xl {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+
+.user-details-section .text-sm {
+  font-size: 0.875rem;
+  color: #9CA3AF;
+}
+
+/* Main Content Container */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  margin-top: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Alert Styles */
+.alert {
+  background-color: #FDE047;
+  color: #1E293B;
+  border-left: 6px solid #FACC15;
+  margin: 1rem 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+/* Profile Dropdown Styles */
+.profile-dropdown {
+  position: relative;
+  z-index: 50;
+}
+
+.profile-dropdown .dropdown-toggle {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.profile-dropdown .dropdown-toggle:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.profile-dropdown .dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: #1F2937;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  min-width: 150px;
+  margin-top: 0.5rem;
+}
+
+.profile-dropdown .dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  color: white;
+  text-align: left;
+  transition: background-color 0.2s;
+}
+
+.profile-dropdown .dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Button Styles */
+.btn-primary {
+  background-color: #3B82F6;
+  color: #FFFFFF;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #2563EB;
+  transform: scale(1.05);
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th {
+  background-color: #1E293B;
+  color: #60A5FA;
+  text-transform: uppercase;
+  padding: 1rem;
+  text-align: left;
+}
+
+table tr:nth-child(even) {
+  background-color: #2A2A2A;
+}
+
+table tr:nth-child(odd) {
+  background-color: #1F1F1F;
+}
+
+table td {
+  color: #E5E7EB;
+  padding: 1rem;
+}
+
+/* Form Input Styles */
+input[type="text"], 
+input[type="number"], 
+input[type="date"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  color: #000000;
+  background-color: #F3F4F6;
+  border: 1px solid #D1D5DB;
+  border-radius: 0.5rem;
+  transition: border-color 0.2s ease;
+}
+
+input[type="text"]:focus, 
+input[type="number"]:focus, 
+input[type="date"]:focus {
+  outline: none;
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+input[type="text"]::placeholder, 
+input[type="number"]::placeholder, 
+input[type="date"]::placeholder {
+  color: #6B7280;
+}
+
+/* Footer Styles */
+.footer {
+  background-color: #001529;
+  padding-bottom: 13px;
+  margin-top: auto;
+  width: 100%;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 20px 0;
+}
+
+.footlinks h4,
+.footlinkss h4 {
+  margin-top: 30px;
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.footlinks h4::before,
+.footlinkss h4::before {
+  content: "";
+  position: absolute;
+  height: 2px;
+  width: 70px;
+  left: 0;
+  bottom: -7px;
+  background: #007bff;
+}
+
+.rounded-full {
+  border-radius: 9999px;
+  padding-left: 12px;
+}
+.footlinks a {
+  color: #a0a0a0;
+  transition: all 0.3s ease;
+}
+
+.footlinks a:hover {
+  color: #007bff;
+  padding-left: 8px;
+}
+
+.social a {
+  font-size: 25px;
+  margin: 4px;
+  height: 40px;
+  width: 40px;
+  color: #001529;
+  background-color: #007bff;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.social a:hover {
+  transform: scale(1.2);
+  background-color: white;
+  color: #007bff;
+}
+
+.end {
+  text-align: center;
+  padding-top: 20px;
+  color: #a0a0a0;
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger .line {
+  width: 30px;
+  height: 4px;
+  background: white;
+  border-radius: 2px;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+  .navbar {
+      padding: 0.5rem 1rem;
+  }
+
+  .navbar-links {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      position: absolute;
+      top: 60px;
+      right: 10px;
+      background: rgba(0, 20, 40, 0.95);
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+      width: auto;
+      text-align: left;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.3s ease-out;
+  }
+
+  .navbar-links.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+  }
+
+  .hamburger {
+      display: flex;
+  }
+
+  .user-details-section {
+      padding: 1rem;
+      margin-top: 60px;
+  }
+
+  .user-details-section .container {
+      max-width: 100%;
+  }
+
+  .user-details-section .flex {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+  }
+
+  .user-details-section .items-center {
+      flex: 1;
+      min-width: 200px;
+  }
+
+  .user-details-section .text-xl {
+      font-size: 1.125rem;
+  }
+
+  .main-content {
+      padding: 1rem;
+      margin-top: 1.5rem;
+  }
+
+  .footer-content {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+  }
+
+  .footlinks h4::before,
+  .footlinkss h4::before {
+      left: 50%;
+      transform: translateX(-50%);
+  }
+
+  /* Table responsiveness */
+  .overflow-x-auto {
+      margin: 0 -1rem;
+      padding: 0 1rem;
+      overflow-x: auto;
+  }
+
+  table {
+      font-size: 0.875rem;
+  }
+
+  table td, 
+  table th {
+      padding: 0.75rem 0.5rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .user-details-section {
+      padding: 0.75rem;
+  }
+
+  .user-details-section .flex {
+      gap: 0.5rem;
+  }
+
+  .user-details-section .text-sm {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+  }
+
+  .user-details-section .text-sm .mx-2 {
+      display: none;
+  }
+
+  .website-name {
+      font-size: 1.5rem;
+  }
+
+  .logo {
+      width: 40px;
+      height: 40px;
+  }
+
+  .main-content {
+      padding: 0.75rem;
+      margin-top: 1rem;
+  }
+
+  table {
+      font-size: 0.75rem;
+  }
+
+  table td, 
+  table th {
+      padding: 0.5rem 0.25rem;
+  }
+}
+/* Add this to your existing style section */
+#searchInput {
+  min-width: 250px; /* Increase this value to make it wider */
+  width: 300px; /* Set a specific width */
+}
+
+/* Maintain responsiveness */
+@media screen and (max-width: 768px) {
+  #searchInput {
+      width: 100%; /* Full width on smaller screens */
+      min-width: unset;
+  }
+}
+/* Modified for larger screens */
+@media screen and (min-width: 769px) {
+  .bg-gray-900 .flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+
+  .bg-gray-900 #searchInput {
+      width: 800px; /* Increase this value from 200px to 300px or more */
+  }
+  
+  /* Maintain slightly larger gap on bigger screens */
+  .user-details-section .flex .items-center > div:last-child {
+      margin-left: 1rem;
+  }
+}
+/* Modal styles */
+.sensor-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.8);
+}
+
+.sensor-modal-content {
+  position: relative;
+  background-color: #1f2937;
+  margin: 2% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+  from {opacity: 0; transform: translateY(-30px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+.close-modal {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.close-modal:hover {
+  color: #fff;
+}
+
+/* Sensor dashboard mini widget */
+.sensor-widget {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.sensor-widget:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* Chart styles */
+.chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+/* Reading cards */
+.reading-card {
+  position: relative;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  background-color: #2d3748;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.temperature {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #dc3545;
+  margin: 10px 0;
+}
+
+.humidity {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #007bff;
+  margin: 10px 0;
+}
+
+.sensor-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.timestamp {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.data-table {
+  background-color: #1f2937;
+  color: #e5e7eb;
+}
+
+.data-table thead {
+  background-color: #111827;
+}
 
 
-          /* General styles */
-          * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            text-decoration: none;
-            list-style: none;
-            scroll-behavior: smooth;
-        }
-        
-        body {
-            background: rgba(0, 20, 40, 0.95);
-            color: white;
-            font-family: 'Arial', sans-serif;
-            min-height: 100vh;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-        
-        /* Navbar styles */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(0, 20, 40, 0.95);
-            color: white;
-            padding: 0.5rem 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            height: 70px;
-        }
-        
-        .navbar-logo {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .logo {
-            width: 50px;
-            height: 50px;
-        }
-        
-        .website-name {
-            font-size: 2rem;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            margin-top: 7px;
-        }
-        
-        .highlight-food {
-            color: #007bff;
-        }
-        
-        .navbar-links {
-            display: flex;
-            gap: 1.5rem;
-        }
-        
-        .nav-link {
-            color: #fff;
-            font-size: 1.2rem;
-            font-weight: 600;
-            padding: 5px 10px;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-link:hover {
-            color: #0a0a0a;
-            background: #007bff;
-            border-radius: 5px;
-            box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
-        }
-        
-        /* Previous styles remain the same until the User Details Section */
-        
-        /* User Details Section Styles */
-        .user-details-section {
-            background: rgba(17, 24, 39, 0.95);
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 70px;
-            width: 100%;
-            box-sizing: border-box;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        
-        .user-details-section .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .user-details-section .flex {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1.5rem;
-        }
-        
-        /* Modified - Removed default gap */
-        .user-details-section .flex .items-center {
-            display: flex;
-            align-items: center;
-            gap: 0; /* Remove default gap */
-        }
-        
-        .user-details-section .bg-blue-500 {
-            background: #3B82F6;
-            padding: 0.75rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
-        }
-        
-        /* Added margin to the text container */
-        .user-details-section .flex .items-center > div:last-child {
-            margin-left: 0.5rem; /* Add small margin between icon and text */
-        }
-        
-        /* Modified for larger screens */
-        @media screen and (min-width: 769px) {
-            .bg-gray-900 .flex {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-        
-            .bg-gray-900 #searchInput {
-                width: 200px;
-            }
-            
-            /* Maintain slightly larger gap on bigger screens */
-            .user-details-section .flex .items-center > div:last-child {
-                margin-left: 1rem;
-            }
-        }
-        
-        /* Modified for smaller screens */
-        @media screen and (max-width: 768px) {
-            .user-details-section .flex .items-center > div:last-child {
-                margin-left: 0.25rem; /* Minimal gap on mobile */
-            }
-            
-            .user-details-section .bg-blue-500 {
-                padding: 0.4rem;
-            }
-        }
-        
-        /* Rest of the styles remain the same... */
-        
-        .user-details-section .bg-blue-500 {
-            background: #3B82F6;
-            padding: 0.75rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
-        }
-        
-        .user-details-section .text-xl {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 0.25rem;
-        }
-        
-        .user-details-section .text-sm {
-            font-size: 0.875rem;
-            color: #9CA3AF;
-        }
-        
-        /* Main Content Container */
-        .main-content {
-            flex: 1;
-            padding: 2rem;
-            margin-top: 2rem;
-            width: 100%;
-            box-sizing: border-box;
-            max-width: 1400px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        /* Alert Styles */
-        .alert {
-            background-color: #FDE047;
-            color: #1E293B;
-            border-left: 6px solid #FACC15;
-            margin: 1rem 0;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 1rem;
-            border-radius: 0.5rem;
-        }
-        
-        /* Profile Dropdown Styles */
-        .profile-dropdown {
-            position: relative;
-            z-index: 50;
-        }
-        
-        .profile-dropdown .dropdown-toggle {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.5rem;
-            border-radius: 0.375rem;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-        
-        .profile-dropdown .dropdown-toggle:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        .profile-dropdown .dropdown-menu {
-            position: absolute;
-            right: 0;
-            top: 100%;
-            background: #1F2937;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            min-width: 150px;
-            margin-top: 0.5rem;
-        }
-        
-        .profile-dropdown .dropdown-item {
-            display: block;
-            width: 100%;
-            padding: 0.75rem 1rem;
-            color: white;
-            text-align: left;
-            transition: background-color 0.2s;
-        }
-        
-        .profile-dropdown .dropdown-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Button Styles */
-        .btn-primary {
-            background-color: #3B82F6;
-            color: #FFFFFF;
-            font-weight: bold;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-        
-        .btn-primary:hover {
-            background-color: #2563EB;
-            transform: scale(1.05);
-        }
-        
-        /* Table Styles */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        table th {
-            background-color: #1E293B;
-            color: #60A5FA;
-            text-transform: uppercase;
-            padding: 1rem;
-            text-align: left;
-        }
-        
-        table tr:nth-child(even) {
-            background-color: #2A2A2A;
-        }
-        
-        table tr:nth-child(odd) {
-            background-color: #1F1F1F;
-        }
-        
-        table td {
-            color: #E5E7EB;
-            padding: 1rem;
-        }
-        
-        /* Form Input Styles */
-        input[type="text"], 
-        input[type="number"], 
-        input[type="date"] {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            color: #000000;
-            background-color: #F3F4F6;
-            border: 1px solid #D1D5DB;
-            border-radius: 0.5rem;
-            transition: border-color 0.2s ease;
-        }
-        
-        input[type="text"]:focus, 
-        input[type="number"]:focus, 
-        input[type="date"]:focus {
-            outline: none;
-            border-color: #3B82F6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-        }
-        
-        input[type="text"]::placeholder, 
-        input[type="number"]::placeholder, 
-        input[type="date"]::placeholder {
-            color: #6B7280;
-        }
-        
-        /* Footer Styles */
-        .footer {
-            background-color: #001529;
-            padding-bottom: 13px;
-            margin-top: auto;
-            width: 100%;
-        }
-        
-        .footer-content {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            padding: 20px 0;
-        }
-        
-        .footlinks h4,
-        .footlinkss h4 {
-            margin-top: 30px;
-            font-size: 20px;
-            font-weight: 600;
-            color: white;
-            margin-bottom: 30px;
-            position: relative;
-        }
-        
-        .footlinks h4::before,
-        .footlinkss h4::before {
-            content: "";
-            position: absolute;
-            height: 2px;
-            width: 70px;
-            left: 0;
-            bottom: -7px;
-            background: #007bff;
-        }
-        
-        .rounded-full {
-            border-radius: 9999px;
-            padding-left: 12px;
-        }
-        .footlinks a {
-            color: #a0a0a0;
-            transition: all 0.3s ease;
-        }
-        
-        .footlinks a:hover {
-            color: #007bff;
-            padding-left: 8px;
-        }
-        
-        .social a {
-            font-size: 25px;
-            margin: 4px;
-            height: 40px;
-            width: 40px;
-            color: #001529;
-            background-color: #007bff;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-        
-        .social a:hover {
-            transform: scale(1.2);
-            background-color: white;
-            color: #007bff;
-        }
-        
-        .end {
-            text-align: center;
-            padding-top: 20px;
-            color: #a0a0a0;
-        }
-        
-        /* Hamburger Menu */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-        
-        .hamburger .line {
-            width: 30px;
-            height: 4px;
-            background: white;
-            border-radius: 2px;
-        }
-        
-        /* Responsive Styles */
-        @media screen and (max-width: 768px) {
-            .navbar {
-                padding: 0.5rem 1rem;
-            }
-        
-            .navbar-links {
-                display: none;
-                flex-direction: column;
-                gap: 1rem;
-                position: absolute;
-                top: 60px;
-                right: 10px;
-                background: rgba(0, 20, 40, 0.95);
-                padding: 1rem 1.5rem;
-                border-radius: 10px;
-                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-                width: auto;
-                text-align: left;
-                opacity: 0;
-                transform: translateY(-10px);
-                transition: all 0.3s ease-out;
-            }
-        
-            .navbar-links.active {
-                display: flex;
-                opacity: 1;
-                transform: translateY(0);
-            }
-        
-            .hamburger {
-                display: flex;
-            }
-        
-            .user-details-section {
-                padding: 1rem;
-                margin-top: 60px;
-            }
-        
-            .user-details-section .container {
-                max-width: 100%;
-            }
-        
-            .user-details-section .flex {
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 0.75rem;
-            }
-        
-            .user-details-section .items-center {
-                flex: 1;
-                min-width: 200px;
-            }
-        
-            .user-details-section .text-xl {
-                font-size: 1.125rem;
-            }
-        
-            .main-content {
-                padding: 1rem;
-                margin-top: 1.5rem;
-            }
-        
-            .footer-content {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-        
-            .footlinks h4::before,
-            .footlinkss h4::before {
-                left: 50%;
-                transform: translateX(-50%);
-            }
-        
-            /* Table responsiveness */
-            .overflow-x-auto {
-                margin: 0 -1rem;
-                padding: 0 1rem;
-                overflow-x: auto;
-            }
-        
-            table {
-                font-size: 0.875rem;
-            }
-        
-            table td, 
-            table th {
-                padding: 0.75rem 0.5rem;
-            }
-        }
-        
-        @media screen and (max-width: 480px) {
-            .user-details-section {
-                padding: 0.75rem;
-            }
-        
-            .user-details-section .flex {
-                gap: 0.5rem;
-            }
-        
-            .user-details-section .text-sm {
-                display: flex;
-                flex-direction: column;
-                gap: 0.25rem;
-            }
-        
-            .user-details-section .text-sm .mx-2 {
-                display: none;
-            }
-        
-            .website-name {
-                font-size: 1.5rem;
-            }
-        
-            .logo {
-                width: 40px;
-                height: 40px;
-            }
-        
-            .main-content {
-                padding: 0.75rem;
-                margin-top: 1rem;
-            }
-        
-            table {
-                font-size: 0.75rem;
-            }
-        
-            table td, 
-            table th {
-                padding: 0.5rem 0.25rem;
-            }
-        }
-        /* Add this to your existing style section */
-        #searchInput {
-            min-width: 250px; /* Increase this value to make it wider */
-            width: 300px; /* Set a specific width */
-        }
-        
-        /* Maintain responsiveness */
-        @media screen and (max-width: 768px) {
-            #searchInput {
-                width: 100%; /* Full width on smaller screens */
-                min-width: unset;
-            }
-        }
-        /* Modified for larger screens */
-        @media screen and (min-width: 769px) {
-            .bg-gray-900 .flex {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-        
-            .bg-gray-900 #searchInput {
-                width: 800px; /* Increase this value from 200px to 300px or more */
-            }
-            
-            /* Maintain slightly larger gap on bigger screens */
-            .user-details-section .flex .items-center > div:last-child {
-                margin-left: 1rem;
-            }
-        }
-    </style>
-    
-    <!-- Added styles for sensor modal -->
-    <style>
-        /* Modal styles */
-        .sensor-modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.8);
-        }
-        
-        .sensor-modal-content {
-            position: relative;
-            background-color: #1f2937;
-            margin: 2% auto;
-            padding: 20px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 1200px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            animation: modalFadeIn 0.3s;
-        }
-        
-        @keyframes modalFadeIn {
-            from {opacity: 0; transform: translateY(-30px);}
-            to {opacity: 1; transform: translateY(0);}
-        }
-        
-        .close-modal {
-            position: absolute;
-            right: 20px;
-            top: 15px;
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 2;
-        }
-        
-        .close-modal:hover {
-            color: #fff;
-        }
-        
-        /* Sensor dashboard mini widget */
-        .sensor-widget {
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .sensor-widget:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        
-        /* Chart styles */
-        .chart-container {
-            position: relative;
-            height: 300px;
-            width: 100%;
-        }
-        
-        /* Reading cards */
-        .reading-card {
-            position: relative;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-            background-color: #2d3748;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        
-        .temperature {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #dc3545;
-            margin: 10px 0;
-        }
-        
-        .humidity {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #007bff;
-            margin: 10px 0;
-        }
-        
-        .sensor-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-        
-        .timestamp {
-            font-size: 0.8rem;
-            color: #9ca3af;
-        }
-        
-        .data-table {
-            background-color: #1f2937;
-            color: #e5e7eb;
-        }
-        
-        .data-table thead {
-            background-color: #111827;
-        }
     </style>
 </head>
 <body>
@@ -717,6 +713,7 @@
             <a href="/viewrequests" class="nav-link">Requests</a>
             <a href="/donations" class="nav-link">Available Donations</a>
             <a href="/register" class="nav-link">Administration</a>
+            <!-- In your navbar-links div -->
             <!-- New nav link for sensor dashboard -->
             
         </div>
@@ -790,9 +787,9 @@
             
             <!-- Layout for mobile (stacked) -->
             <div class="md:hidden space-y-3">
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between" onclick="openSensorModal()">
                     <h3 class="text-lg font-medium">Storage Environment</h3>
-                    <button class="text-blue-400 hover:text-blue-300 text-sm">
+                    <button class="text-blue-400 hover:text-blue-300 text-sm ">
                         View Details →
                     </button>
                 </div>
@@ -1320,6 +1317,13 @@ async function updateSensorDashboard() {
         document.getElementById('currentTemp').textContent = latestReading.temperature.toFixed(1) + '°C';
         document.getElementById('currentHumidity').textContent = latestReading.humidity.toFixed(1) + '%';
         
+        // Check if mobile elements exist before updating them
+        const tempMobile = document.getElementById('currentTempMobile');
+        const humidityMobile = document.getElementById('currentHumidityMobile');
+        
+        if(tempMobile) tempMobile.textContent = latestReading.temperature.toFixed(1) + '°C';
+        if(humidityMobile) humidityMobile.textContent = latestReading.humidity.toFixed(1) + '%';
+        
         // Update modal data
         document.getElementById('modalTemp').textContent = latestReading.temperature.toFixed(1) + '°C';
         document.getElementById('modalHumidity').textContent = latestReading.humidity.toFixed(1) + '%';
@@ -1521,30 +1525,21 @@ window.onclick = function(event) {
         closeSensorModal();
     }
 }
-
-// Event listeners
+// Replace this code in your JavaScript section
 document.addEventListener('DOMContentLoaded', function() {
-    // Update the dashboard when page loads
     updateSensorDashboard();
-    
-    // Set up event listener for sensor dashboard link
-    document.getElementById('sensorDashboardLink').addEventListener('click', function(e) {
-        e.preventDefault();
-        openSensorModal();
-    });
-    
-    // Auto refresh the data every 30 seconds
-    setInterval(function() {
+        setInterval(function() {
         updateSensorDashboard();
-    }, 30000);
+    }, 20000);
+    
+    // Remove the event listener for sensorDashboardLink since it doesn't exist
 });
 
         // Rest of your existing scripts
         // (keep all your existing JavaScript functions)
        
     </script>
-
-    <!-- The rest of your JavaScript code goes here -->
+     <!-- The rest of your JavaScript code goes here -->
        <!-- Add this to your HTML body, just before the closing </body> tag -->
 
 <!-- Microphone Icon -->
@@ -1596,531 +1591,532 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
 </div>
-
 <!-- Add this to your existing <style> tag -->
-<style>
-    /* Microphone Icon Styles */
-    .mic-icon {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 60px;
-        height: 60px;
-        background-color: #3B82F6;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        cursor: pointer;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        z-index: 999;
-        transition: all 0.3s ease;
-    }
-
-    .mic-icon:hover {
-        transform: scale(1.1);
-        background-color: #2563EB;
-    }
-
-    /* Voice Assistant Modal Styles */
-    .voice-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-    }
-
-    .voice-modal.show {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .voice-modal-content {
-        background-color: #1E293B;
-        border-radius: 16px;
-        width: 90%;
-        max-width: 500px;
-        overflow: hidden;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        color: white;
-    }
-
-    .voice-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px 20px;
-        background-color: #0F172A;
-    }
-
-    .voice-header h3 {
-        margin: 0;
-        font-size: 18px;
-        font-weight: 600;
-    }
-
-    .close-btn {
-        background: none;
-        border: none;
-        color: #9CA3AF;
-        cursor: pointer;
-        padding: 4px;
-        margin: -4px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-    }
-
-    .close-btn:hover {
-        color: white;
-        background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .voice-body {
-        padding: 30px 20px;
-        text-align: center;
-        min-height: 200px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .animation-container {
-        margin-bottom: 20px;
-    }
-
-    /* Sound Wave Animation */
-    .sound-wave {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 60px;
-    }
-
-    .sound-wave .bar {
-        display: inline-block;
-        width: 5px;
-        margin: 0 3px;
-        height: 20px;
-        background-color: #3B82F6;
-        border-radius: 3px;
-        animation: sound-wave-animation 1.2s infinite ease-in-out;
-    }
-
-    .sound-wave .bar:nth-child(2) {
-        animation-delay: 0.1s;
-    }
-
-    .sound-wave .bar:nth-child(3) {
-        animation-delay: 0.2s;
-    }
-
-    .sound-wave .bar:nth-child(4) {
-        animation-delay: 0.3s;
-    }
-
-    .sound-wave .bar:nth-child(5) {
-        animation-delay: 0.4s;
-    }
-
-    .sound-wave .bar:nth-child(6) {
-        animation-delay: 0.5s;
-    }
-
-    .sound-wave .bar:nth-child(7) {
-        animation-delay: 0.6s;
-    }
-
-    .sound-wave.inactive .bar {
-        animation: none;
-        height: 5px;
-    }
-
-    @keyframes sound-wave-animation {
-        0%, 100% {
-            height: 20px;
+    <style>
+        /* Microphone Icon Styles */
+        .mic-icon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #3B82F6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            transition: all 0.3s ease;
         }
-        50% {
+    
+        .mic-icon:hover {
+            transform: scale(1.1);
+            background-color: #2563EB;
+        }
+    
+        /* Voice Assistant Modal Styles */
+        .voice-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+    
+        .voice-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    
+        .voice-modal-content {
+            background-color: #1E293B;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+    
+        .voice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background-color: #0F172A;
+        }
+    
+        .voice-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+    
+        .close-btn {
+            background: none;
+            border: none;
+            color: #9CA3AF;
+            cursor: pointer;
+            padding: 4px;
+            margin: -4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+    
+        .close-btn:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    
+        .voice-body {
+            padding: 30px 20px;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        .animation-container {
+            margin-bottom: 20px;
+        }
+    
+        /* Sound Wave Animation */
+        .sound-wave {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             height: 60px;
         }
-    }
-
-    #listening-text, #response-text {
-        font-size: 18px;
-        margin: 10px 0;
-    }
-
-    #response-text {
-        max-height: 200px;
-        overflow-y: auto;
-    }
-
-    .voice-footer {
-        padding: 16px 20px;
-        display: flex;
-        justify-content: center;
-        background-color: #0F172A;
-    }
-
-    .mic-btn {
-        background-color: #3B82F6;
-        color: white;
-        border: none;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .mic-btn:hover {
-        background-color: #2563EB;
-        transform: scale(1.05);
-    }
-
-    .mic-btn.listening {
-        background-color: #EF4444;
-        animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-        0% {
-            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    
+        .sound-wave .bar {
+            display: inline-block;
+            width: 5px;
+            margin: 0 3px;
+            height: 20px;
+            background-color: #3B82F6;
+            border-radius: 3px;
+            animation: sound-wave-animation 1.2s infinite ease-in-out;
         }
-        70% {
-            box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+    
+        .sound-wave .bar:nth-child(2) {
+            animation-delay: 0.1s;
         }
-        100% {
-            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    
+        .sound-wave .bar:nth-child(3) {
+            animation-delay: 0.2s;
         }
-    }
-
-    .hidden {
-        display: none !important;
-    }
-
-    /* Responsive styles */
-    @media screen and (max-width: 768px) {
-        .mic-icon {
-            bottom: 20px;
-            right: 20px;
+    
+        .sound-wave .bar:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+    
+        .sound-wave .bar:nth-child(5) {
+            animation-delay: 0.4s;
+        }
+    
+        .sound-wave .bar:nth-child(6) {
+            animation-delay: 0.5s;
+        }
+    
+        .sound-wave .bar:nth-child(7) {
+            animation-delay: 0.6s;
+        }
+    
+        .sound-wave.inactive .bar {
+            animation: none;
+            height: 5px;
+        }
+    
+        @keyframes sound-wave-animation {
+            0%, 100% {
+                height: 20px;
+            }
+            50% {
+                height: 60px;
+            }
+        }
+    
+        #listening-text, #response-text {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+    
+        #response-text {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    
+        .voice-footer {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: center;
+            background-color: #0F172A;
+        }
+    
+        .mic-btn {
+            background-color: #3B82F6;
+            color: white;
+            border: none;
             width: 50px;
             height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-
-        .voice-modal-content {
-            width: 95%;
+    
+        .mic-btn:hover {
+            background-color: #2563EB;
+            transform: scale(1.05);
         }
-    }
-</style>
+    
+        .mic-btn.listening {
+            background-color: #EF4444;
+            animation: pulse 1.5s infinite;
+        }
+    
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+    
+    
+        /* Responsive styles */
+        @media screen and (max-width: 768px) {
+            .mic-icon {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+            }
+    
+            .voice-modal-content {
+                width: 95%;
+            }
+        }
+    </style>
 
 <!-- Add this to the end of your JavaScript section -->
 <script>
-  // Voice Assistant Functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Elements
-    const micAssistant = document.getElementById('mic-assistant');
-    const voiceModal = document.getElementById('voice-modal');
-    const closeVoiceModal = document.getElementById('close-voice-modal');
-    const startListeningBtn = document.getElementById('start-listening');
-    const listeningText = document.getElementById('listening-text');
-    const responseText = document.getElementById('response-text');
-    const soundWave = document.querySelector('.sound-wave');
-    
-    // Product data from the page
-    function getProductsData() {
-        const products = [];
-        const rows = document.querySelectorAll('.product-row');
-        
-        rows.forEach(row => {
-            const cells = row.querySelectorAll('td');
-            if (cells.length >= 5) {
-                products.push({
-                    name: cells[0].textContent.trim().toLowerCase(),
-                    quantity: cells[1].textContent.trim(),
-                    location: cells[2].textContent.trim(),
-                    expiryDate: cells[3].textContent.trim(),
-                    daysUntilExpiry: cells[4].textContent.trim()
-                });
-            }
-        });
-        
-        return products;
-    }
-    
-    // Find product by name
-    function findProduct(productName) {
-        const products = getProductsData();
-        const searchName = productName.toLowerCase().trim();
-        
-        return products.find(product => 
-            product.name.includes(searchName) || 
-            searchName.includes(product.name)
-        );
-    }
-    
-    // Speech recognition setup
-    let recognition;
-    
-    try {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        recognition = new SpeechRecognition();
-        recognition.continuous = false;
-        recognition.lang = 'en-US';
-        recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
-    } catch (e) {
-        console.error('Speech recognition not supported:', e);
-    }
-    
-    // Speech synthesis
-    const speak = (text) => {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 1;
-        utterance.pitch = 1;
-        speechSynthesis.speak(utterance);
-    };
-    
-    // Handle recognition results
-    if (recognition) {
-        recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript.toLowerCase();
-            listeningText.textContent = transcript;
-            
-            setTimeout(() => {
-                processCommand(transcript);
-            }, 500);
-        };
-        
-        recognition.onend = () => {
-            startListeningBtn.classList.remove('listening');
-            soundWave.classList.add('inactive');
-        };
-        
-        recognition.onerror = (event) => {
-            console.error('Speech recognition error', event.error);
-            listeningText.textContent = `Error: ${event.error}. Please try again.`;
-            startListeningBtn.classList.remove('listening');
-            soundWave.classList.add('inactive');
-        };
-    }
-    
-    // Process voice command
-    function processCommand(command) {
-        responseText.classList.remove('hidden');
-        
-        // Extract product name using a more sophisticated approach
-        function extractProductName(cmd) {
-            // Common phrases that might come before product names
-            const phrases = [
-                'tell about', 'tell me about', 'what about', 'details for', 
-                'information on', 'when will', 'when does', 'expires', 
-                'expiration date for', 'expiry date of', 'how many', 
-                'quantity of', 'quantities of', 'amount of', 'where is',
-                'location of', 'where can i find'
-            ];
-            
-            let productName = cmd;
-            
-            // Remove question words and common phrases
-            phrases.forEach(phrase => {
-                productName = productName.replace(phrase, '');
-            });
-            
-            // Remove other common words that might appear
-            const fillerWords = ['the', 'a', 'an', 'this', 'that', 'these', 'those', 'some', 'expire', 'product'];
-            fillerWords.forEach(word => {
-                productName = productName.replace(new RegExp(`\\b${word}\\b`, 'gi'), '');
-            });
-            
-            return productName.trim();
-        }
-        
-        // Check for specific expiration date questions
-        if (command.includes('when') && 
-           (command.includes('expire') || command.includes('expiry') || command.includes('expiration'))) {
-            
-            const productName = extractProductName(command);
-            const product = findProduct(productName);
-            
-            if (product) {
-                const response = `${product.name} expires on ${product.expiryDate}, which is ${product.daysUntilExpiry} days from now.`;
-                responseText.textContent = response;
-                speak(response);
-            } else {
-                const response = `Sorry, I couldn't find any product matching "${productName}" in the inventory.`;
-                responseText.textContent = response;
-                speak(response);
-            }
-        }
-        // Check for quantity questions
-        else if ((command.includes('how many') || command.includes('quantity') || 
-                 command.includes('quantities') || command.includes('amount')) &&
-                 !command.includes('expiring soon')) {
-            
-            const productName = extractProductName(command);
-            const product = findProduct(productName);
-            
-            if (product) {
-                const response = `There are ${product.quantity} units of ${product.name} in your inventory.`;
-                responseText.textContent = response;
-                speak(response);
-            } else {
-                const response = `Sorry, I couldn't find any product matching "${productName}" in the inventory.`;
-                responseText.textContent = response;
-                speak(response);
-            }
-        }
-        // Check for location questions
-        else if (command.includes('where') || command.includes('location')) {
-            
-            const productName = extractProductName(command);
-            const product = findProduct(productName);
-            
-            if (product) {
-                const response = `${product.name} is located at ${product.location}.`;
-                responseText.textContent = response;
-                speak(response);
-            } else {
-                const response = `Sorry, I couldn't find any product matching "${productName}" in the inventory.`;
-                responseText.textContent = response;
-                speak(response);
-            }
-        }
-        // General product info (existing functionality)
-        else if (command.includes('tell about') || 
-                command.includes('tell me about') || 
-                command.includes('what about') || 
-                command.includes('details for') || 
-                command.includes('information on')) {
-            
-            const productName = extractProductName(command);
-            const product = findProduct(productName);
-            
-            if (product) {
-                const response = `${product.name} has a quantity of ${product.quantity}. It expires on ${product.expiryDate}, which is ${product.daysUntilExpiry} days from now. It's located at ${product.location}.`;
-                responseText.textContent = response;
-                speak(response);
-            } else {
-                const response = `Sorry, I couldn't find any product matching "${productName}" in the inventory.`;
-                responseText.textContent = response;
-                speak(response);
-            }
-        } else if (command.includes('search for') || command.includes('find')) {
-            // Handle search commands
-            let searchTerm = command
-                .replace('search for', '')
-                .replace('find', '')
-                .trim();
-            
-            // Trigger the search input
-            const searchInput = document.getElementById('searchInput');
-            if (searchInput) {
-                searchInput.value = searchTerm;
-                searchInput.dispatchEvent(new Event('input'));
-                
-                const response = `Searching for "${searchTerm}" in inventory.`;
-                responseText.textContent = response;
-                speak(response);
-            }
-        } else if (command.includes('expiring soon') || command.includes('expires soon')) {
-            // Find products expiring soon
-            const products = getProductsData();
-            const expiringProducts = products.filter(p => {
-                const days = parseInt(p.daysUntilExpiry);
-                return !isNaN(days) && days <= 7;
-            });
-            
-            if (expiringProducts.length > 0) {
-                const response = `I found ${expiringProducts.length} products expiring within 7 days: ${expiringProducts.map(p => p.name).join(', ')}`;
-                responseText.textContent = response;
-                speak(response);
-            } else {
-                const response = "I didn't find any products expiring within the next 7 days.";
-                responseText.textContent = response;
-                speak(response);
-            }
-        } else {
-            const response = "I'm sorry, I didn't understand that command. You can ask about product details, expiration dates, quantities, locations, search for items, or check which products are expiring soon.";
-            responseText.textContent = response;
-            speak(response);
-        }
-        
-        listeningText.classList.add('hidden');
-    }
-    
-    // Function to start listening
-    function startListening() {
-        if (recognition) {
-            try {
-                responseText.classList.add('hidden');
-                listeningText.classList.remove('hidden');
-                listeningText.textContent = 'Listening...';
-                soundWave.classList.remove('inactive');
-                startListeningBtn.classList.add('listening');
-                
-                recognition.start();
-            } catch (e) {
-                console.error('Error starting recognition:', e);
-            }
-        } else {
-            responseText.classList.remove('hidden');
-            responseText.textContent = "Sorry, speech recognition is not supported in your browser.";
-            listeningText.classList.add('hidden');
-        }
-    }
-    
-    // Event listeners
-    micAssistant.addEventListener('click', () => {
-        voiceModal.classList.remove('hidden');
-        setTimeout(() => {
-            voiceModal.classList.add('show');
-            // Automatically start listening when modal opens
-            startListening();
-        }, 10);
-        
-        responseText.classList.add('hidden');
-        listeningText.classList.remove('hidden');
-        listeningText.textContent = 'Ask about a product...';
-        soundWave.classList.add('inactive');
-    });
-    
-    closeVoiceModal.addEventListener('click', () => {
-        voiceModal.classList.remove('show');
-        setTimeout(() => {
-            voiceModal.classList.add('hidden');
-            speechSynthesis.cancel(); // Stop any ongoing speech
-        }, 300);
-    });
-    
-    // Keep this button for manual activation if needed
-    startListeningBtn.addEventListener('click', startListening);
-    
-    // Close modal when clicking outside
-    voiceModal.addEventListener('click', function(e) {
-        if (e.target === voiceModal) {
-            closeVoiceModal.click();
-        }
-    });
-});
-</script>
-        
+    // Voice Assistant Functionality
+  document.addEventListener('DOMContentLoaded', function() {
+      // Elements
+      const micAssistant = document.getElementById('mic-assistant');
+      const voiceModal = document.getElementById('voice-modal');
+      const closeVoiceModal = document.getElementById('close-voice-modal');
+      const startListeningBtn = document.getElementById('start-listening');
+      const listeningText = document.getElementById('listening-text');
+      const responseText = document.getElementById('response-text');
+      const soundWave = document.querySelector('.sound-wave');
+      
+      // Product data from the page
+      function getProductsData() {
+          const products = [];
+          const rows = document.querySelectorAll('.product-row');
+          
+          rows.forEach(row => {
+              const cells = row.querySelectorAll('td');
+              if (cells.length >= 5) {
+                  products.push({
+                      name: cells[0].textContent.trim().toLowerCase(),
+                      quantity: cells[1].textContent.trim(),
+                      location: cells[2].textContent.trim(),
+                      expiryDate: cells[3].textContent.trim(),
+                      daysUntilExpiry: cells[4].textContent.trim()
+                  });
+              }
+          });
+          
+          return products;
+      }
+      
+      // Find product by name
+      function findProduct(productName) {
+          const products = getProductsData();
+          const searchName = productName.toLowerCase().trim();
+          
+          return products.find(product => 
+              product.name.includes(searchName) || 
+              searchName.includes(product.name)
+          );
+      }
+      
+      // Speech recognition setup
+      let recognition;
+      
+      try {
+          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+          recognition = new SpeechRecognition();
+          recognition.continuous = false;
+          recognition.lang = 'en-US';
+          recognition.interimResults = false;
+          recognition.maxAlternatives = 1;
+      } catch (e) {
+          console.error('Speech recognition not supported:', e);
+      }
+      
+      // Speech synthesis
+      const speak = (text) => {
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.rate = 1;
+          utterance.pitch = 1;
+          speechSynthesis.speak(utterance);
+      };
+      
+      // Handle recognition results
+      if (recognition) {
+          recognition.onresult = (event) => {
+              const transcript = event.results[0][0].transcript.toLowerCase();
+              listeningText.textContent = transcript;
+              
+              setTimeout(() => {
+                  processCommand(transcript);
+              }, 500);
+          };
+          
+          recognition.onend = () => {
+              startListeningBtn.classList.remove('listening');
+              soundWave.classList.add('inactive');
+          };
+          
+          recognition.onerror = (event) => {
+              console.error('Speech recognition error', event.error);
+              listeningText.textContent = `Error: ${event.error}. Please try again.`;
+              startListeningBtn.classList.remove('listening');
+              soundWave.classList.add('inactive');
+          };
+      }
+      
+      // Process voice command
+      function processCommand(command) {
+          responseText.classList.remove('hidden');
+          
+          // Extract product name using a more sophisticated approach
+          function extractProductName(cmd) {
+              // Common phrases that might come before product names
+              const phrases = [
+                  'tell about', 'tell me about', 'what about', 'details for', 
+                  'information on', 'when will', 'when does', 'expires', 
+                  'expiration date for', 'expiry date of', 'how many', 
+                  'quantity of', 'quantities of', 'amount of', 'where is',
+                  'location of', 'where can i find'
+              ];
+              
+              let productName = cmd;
+              
+              // Remove question words and common phrases
+              phrases.forEach(phrase => {
+                  productName = productName.replace(phrase, '');
+              });
+              
+              // Remove other common words that might appear
+              const fillerWords = ['the', 'a', 'an', 'this', 'that', 'these', 'those', 'some', 'expire', 'product'];
+              fillerWords.forEach(word => {
+                  productName = productName.replace(new RegExp(`\\b${word}\\b`, 'gi'), '');
+              });
+              
+              return productName.trim();
+          }
+          
+          // Check for specific expiration date questions
+          if (command.includes('when') && 
+             (command.includes('expire') || command.includes('expiry') || command.includes('expiration'))) {
+              
+              const productName = extractProductName(command);
+              const product = findProduct(productName);
+              
+              if (product) {
+                  const response = `${product.name} expires on ${product.expiryDate}, which is ${product.daysUntilExpiry} days from now.`;
+                  responseText.textContent = response;
+                  speak(response);
+              } else {
+                  const response = `Sorry, I couldn't find any product matching "${productName}" in the inventory.`;
+                  responseText.textContent = response;
+                  speak(response);
+              }
+          }
+          // Check for quantity questions
+          else if ((command.includes('how many') || command.includes('quantity') || 
+                   command.includes('quantities') || command.includes('amount')) &&
+                   !command.includes('expiring soon')) {
+              
+              const productName = extractProductName(command);
+              const product = findProduct(productName);
+              
+              if (product) {
+                  const response = `There are ${product.quantity} units of ${product.name} in your inventory.`;
+                  responseText.textContent = response;
+                  speak(response);
+              } else {
+                  const response = `Sorry, I couldn't find any product matching "${productName}" in the inventory.`;
+                  responseText.textContent = response;
+                  speak(response);
+              }
+          }
+          // Check for location questions
+          else if (command.includes('where') || command.includes('location')) {
+              
+              const productName = extractProductName(command);
+              const product = findProduct(productName);
+              
+              if (product) {
+                  const response = `${product.name} is located at ${product.location}.`;
+                  responseText.textContent = response;
+                  speak(response);
+              } else {
+                  const response = `Sorry, I couldn't find any product matching "${productName}" in the inventory.`;
+                  responseText.textContent = response;
+                  speak(response);
+              }
+          }
+          // General product info (existing functionality)
+          else if (command.includes('tell about') || 
+                  command.includes('tell me about') || 
+                  command.includes('what about') || 
+                  command.includes('details for') || 
+                  command.includes('information on')) {
+              
+              const productName = extractProductName(command);
+              const product = findProduct(productName);
+              
+              if (product) {
+                  const response = `${product.name} has a quantity of ${product.quantity}. It expires on ${product.expiryDate}, which is ${product.daysUntilExpiry} days from now. It's located at ${product.location}.`;
+                  responseText.textContent = response;
+                  speak(response);
+              } else {
+                  const response = `Sorry, I couldn't find any product matching "${productName}" in the inventory.`;
+                  responseText.textContent = response;
+                  speak(response);
+              }
+          } else if (command.includes('search for') || command.includes('find')) {
+              // Handle search commands
+              let searchTerm = command
+                  .replace('search for', '')
+                  .replace('find', '')
+                  .trim();
+              
+              // Trigger the search input
+              const searchInput = document.getElementById('searchInput');
+              if (searchInput) {
+                  searchInput.value = searchTerm;
+                  searchInput.dispatchEvent(new Event('input'));
+                  
+                  const response = `Searching for "${searchTerm}" in inventory.`;
+                  responseText.textContent = response;
+                  speak(response);
+              }
+          } else if (command.includes('expiring soon') || command.includes('expires soon')) {
+              // Find products expiring soon
+              const products = getProductsData();
+              const expiringProducts = products.filter(p => {
+                  const days = parseInt(p.daysUntilExpiry);
+                  return !isNaN(days) && days <= 7;
+              });
+              
+              if (expiringProducts.length > 0) {
+                  const response = `I found ${expiringProducts.length} products expiring within 7 days: ${expiringProducts.map(p => p.name).join(', ')}`;
+                  responseText.textContent = response;
+                  speak(response);
+              } else {
+                  const response = "I didn't find any products expiring within the next 7 days.";
+                  responseText.textContent = response;
+                  speak(response);
+              }
+          } else {
+              const response = "I'm sorry, I didn't understand that command. You can ask about product details, expiration dates, quantities, locations, search for items, or check which products are expiring soon.";
+              responseText.textContent = response;
+              speak(response);
+          }
+          
+          listeningText.classList.add('hidden');
+      }
+      
+      // Function to start listening
+      function startListening() {
+          if (recognition) {
+              try {
+                  responseText.classList.add('hidden');
+                  listeningText.classList.remove('hidden');
+                  listeningText.textContent = 'Listening...';
+                  soundWave.classList.remove('inactive');
+                  startListeningBtn.classList.add('listening');
+                  
+                  recognition.start();
+              } catch (e) {
+                  console.error('Error starting recognition:', e);
+              }
+          } else {
+              responseText.classList.remove('hidden');
+              responseText.textContent = "Sorry, speech recognition is not supported in your browser.";
+              listeningText.classList.add('hidden');
+          }
+      }
+      
+      // Event listeners
+      micAssistant.addEventListener('click', () => {
+          voiceModal.classList.remove('hidden');
+          setTimeout(() => {
+              voiceModal.classList.add('show');
+              // Automatically start listening when modal opens
+              startListening();
+          }, 10);
+          // This element doesn't exist in your HTML
+  document.getElementById('sensorDashboardLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      openSensorModal();
+  });
+          
+          responseText.classList.add('hidden');
+          listeningText.classList.remove('hidden');
+          listeningText.textContent = 'Ask about a product...';
+          soundWave.classList.add('inactive');
+      });
+      
+      closeVoiceModal.addEventListener('click', () => {
+          voiceModal.classList.remove('show');
+          setTimeout(() => {
+              voiceModal.classList.add('hidden');
+              speechSynthesis.cancel(); // Stop any ongoing speech
+          }, 300);
+      });
+      
+      // Keep this button for manual activation if needed
+      startListeningBtn.addEventListener('click', startListening);
+      
+      // Close modal when clicking outside
+      voiceModal.addEventListener('click', function(e) {
+          if (e.target === voiceModal) {
+              closeVoiceModal.click();
+          }
+      });
+  });
+  </script>
+
     
 </body>
 </html>
