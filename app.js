@@ -1,24 +1,25 @@
-
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-const port = process.env.PORT || 3000// Correct way
+const axios = require('axios');
+const cron = require('node-cron');
+const port = process.env.PORT || 3000;
 const app = express();
 const JWT_SECRET = 'your-secret-key'; // Use environment variable in production
 
 // MongoDB Connection
 const uri = "mongodb+srv://reksitrajan01:8n4SHiaJfCZRrimg@cluster0.mperr.mongodb.net/test?retryWrites=true&w=majority";
 mongoose.connect(uri)
-    .then(() => console.log('MongoDB Connected Successfully!'))
+    .then(() => console.log('✅ MongoDB Connected Successfully!'))
     .catch((err) => {
-        console.error('MongoDB connection error:', err);
+        console.error('❌ MongoDB connection error:', err);
         process.exit(1);
     });
 
-// Schema definitions
+// Schema definitions for donation system
 const donationSchema = new mongoose.Schema({
     name: String,
     email: String,
@@ -60,8 +61,21 @@ const Product = mongoose.model('Product', {
     createdAt: { type: Date, default: Date.now }
 });
 
+// Schema for sensor data
+const sensorDataSchema = new mongoose.Schema({
+    temperature: Number,
+    humidity: Number,
+    timestamp: { type: Date, default: Date.now }
+});
+
+// Create models
 const Donation = mongoose.model('Donation', donationSchema);
 const Request = mongoose.model('Request', requestSchema);
+const SensorData = mongoose.model('SensorData', sensorDataSchema);
+
+// ThingSpeak API configuration
+const channelID = '2857456'; // Replace with your ThingSpeak channel ID
+const readAPIKey = '3PVRMKZIGG7C7XSF';
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -90,7 +104,42 @@ const authenticateToken = (req, res, next) => {
     }
 };
 
-// Routes
+// Function to fetch data from ThingSpeak and store in MongoDB
+async function fetchAndStoreThingSpeakData() {
+    try {
+        // Fetch the latest data from ThingSpeak
+        const response = await axios.get(`https://api.thingspeak.com/channels/${channelID}/feeds.json?api_key=${readAPIKey}&results=1`);
+        
+        if (response.data && response.data.feeds && response.data.feeds.length > 0) {
+            const latestData = response.data.feeds[0];
+            
+            // Create a new document in MongoDB
+            const newData = new SensorData({
+                temperature: parseFloat(latestData.field1),
+                humidity: parseFloat(latestData.field2),
+                timestamp: new Date(latestData.created_at)
+            });
+            
+            // Save to MongoDB
+            await newData.save();
+            console.log('✅ Data from ThingSpeak saved to MongoDB:', {
+                temperature: newData.temperature,
+                humidity: newData.humidity,
+                timestamp: newData.timestamp
+            });
+        }
+    } catch (error) {
+        console.error('❌ Error fetching or storing data from ThingSpeak:', error.message);
+    }
+}
+
+// Schedule the data fetch every minute
+cron.schedule('* * * * *', () => {
+    console.log('🔄 Running scheduled data fetch from ThingSpeak');
+    fetchAndStoreThingSpeakData();
+});
+
+// Routes for donation system
 app.get('/', (req, res) => {
     res.render('index');
 });
@@ -160,14 +209,22 @@ app.get('/main', authenticateToken, async (req, res) => {
     try {
         const user = await User.findById(req.user.userId);
         const products = await Product.find({ userId: req.user.userId });
+        
+        const today = new Date();
         const expiringProducts = products.filter(product => {
-            const daysToExpiry = Math.ceil((product.expiryDate - new Date()) / (1000 * 60 * 60 * 24));
+            const daysToExpiry = Math.ceil((product.expiryDate - today) / (1000 * 60 * 60 * 24));
             return daysToExpiry <= 10 && daysToExpiry > 0;
+        });
+        
+        // Add this new code to identify expired products
+        const expiredProducts = products.filter(product => {
+            return product.expiryDate < today;
         });
         
         res.render('main', { 
             products, 
             expiringProducts,
+            expiredProducts, // Pass the expired products to the template
             user: {
                 username: user.username,
                 email: user.email,
@@ -283,7 +340,6 @@ app.post('/dispose-product', authenticateToken, async (req, res) => {
 });
 
 // Donation Routes
-// Donation Routes
 app.get('/donate', (req, res) => {
     res.render('donate');
 });
@@ -323,6 +379,33 @@ app.get('/donations', async (req, res) => {
     }
 });
 
+app.post('/dispose-expired-products', authenticateToken, async (req, res) => {
+    try {
+        const quantities = req.body.quantities;
+        for (const [productId, quantity] of Object.entries(quantities)) {
+            if (!quantity || quantity <= 0) continue;
+            
+            const product = await Product.findOne({ 
+                _id: productId, 
+                userId: req.user.userId 
+            });
+            
+            if (product) {
+                if (parseInt(quantity) >= product.quantity) {
+                    await Product.deleteOne({ _id: product._id });
+                } else {
+                    product.quantity -= parseInt(quantity);
+                    await product.save();
+                }
+            }
+        }
+        res.redirect('/main');
+    } catch (error) {
+        console.error('Error disposing expired products:', error);
+        res.redirect('/main');
+    }
+});
+
 // Request Routes
 app.get('/donaters', (req, res) => {
     res.render('request-food');
@@ -331,13 +414,19 @@ app.get('/donaters', (req, res) => {
 app.get('/reqfood', (req, res) => {
     res.render('reqfood');
 });
+app.get('/ngo', (req, res) => {
+    res.render('ngo');
+});
+app.get('/info', (req, res) => {
+    res.render('info');
+});
 
 app.post('/requests', async (req, res) => {
     try {
         const request = new Request({
-            orgName: req.body.orgName,  // Changed from org_name to orgName
+            orgName: req.body.orgName,
             address: req.body.address,
-            contactDetails: req.body.contactDetails,  // Changed from contact_details to contactDetails
+            contactDetails: req.body.contactDetails,
             membersCount: parseInt(req.body.membersCount),
             description: req.body.description
         });
@@ -353,6 +442,7 @@ app.post('/requests', async (req, res) => {
         });
     }
 });
+
 app.get('/viewrequests', async (req, res) => {
     try {
         const requests = await Request.find().sort({ createdAt: -1 });
@@ -371,7 +461,48 @@ app.get('/viewrequests', async (req, res) => {
     }
 });
 
+// Sensor data routes
+app.get('/sensors', async (req, res) => {
+    try {
+        // Get the latest 20 records from MongoDB, sorted by timestamp (newest first)
+        const data = await SensorData.find().sort({ timestamp: -1 }).limit(20);
+        res.render('sensors', { sensorData: data });
+    } catch (error) {
+        console.error('❌ Error retrieving sensor data:', error.message);
+        res.status(500).send('Server Error');
+    }
+});
 
+// Route to get all sensor data as JSON
+app.get('/api/sensor-data', async (req, res) => {
+    try {
+        // Check if we're receiving data from ESP32
+        if (req.query.temperature && req.query.humidity) {
+            // Create a new document in MongoDB
+            const newData = new SensorData({
+                temperature: parseFloat(req.query.temperature),
+                humidity: parseFloat(req.query.humidity)
+            });
+            
+            // Save to MongoDB
+            await newData.save();
+            console.log('✅ Data received directly from ESP32 saved to MongoDB:', {
+                temperature: newData.temperature,
+                humidity: newData.humidity,
+                timestamp: newData.timestamp
+            });
+            
+            return res.json({ success: true, message: 'Data saved successfully' });
+        }
+        
+        // Otherwise, just return the data
+        const data = await SensorData.find().sort({ timestamp: -1 }).limit(100);
+        res.json(data);
+    } catch (error) {
+        console.error('❌ Error processing API request:', error.message);
+        res.status(500).json({ error: 'Server Error' });
+    }
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -384,5 +515,8 @@ app.use((err, req, res, next) => {
 
 // Start server
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+    console.log(`🚀 Server running on port ${port}`);
+    
+    // Fetch sensor data immediately when the server starts
+    fetchAndStoreThingSpeakData();
 });

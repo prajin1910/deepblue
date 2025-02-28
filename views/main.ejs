@@ -10,547 +10,698 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
     <style>
-       /* General styles */
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    text-decoration: none;
-    list-style: none;
-    scroll-behavior: smooth;
-}
 
-body {
-    background: rgba(0, 20, 40, 0.95);
-    color: white;
-    font-family: 'Arial', sans-serif;
-    min-height: 100vh;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
 
-/* Navbar styles */
-.navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(0, 20, 40, 0.95);
-    color: white;
-    padding: 0.5rem 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 1000;
-    height: 70px;
-}
-
-.navbar-logo {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.logo {
-    width: 50px;
-    height: 50px;
-}
-
-.website-name {
-    font-size: 2rem;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    margin-top: 7px;
-}
-
-.highlight-food {
-    color: #007bff;
-}
-
-.navbar-links {
-    display: flex;
-    gap: 1.5rem;
-}
-
-.nav-link {
-    color: #fff;
-    font-size: 1.2rem;
-    font-weight: 600;
-    padding: 5px 10px;
-    transition: all 0.3s ease;
-}
-
-.nav-link:hover {
-    color: #0a0a0a;
-    background: #007bff;
-    border-radius: 5px;
-    box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
-}
-
-/* Previous styles remain the same until the User Details Section */
-
-/* User Details Section Styles */
-.user-details-section {
-    background: rgba(17, 24, 39, 0.95);
-    padding: 1.5rem 2rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    margin-top: 70px;
-    width: 100%;
-    box-sizing: border-box;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.user-details-section .container {
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.user-details-section .flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-/* Modified - Removed default gap */
-.user-details-section .flex .items-center {
-    display: flex;
-    align-items: center;
-    gap: 0; /* Remove default gap */
-}
-
-.user-details-section .bg-blue-500 {
-    background: #3B82F6;
-    padding: 0.75rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
-}
-
-/* Added margin to the text container */
-.user-details-section .flex .items-center > div:last-child {
-    margin-left: 0.5rem; /* Add small margin between icon and text */
-}
-
-/* Modified for larger screens */
-@media screen and (min-width: 769px) {
-    .bg-gray-900 .flex {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .bg-gray-900 #searchInput {
-        width: 200px;
-    }
+          /* General styles */
+          * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none;
+            list-style: none;
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background: rgba(0, 20, 40, 0.95);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* Navbar styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 20, 40, 0.95);
+            color: white;
+            padding: 0.5rem 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            height: 70px;
+        }
+        
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+        }
+        
+        .website-name {
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            margin-top: 7px;
+        }
+        
+        .highlight-food {
+            color: #007bff;
+        }
+        
+        .navbar-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .nav-link {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding: 5px 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #0a0a0a;
+            background: #007bff;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+        }
+        
+        /* Previous styles remain the same until the User Details Section */
+        
+        /* User Details Section Styles */
+        .user-details-section {
+            background: rgba(17, 24, 39, 0.95);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 70px;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .user-details-section .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .user-details-section .flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        /* Modified - Removed default gap */
+        .user-details-section .flex .items-center {
+            display: flex;
+            align-items: center;
+            gap: 0; /* Remove default gap */
+        }
+        
+        .user-details-section .bg-blue-500 {
+            background: #3B82F6;
+            padding: 0.75rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* Added margin to the text container */
+        .user-details-section .flex .items-center > div:last-child {
+            margin-left: 0.5rem; /* Add small margin between icon and text */
+        }
+        
+        /* Modified for larger screens */
+        @media screen and (min-width: 769px) {
+            .bg-gray-900 .flex {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        
+            .bg-gray-900 #searchInput {
+                width: 200px;
+            }
+            
+            /* Maintain slightly larger gap on bigger screens */
+            .user-details-section .flex .items-center > div:last-child {
+                margin-left: 1rem;
+            }
+        }
+        
+        /* Modified for smaller screens */
+        @media screen and (max-width: 768px) {
+            .user-details-section .flex .items-center > div:last-child {
+                margin-left: 0.25rem; /* Minimal gap on mobile */
+            }
+            
+            .user-details-section .bg-blue-500 {
+                padding: 0.4rem;
+            }
+        }
+        
+        /* Rest of the styles remain the same... */
+        
+        .user-details-section .bg-blue-500 {
+            background: #3B82F6;
+            padding: 0.75rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+        
+        .user-details-section .text-xl {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+        
+        .user-details-section .text-sm {
+            font-size: 0.875rem;
+            color: #9CA3AF;
+        }
+        
+        /* Main Content Container */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            margin-top: 2rem;
+            width: 100%;
+            box-sizing: border-box;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Alert Styles */
+        .alert {
+            background-color: #FDE047;
+            color: #1E293B;
+            border-left: 6px solid #FACC15;
+            margin: 1rem 0;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        
+        /* Profile Dropdown Styles */
+        .profile-dropdown {
+            position: relative;
+            z-index: 50;
+        }
+        
+        .profile-dropdown .dropdown-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .profile-dropdown .dropdown-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .profile-dropdown .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: #1F2937;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            min-width: 150px;
+            margin-top: 0.5rem;
+        }
+        
+        .profile-dropdown .dropdown-item {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            color: white;
+            text-align: left;
+            transition: background-color 0.2s;
+        }
+        
+        .profile-dropdown .dropdown-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            background-color: #3B82F6;
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2563EB;
+            transform: scale(1.05);
+        }
+        
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        table th {
+            background-color: #1E293B;
+            color: #60A5FA;
+            text-transform: uppercase;
+            padding: 1rem;
+            text-align: left;
+        }
+        
+        table tr:nth-child(even) {
+            background-color: #2A2A2A;
+        }
+        
+        table tr:nth-child(odd) {
+            background-color: #1F1F1F;
+        }
+        
+        table td {
+            color: #E5E7EB;
+            padding: 1rem;
+        }
+        
+        /* Form Input Styles */
+        input[type="text"], 
+        input[type="number"], 
+        input[type="date"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            color: #000000;
+            background-color: #F3F4F6;
+            border: 1px solid #D1D5DB;
+            border-radius: 0.5rem;
+            transition: border-color 0.2s ease;
+        }
+        
+        input[type="text"]:focus, 
+        input[type="number"]:focus, 
+        input[type="date"]:focus {
+            outline: none;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        
+        input[type="text"]::placeholder, 
+        input[type="number"]::placeholder, 
+        input[type="date"]::placeholder {
+            color: #6B7280;
+        }
+        
+        /* Footer Styles */
+        .footer {
+            background-color: #001529;
+            padding-bottom: 13px;
+            margin-top: auto;
+            width: 100%;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px 0;
+        }
+        
+        .footlinks h4,
+        .footlinkss h4 {
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .footlinks h4::before,
+        .footlinkss h4::before {
+            content: "";
+            position: absolute;
+            height: 2px;
+            width: 70px;
+            left: 0;
+            bottom: -7px;
+            background: #007bff;
+        }
+        
+        .rounded-full {
+            border-radius: 9999px;
+            padding-left: 12px;
+        }
+        .footlinks a {
+            color: #a0a0a0;
+            transition: all 0.3s ease;
+        }
+        
+        .footlinks a:hover {
+            color: #007bff;
+            padding-left: 8px;
+        }
+        
+        .social a {
+            font-size: 25px;
+            margin: 4px;
+            height: 40px;
+            width: 40px;
+            color: #001529;
+            background-color: #007bff;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .social a:hover {
+            transform: scale(1.2);
+            background-color: white;
+            color: #007bff;
+        }
+        
+        .end {
+            text-align: center;
+            padding-top: 20px;
+            color: #a0a0a0;
+        }
+        
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .hamburger .line {
+            width: 30px;
+            height: 4px;
+            background: white;
+            border-radius: 2px;
+        }
+        
+        /* Responsive Styles */
+        @media screen and (max-width: 768px) {
+            .navbar {
+                padding: 0.5rem 1rem;
+            }
+        
+            .navbar-links {
+                display: none;
+                flex-direction: column;
+                gap: 1rem;
+                position: absolute;
+                top: 60px;
+                right: 10px;
+                background: rgba(0, 20, 40, 0.95);
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+                width: auto;
+                text-align: left;
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: all 0.3s ease-out;
+            }
+        
+            .navbar-links.active {
+                display: flex;
+                opacity: 1;
+                transform: translateY(0);
+            }
+        
+            .hamburger {
+                display: flex;
+            }
+        
+            .user-details-section {
+                padding: 1rem;
+                margin-top: 60px;
+            }
+        
+            .user-details-section .container {
+                max-width: 100%;
+            }
+        
+            .user-details-section .flex {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+        
+            .user-details-section .items-center {
+                flex: 1;
+                min-width: 200px;
+            }
+        
+            .user-details-section .text-xl {
+                font-size: 1.125rem;
+            }
+        
+            .main-content {
+                padding: 1rem;
+                margin-top: 1.5rem;
+            }
+        
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        
+            .footlinks h4::before,
+            .footlinkss h4::before {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        
+            /* Table responsiveness */
+            .overflow-x-auto {
+                margin: 0 -1rem;
+                padding: 0 1rem;
+                overflow-x: auto;
+            }
+        
+            table {
+                font-size: 0.875rem;
+            }
+        
+            table td, 
+            table th {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            .user-details-section {
+                padding: 0.75rem;
+            }
+        
+            .user-details-section .flex {
+                gap: 0.5rem;
+            }
+        
+            .user-details-section .text-sm {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+        
+            .user-details-section .text-sm .mx-2 {
+                display: none;
+            }
+        
+            .website-name {
+                font-size: 1.5rem;
+            }
+        
+            .logo {
+                width: 40px;
+                height: 40px;
+            }
+        
+            .main-content {
+                padding: 0.75rem;
+                margin-top: 1rem;
+            }
+        
+            table {
+                font-size: 0.75rem;
+            }
+        
+            table td, 
+            table th {
+                padding: 0.5rem 0.25rem;
+            }
+        }
+        /* Add this to your existing style section */
+        #searchInput {
+            min-width: 250px; /* Increase this value to make it wider */
+            width: 300px; /* Set a specific width */
+        }
+        
+        /* Maintain responsiveness */
+        @media screen and (max-width: 768px) {
+            #searchInput {
+                width: 100%; /* Full width on smaller screens */
+                min-width: unset;
+            }
+        }
+        /* Modified for larger screens */
+        @media screen and (min-width: 769px) {
+            .bg-gray-900 .flex {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        
+            .bg-gray-900 #searchInput {
+                width: 800px; /* Increase this value from 200px to 300px or more */
+            }
+            
+            /* Maintain slightly larger gap on bigger screens */
+            .user-details-section .flex .items-center > div:last-child {
+                margin-left: 1rem;
+            }
+        }
+    </style>
     
-    /* Maintain slightly larger gap on bigger screens */
-    .user-details-section .flex .items-center > div:last-child {
-        margin-left: 1rem;
-    }
-}
-
-/* Modified for smaller screens */
-@media screen and (max-width: 768px) {
-    .user-details-section .flex .items-center > div:last-child {
-        margin-left: 0.25rem; /* Minimal gap on mobile */
-    }
-    
-    .user-details-section .bg-blue-500 {
-        padding: 0.4rem;
-    }
-}
-
-/* Rest of the styles remain the same... */
-
-.user-details-section .bg-blue-500 {
-    background: #3B82F6;
-    padding: 0.75rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
-}
-
-.user-details-section .text-xl {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 0.25rem;
-}
-
-.user-details-section .text-sm {
-    font-size: 0.875rem;
-    color: #9CA3AF;
-}
-
-/* Main Content Container */
-.main-content {
-    flex: 1;
-    padding: 2rem;
-    margin-top: 2rem;
-    width: 100%;
-    box-sizing: border-box;
-    max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* Alert Styles */
-.alert {
-    background-color: #FDE047;
-    color: #1E293B;
-    border-left: 6px solid #FACC15;
-    margin: 1rem 0;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 1rem;
-    border-radius: 0.5rem;
-}
-
-/* Profile Dropdown Styles */
-.profile-dropdown {
-    position: relative;
-    z-index: 50;
-}
-
-.profile-dropdown .dropdown-toggle {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 0.5rem;
-    border-radius: 0.375rem;
-    transition: all 0.2s ease;
-    cursor: pointer;
-}
-
-.profile-dropdown .dropdown-toggle:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.profile-dropdown .dropdown-menu {
-    position: absolute;
-    right: 0;
-    top: 100%;
-    background: #1F2937;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    min-width: 150px;
-    margin-top: 0.5rem;
-}
-
-.profile-dropdown .dropdown-item {
-    display: block;
-    width: 100%;
-    padding: 0.75rem 1rem;
-    color: white;
-    text-align: left;
-    transition: background-color 0.2s;
-}
-
-.profile-dropdown .dropdown-item:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Button Styles */
-.btn-primary {
-    background-color: #3B82F6;
-    color: #FFFFFF;
-    font-weight: bold;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btn-primary:hover {
-    background-color: #2563EB;
-    transform: scale(1.05);
-}
-
-/* Table Styles */
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-table th {
-    background-color: #1E293B;
-    color: #60A5FA;
-    text-transform: uppercase;
-    padding: 1rem;
-    text-align: left;
-}
-
-table tr:nth-child(even) {
-    background-color: #2A2A2A;
-}
-
-table tr:nth-child(odd) {
-    background-color: #1F1F1F;
-}
-
-table td {
-    color: #E5E7EB;
-    padding: 1rem;
-}
-
-/* Form Input Styles */
-input[type="text"], 
-input[type="number"], 
-input[type="date"] {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    color: #000000;
-    background-color: #F3F4F6;
-    border: 1px solid #D1D5DB;
-    border-radius: 0.5rem;
-    transition: border-color 0.2s ease;
-}
-
-input[type="text"]:focus, 
-input[type="number"]:focus, 
-input[type="date"]:focus {
-    outline: none;
-    border-color: #3B82F6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-}
-
-input[type="text"]::placeholder, 
-input[type="number"]::placeholder, 
-input[type="date"]::placeholder {
-    color: #6B7280;
-}
-
-/* Footer Styles */
-.footer {
-    background-color: #001529;
-    padding-bottom: 13px;
-    margin-top: auto;
-    width: 100%;
-}
-
-.footer-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    padding: 20px 0;
-}
-
-.footlinks h4,
-.footlinkss h4 {
-    margin-top: 30px;
-    font-size: 20px;
-    font-weight: 600;
-    color: white;
-    margin-bottom: 30px;
-    position: relative;
-}
-
-.footlinks h4::before,
-.footlinkss h4::before {
-    content: "";
-    position: absolute;
-    height: 2px;
-    width: 70px;
-    left: 0;
-    bottom: -7px;
-    background: #007bff;
-}
-
-.footlinks a {
-    color: #a0a0a0;
-    transition: all 0.3s ease;
-}
-
-.footlinks a:hover {
-    color: #007bff;
-    padding-left: 8px;
-}
-
-.social a {
-    font-size: 25px;
-    margin: 4px;
-    height: 40px;
-    width: 40px;
-    color: #001529;
-    background-color: #007bff;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-}
-
-.social a:hover {
-    transform: scale(1.2);
-    background-color: white;
-    color: #007bff;
-}
-
-.end {
-    text-align: center;
-    padding-top: 20px;
-    color: #a0a0a0;
-}
-
-/* Hamburger Menu */
-.hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.hamburger .line {
-    width: 30px;
-    height: 4px;
-    background: white;
-    border-radius: 2px;
-}
-
-/* Responsive Styles */
-@media screen and (max-width: 768px) {
-    .navbar {
-        padding: 0.5rem 1rem;
-    }
-
-    .navbar-links {
-        display: none;
-        flex-direction: column;
-        gap: 1rem;
-        position: absolute;
-        top: 60px;
-        right: 10px;
-        background: rgba(0, 20, 40, 0.95);
-        padding: 1rem 1.5rem;
-        border-radius: 10px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-        width: auto;
-        text-align: left;
-        opacity: 0;
-        transform: translateY(-10px);
-        transition: all 0.3s ease-out;
-    }
-
-    .navbar-links.active {
-        display: flex;
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .hamburger {
-        display: flex;
-    }
-
-    .user-details-section {
-        padding: 1rem;
-        margin-top: 60px;
-    }
-
-    .user-details-section .container {
-        max-width: 100%;
-    }
-
-    .user-details-section .flex {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-    }
-
-    .user-details-section .items-center {
-        flex: 1;
-        min-width: 200px;
-    }
-
-    .user-details-section .text-xl {
-        font-size: 1.125rem;
-    }
-
-    .main-content {
-        padding: 1rem;
-        margin-top: 1.5rem;
-    }
-
-    .footer-content {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    .footlinks h4::before,
-    .footlinkss h4::before {
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    /* Table responsiveness */
-    .overflow-x-auto {
-        margin: 0 -1rem;
-        padding: 0 1rem;
-        overflow-x: auto;
-    }
-
-    table {
-        font-size: 0.875rem;
-    }
-
-    table td, 
-    table th {
-        padding: 0.75rem 0.5rem;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .user-details-section {
-        padding: 0.75rem;
-    }
-
-    .user-details-section .flex {
-        gap: 0.5rem;
-    }
-
-    .user-details-section .text-sm {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-    }
-
-    .user-details-section .text-sm .mx-2 {
-        display: none;
-    }
-
-    .website-name {
-        font-size: 1.5rem;
-    }
-
-    .logo {
-        width: 40px;
-        height: 40px;
-    }
-
-    .main-content {
-        padding: 0.75rem;
-        margin-top: 1rem;
-    }
-
-    table {
-        font-size: 0.75rem;
-    }
-
-    table td, 
-    table th {
-        padding: 0.5rem 0.25rem;
-    }
-}
+    <!-- Added styles for sensor modal -->
+    <style>
+        /* Modal styles */
+        .sensor-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+        }
+        
+        .sensor-modal-content {
+            position: relative;
+            background-color: #1f2937;
+            margin: 2% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            animation: modalFadeIn 0.3s;
+        }
+        
+        @keyframes modalFadeIn {
+            from {opacity: 0; transform: translateY(-30px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2;
+        }
+        
+        .close-modal:hover {
+            color: #fff;
+        }
+        
+        /* Sensor dashboard mini widget */
+        .sensor-widget {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .sensor-widget:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        /* Chart styles */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        /* Reading cards */
+        .reading-card {
+            position: relative;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: #2d3748;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .temperature {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #dc3545;
+            margin: 10px 0;
+        }
+        
+        .humidity {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #007bff;
+            margin: 10px 0;
+        }
+        
+        .sensor-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .timestamp {
+            font-size: 0.8rem;
+            color: #9ca3af;
+        }
+        
+        .data-table {
+            background-color: #1f2937;
+            color: #e5e7eb;
+        }
+        
+        .data-table thead {
+            background-color: #111827;
+        }
     </style>
 </head>
 <body>
@@ -561,11 +712,13 @@ input[type="date"]::placeholder {
         </div>
         <div class="navbar-links">
             <a href="/" class="nav-link">Home</a>
-            <a href="/donate" class="nav-link">Donate</a>
+            <a href="/info" class="nav-link">Donate</a>
             <a href="/reqfood" class="nav-link">Ask for Donate</a>
             <a href="/viewrequests" class="nav-link">Requests</a>
             <a href="/donations" class="nav-link">Available Donations</a>
             <a href="/register" class="nav-link">Administration</a>
+            <!-- New nav link for sensor dashboard -->
+            
         </div>
         <button class="hamburger" onclick="toggleMenu()">
             <div class="line"></div>
@@ -607,6 +760,174 @@ input[type="date"]::placeholder {
             </div>
         </div>
     </div>
+
+<!-- New Sensor Widget Section -->
+<div class="w-full">
+    <div class="w-full">
+        <div class="sensor-widget bg-gray-900 rounded-lg shadow-md p-4 w-full" onclick="openSensorModal()">
+            <!-- Layout for larger screens (flex row) -->
+            <div class="hidden md:flex md:items-center md:justify-between">
+                <div class="flex items-center">
+                    <h3 class="text-lg font-medium">Storage Environment:</h3>
+                </div>
+                
+                <div class="flex items-center mx-4">
+                    <div class="text-xl mr-2">🌡️</div>
+                    <h4 class="text-base text-gray-400 mr-2">Temperature:</h4>
+                    <div class="text-lg font-medium text-red-500" id="currentTemp">Value</div>
+                </div>
+                
+                <div class="flex items-center mx-4">
+                    <div class="text-xl mr-2">💧</div>
+                    <h4 class="text-base text-gray-400 mr-2">Humidity:</h4>
+                    <div class="text-lg font-medium text-blue-500" id="currentHumidity">Value</div>
+                </div>
+                
+                <button class="text-blue-400 hover:text-blue-300 text-lg">
+                    View Details →
+                </button>
+            </div>
+            
+            <!-- Layout for mobile (stacked) -->
+            <div class="md:hidden space-y-3">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-medium">Storage Environment</h3>
+                    <button class="text-blue-400 hover:text-blue-300 text-sm">
+                        View Details →
+                    </button>
+                </div>
+                
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="text-xl mr-2">🌡️</div>
+                        <h4 class="text-sm text-gray-400 mr-2">Temp:</h4>
+                        <div class="text-lg font-medium text-red-500" id="currentTempMobile">Value</div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="text-xl mr-2">💧</div>
+                        <h4 class="text-sm text-gray-400 mr-2">Humidity:</h4>
+                        <div class="text-lg font-medium text-blue-500" id="currentHumidityMobile">Value</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Sensor Dashboard Modal -->
+    <div id="sensorModal" class="sensor-modal">
+        <div class="sensor-modal-content">
+            <span class="close-modal" onclick="closeSensorModal()">&times;</span>
+            
+            <div class="header-container mb-6">
+                <h1 class="text-3xl font-bold mb-2">🌡️ DHT22 <span class="text-blue-400">Temperature & Humidity</span> Dashboard</h1>
+                <p class="text-gray-400">Monitor storage conditions for food safety and quality</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="reading-card">
+                    <div class="sensor-icon">🌡️</div>
+                    <h3 class="text-xl font-bold">Current Temperature</h3>
+                    <div class="temperature" id="modalTemp">25.2°C</div>
+                    <p class="timestamp" id="tempTimestamp">Last updated: 2/28/2025 13:45:22</p>
+                </div>
+                <div class="reading-card">
+                    <div class="sensor-icon">💧</div>
+                    <h3 class="text-xl font-bold">Current Humidity</h3>
+                    <div class="humidity" id="modalHumidity">62.4%</div>
+                    <p class="timestamp" id="humidityTimestamp">Last updated: 2/28/2025 13:45:22</p>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
+                <h5 class="text-xl font-bold mb-4">Temperature & Humidity History</h5>
+                <div class="chart-container">
+                    <canvas id="sensorChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+                <h5 class="text-xl font-bold mb-4">Recent Readings</h5>
+                <div class="overflow-x-auto">
+                    <table class="w-full data-table">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2 text-left">Timestamp</th>
+                                <th class="px-4 py-2 text-left">Temperature (°C)</th>
+                                <th class="px-4 py-2 text-left">Humidity (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sensorTableBody">
+                            <!-- Table rows will be populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <p class="text-gray-400 text-sm mt-4 text-center">This dashboard automatically refreshes every 30 seconds</p>
+        </div>
+    </div>
+
+   
+    <% if (expiredProducts && expiredProducts.length > 0) { %>
+        <div class="alert p-4 mb-8 rounded-lg shadow-md bg-red-700">
+            <div class="flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="flex items-center">
+                        <svg class="h-6 w-6 text-red-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                        </svg>
+                        <h3 class="text-lg font-bold ml-2">Products Expired!</h3>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="showExpiredDisposeModal()"
+                                class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">
+                            Dispose All
+                        </button>
+                    </div>
+                </div>
+                <ul class="space-y-1 list-disc pl-5">
+                    <% expiredProducts.forEach(product => { %>
+                    <li>
+                        <%= product.productName %> - Expired 
+                        <%= Math.abs(Math.ceil((product.expiryDate - new Date()) / (1000 * 60 * 60 * 24))) %> days ago
+                        (Quantity: <%= product.quantity %>)
+                    </li>
+                    <% }); %>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Expired Products Dispose Modal -->
+        <div id="expiredDisposeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div class="bg-white rounded-lg p-6 w-96">
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Dispose Expired Products</h3>
+                <p class="text-red-600 mb-4">These products have expired and should be disposed of.</p>
+                <form id="expiredDisposeForm" action="/dispose-expired-products" method="POST">
+                    <% expiredProducts.forEach(product => { %>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">
+                            <%= product.productName %> (Max: <%= product.quantity %>)
+                        </label>
+                        <input type="number" name="quantities[<%= product._id %>]" 
+                               value="<%= product.quantity %>" max="<%= product.quantity %>" min="0"
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <% }); %>
+                    <div class="flex justify-end space-x-2">
+                        <button type="button" onclick="hideExpiredDisposeModal()"
+                                class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                                class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">
+                            Dispose All
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    <% } %>
     <% if (expiringProducts.length > 0) { %>
         <div class="alert p-4 mb-8 rounded-lg shadow-md ">
             <div class="flex flex-col">
@@ -641,6 +962,7 @@ input[type="date"]::placeholder {
                 </ul>
             </div>
         </div>
+
         
         <!-- Dispose Modal -->
         <div id="disposeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -722,12 +1044,15 @@ input[type="date"]::placeholder {
             <!-- Products List -->
          <!-- Replace the Products List section in main.ejs -->
     <div class="bg-gray-900 text-white rounded-lg shadow-lg p-6">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold">Product Inventory</h2>
-            <input type="text" id="searchInput" 
-                   placeholder="Search products..." 
-                   class="px-4 py-2 border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <div class="flex flex-wrap items-start gap-4 mb-6">
+            <h2 class="text-2xl font-bold whitespace-nowrap">Product Inventory</h2>
+            <div class="w-full sm:w-auto">
+                <input type="text" id="searchInput"
+                    placeholder="Search products..."
+                    class="w-full sm:w-96 px-4 py-2 border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
         </div>
+        
         <div class="overflow-x-auto">
             <table class="min-w-full table-auto">
                 <thead>
@@ -741,36 +1066,51 @@ input[type="date"]::placeholder {
                     </tr>
                 </thead>
                 <tbody id="productTableBody">
-                    <% products.forEach(product => { %>
-                    <tr class="border-b border-gray-800 product-row">
-                        <td class="px-6 py-4 product-name"><%= product.productName %></td>
-                        <td class="px-6 py-4"><%= product.quantity %></td>
-                        <td class="px-6 py-4"><%= product.manufacturer %></td>
-                        <td class="px-6 py-4"><%= product.expiryDate.toLocaleDateString() %></td>
-                        <td class="px-6 py-4">
-                            <%= Math.ceil((product.expiryDate - new Date()) / (1000 * 60 * 60 * 24)) %>
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="relative flex justify-center">
-                                <button onclick="toggleDropdown('<%= product._id %>')" 
-                                        class="text-white text-xl font-bold hover:bg-gray-700 rounded-full h-8 w-8 flex items-center justify-center">⋮</button>
-                                <div id="dropdown-<%= product._id %>" 
-                                     class="hidden absolute right-0 mt-8 w-48 bg-white rounded-md shadow-lg z-10">
-                                    <form action="/manage-product/<%= product._id %>" method="POST">
-                                        <button type="submit" 
-                                                class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
-                                            Manage
-                                        </button>
-                                    </form>
-                                    <button onclick="showProductDisposeModal('<%= product._id %>', '<%= product.productName %>', '<%= product.quantity %>')"
-                                            class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
-                                        Dispose
-                                    </button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <% }); %>
+                    <!-- Replace the existing product table row in main.ejs with this updated version -->
+<% products.forEach(product => { 
+    const daysToExpiry = Math.ceil((product.expiryDate - new Date()) / (1000 * 60 * 60 * 24));
+    const isExpired = daysToExpiry <= 0;
+%>
+<tr class="border-b border-gray-800 product-row <%= isExpired ? 'bg-red-900 bg-opacity-50' : '' %>">
+    <td class="px-6 py-4 product-name">
+        <%= product.productName %>
+        <% if (isExpired) { %>
+            <span class="ml-2 text-red-300 font-bold">(EXPIRED)</span>
+        <% } %>
+    </td>
+    <td class="px-6 py-4"><%= product.quantity %></td>
+    <td class="px-6 py-4"><%= product.manufacturer %></td>
+    <td class="px-6 py-4"><%= product.expiryDate.toLocaleDateString() %></td>
+    <td class="px-6 py-4">
+        <% if (isExpired) { %>
+            <span class="text-red-300 font-bold">Expired <%= Math.abs(daysToExpiry) %> days ago</span>
+        <% } else { %>
+            <%= daysToExpiry %>
+        <% } %>
+    </td>
+    <td class="px-6 py-4">
+        <div class="relative flex justify-center">
+            <button onclick="toggleDropdown('<%= product._id %>')" 
+                    class="text-white text-xl font-bold hover:bg-gray-700 rounded-full h-8 w-8 flex items-center justify-center">⋮</button>
+            <div id="dropdown-<%= product._id %>" 
+                    class="hidden absolute right-0 mt-8 w-48 bg-white rounded-md shadow-lg z-10">
+                <% if (!isExpired) { %>
+                <form action="/manage-product/<%= product._id %>" method="POST">
+                    <button type="submit" 
+                            class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
+                        Manage
+                    </button>
+                </form>
+                <% } %>
+                <button onclick="showProductDisposeModal('<%= product._id %>', '<%= product.productName %>', '<%= product.quantity %>')"
+                        class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">
+                    Dispose
+                </button>
+            </div>
+        </div>
+    </td>
+</tr>
+<% }); %>
                 </tbody>
             </table>
         </div>
@@ -925,7 +1265,862 @@ input[type="date"]::placeholder {
                     dropdown.classList.add('hidden');
                 }
             });
-    </script>
+
+            // Add these functions to your existing script section
+function showExpiredDisposeModal() {
+    document.getElementById('expiredDisposeModal').classList.remove('hidden');
+}
+
+function hideExpiredDisposeModal() {
+    document.getElementById('expiredDisposeModal').classList.add('hidden');
+}
+
+// Close expired modal when clicking outside
+document.addEventListener('DOMContentLoaded', function() {
+    const expiredModal = document.getElementById('expiredDisposeModal');
+    if (expiredModal) {
+        expiredModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideExpiredDisposeModal();
+            }
+        });
+    }
+});
+    // Replace the existing sensor data JavaScript with this code
+// This will fetch real-time data from your API endpoint
+
+// Function to fetch sensor data from the API
+async function fetchSensorData() {
+    try {
+        const response = await fetch('/api/sensor-data');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching sensor data:', error);
+        return [];
+    }
+}
+
+// Format timestamp nicely
+function formatTimestamp(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleString();
+}
+
+// Update the dashboard with the latest data
+async function updateSensorDashboard() {
+    const sensorData = await fetchSensorData();
+    
+    if (sensorData && sensorData.length > 0) {
+        const latestReading = sensorData[0];
         
-    </body>
-    </html>
+        // Update mini-widget
+        document.getElementById('currentTemp').textContent = latestReading.temperature.toFixed(1) + '°C';
+        document.getElementById('currentHumidity').textContent = latestReading.humidity.toFixed(1) + '%';
+        
+        // Update modal data
+        document.getElementById('modalTemp').textContent = latestReading.temperature.toFixed(1) + '°C';
+        document.getElementById('modalHumidity').textContent = latestReading.humidity.toFixed(1) + '%';
+        
+        document.getElementById('tempTimestamp').textContent = 'Last updated: ' + formatTimestamp(latestReading.timestamp);
+        document.getElementById('humidityTimestamp').textContent = 'Last updated: ' + formatTimestamp(latestReading.timestamp);
+        
+        // Update table
+        const tableBody = document.getElementById('sensorTableBody');
+        tableBody.innerHTML = '';
+        
+        sensorData.forEach(reading => {
+            const row = document.createElement('tr');
+            row.className = 'border-b border-gray-700';
+            
+            row.innerHTML = `
+                <td class="px-4 py-2">${formatTimestamp(reading.timestamp)}</td>
+                <td class="px-4 py-2">${reading.temperature.toFixed(1)}</td>
+                <td class="px-4 py-2">${reading.humidity.toFixed(1)}</td>
+            `;
+            
+            tableBody.appendChild(row);
+        });
+
+        // If the chart is visible, update it
+        const chartCanvas = document.getElementById('sensorChart');
+        if (chartCanvas && chartCanvas.chart) {
+            updateSensorChart(sensorData, chartCanvas.chart);
+        }
+    }
+}
+
+// Initialize the chart
+function initSensorChart() {
+    const ctx = document.getElementById('sensorChart').getContext('2d');
+    
+    // Create an empty chart first
+    const sensorChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+                {
+                    label: 'Temperature (°C)',
+                    data: [],
+                    borderColor: '#dc3545',
+                    backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#dc3545',
+                    tension: 0.4,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Humidity (%)',
+                    data: [],
+                    borderColor: '#007bff',
+                    backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#007bff',
+                    tension: 0.4,
+                    yAxisID: 'y1'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'Temperature (°C)',
+                        color: '#dc3545',
+                        font: {
+                            weight: 'bold'
+                        }
+                    },
+                    ticks: {
+                        color: '#dddddd',
+                        font: {
+                            weight: '600'
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    title: {
+                        display: true,
+                        text: 'Humidity (%)',
+                        color: '#007bff',
+                        font: {
+                            weight: 'bold'
+                        }
+                    },
+                    ticks: {
+                        color: '#dddddd',
+                        font: {
+                            weight: '600'
+                        }
+                    },
+                    grid: {
+                        drawOnChartArea: false,
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#dddddd',
+                        maxRotation: 45,
+                        minRotation: 45
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#dddddd',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        },
+                        padding: 20
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#ffffff',
+                    bodyColor: '#ffffff',
+                    borderColor: '#007bff',
+                    borderWidth: 1,
+                    padding: 10,
+                    displayColors: true
+                }
+            }
+        }
+    });
+    
+    // Store the chart instance on the canvas element
+    document.getElementById('sensorChart').chart = sensorChart;
+    
+    // Fetch and update chart data
+    fetchSensorData().then(data => {
+        updateSensorChart(data, sensorChart);
+    });
+}
+
+// Update chart with new data
+function updateSensorChart(sensorData, chart) {
+    if (!sensorData || sensorData.length === 0) return;
+    
+    // Prepare data (reversed to show oldest to newest)
+    const recentData = [...sensorData].reverse();
+    const timestamps = recentData.map(reading => new Date(reading.timestamp).toLocaleTimeString());
+    const temperatures = recentData.map(reading => reading.temperature);
+    const humidities = recentData.map(reading => reading.humidity);
+    
+    // Update chart data
+    chart.data.labels = timestamps;
+    chart.data.datasets[0].data = temperatures;
+    chart.data.datasets[1].data = humidities;
+    chart.update();
+}
+
+// Sensor modal functions
+function openSensorModal() {
+    document.getElementById('sensorModal').style.display = 'block';
+    
+    // Initialize chart when modal opens
+    setTimeout(() => {
+        initSensorChart();
+    }, 100);
+}
+
+function closeSensorModal() {
+    document.getElementById('sensorModal').style.display = 'none';
+}
+
+// Close modal when clicking outside of it
+window.onclick = function(event) {
+    const modal = document.getElementById('sensorModal');
+    if (event.target == modal) {
+        closeSensorModal();
+    }
+}
+
+// Event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    // Update the dashboard when page loads
+    updateSensorDashboard();
+    
+    // Set up event listener for sensor dashboard link
+    document.getElementById('sensorDashboardLink').addEventListener('click', function(e) {
+        e.preventDefault();
+        openSensorModal();
+    });
+    
+    // Auto refresh the data every 30 seconds
+    setInterval(function() {
+        updateSensorDashboard();
+    }, 30000);
+});
+
+        // Rest of your existing scripts
+        // (keep all your existing JavaScript functions)
+       
+    </script>
+
+    <!-- The rest of your JavaScript code goes here -->
+       <!-- Add this to your HTML body, just before the closing </body> tag -->
+
+<!-- Microphone Icon -->
+<div id="mic-assistant" class="mic-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+        <line x1="12" y1="19" x2="12" y2="23"></line>
+        <line x1="8" y1="23" x2="16" y2="23"></line>
+    </svg>
+</div>
+
+<!-- Voice Assistant Modal -->
+<div id="voice-modal" class="voice-modal hidden">
+    <div class="voice-modal-content">
+        <div class="voice-header">
+            <h3>Voice Assistant</h3>
+            <button id="close-voice-modal" class="close-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="voice-body">
+            <div class="animation-container">
+                <div class="sound-wave">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+            <p id="listening-text">Ask about a product...</p>
+            <p id="response-text" class="hidden"></p>
+        </div>
+        <div class="voice-footer">
+            <button id="start-listening" class="mic-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Add this to your existing <style> tag -->
+<style>
+    /* Microphone Icon Styles */
+    .mic-icon {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        background-color: #3B82F6;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        z-index: 999;
+        transition: all 0.3s ease;
+    }
+
+    .mic-icon:hover {
+        transform: scale(1.1);
+        background-color: #2563EB;
+    }
+
+    /* Voice Assistant Modal Styles */
+    .voice-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .voice-modal.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .voice-modal-content {
+        background-color: #1E293B;
+        border-radius: 16px;
+        width: 90%;
+        max-width: 500px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        color: white;
+    }
+
+    .voice-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+        background-color: #0F172A;
+    }
+
+    .voice-header h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .close-btn {
+        background: none;
+        border: none;
+        color: #9CA3AF;
+        cursor: pointer;
+        padding: 4px;
+        margin: -4px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+
+    .close-btn:hover {
+        color: white;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .voice-body {
+        padding: 30px 20px;
+        text-align: center;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .animation-container {
+        margin-bottom: 20px;
+    }
+
+    /* Sound Wave Animation */
+    .sound-wave {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 60px;
+    }
+
+    .sound-wave .bar {
+        display: inline-block;
+        width: 5px;
+        margin: 0 3px;
+        height: 20px;
+        background-color: #3B82F6;
+        border-radius: 3px;
+        animation: sound-wave-animation 1.2s infinite ease-in-out;
+    }
+
+    .sound-wave .bar:nth-child(2) {
+        animation-delay: 0.1s;
+    }
+
+    .sound-wave .bar:nth-child(3) {
+        animation-delay: 0.2s;
+    }
+
+    .sound-wave .bar:nth-child(4) {
+        animation-delay: 0.3s;
+    }
+
+    .sound-wave .bar:nth-child(5) {
+        animation-delay: 0.4s;
+    }
+
+    .sound-wave .bar:nth-child(6) {
+        animation-delay: 0.5s;
+    }
+
+    .sound-wave .bar:nth-child(7) {
+        animation-delay: 0.6s;
+    }
+
+    .sound-wave.inactive .bar {
+        animation: none;
+        height: 5px;
+    }
+
+    @keyframes sound-wave-animation {
+        0%, 100% {
+            height: 20px;
+        }
+        50% {
+            height: 60px;
+        }
+    }
+
+    #listening-text, #response-text {
+        font-size: 18px;
+        margin: 10px 0;
+    }
+
+    #response-text {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .voice-footer {
+        padding: 16px 20px;
+        display: flex;
+        justify-content: center;
+        background-color: #0F172A;
+    }
+
+    .mic-btn {
+        background-color: #3B82F6;
+        color: white;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .mic-btn:hover {
+        background-color: #2563EB;
+        transform: scale(1.05);
+    }
+
+    .mic-btn.listening {
+        background-color: #EF4444;
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+        }
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    /* Responsive styles */
+    @media screen and (max-width: 768px) {
+        .mic-icon {
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .voice-modal-content {
+            width: 95%;
+        }
+    }
+</style>
+
+<!-- Add this to the end of your JavaScript section -->
+<script>
+  // Voice Assistant Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Elements
+    const micAssistant = document.getElementById('mic-assistant');
+    const voiceModal = document.getElementById('voice-modal');
+    const closeVoiceModal = document.getElementById('close-voice-modal');
+    const startListeningBtn = document.getElementById('start-listening');
+    const listeningText = document.getElementById('listening-text');
+    const responseText = document.getElementById('response-text');
+    const soundWave = document.querySelector('.sound-wave');
+    
+    // Product data from the page
+    function getProductsData() {
+        const products = [];
+        const rows = document.querySelectorAll('.product-row');
+        
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length >= 5) {
+                products.push({
+                    name: cells[0].textContent.trim().toLowerCase(),
+                    quantity: cells[1].textContent.trim(),
+                    location: cells[2].textContent.trim(),
+                    expiryDate: cells[3].textContent.trim(),
+                    daysUntilExpiry: cells[4].textContent.trim()
+                });
+            }
+        });
+        
+        return products;
+    }
+    
+    // Find product by name
+    function findProduct(productName) {
+        const products = getProductsData();
+        const searchName = productName.toLowerCase().trim();
+        
+        return products.find(product => 
+            product.name.includes(searchName) || 
+            searchName.includes(product.name)
+        );
+    }
+    
+    // Speech recognition setup
+    let recognition;
+    
+    try {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+    } catch (e) {
+        console.error('Speech recognition not supported:', e);
+    }
+    
+    // Speech synthesis
+    const speak = (text) => {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 1;
+        utterance.pitch = 1;
+        speechSynthesis.speak(utterance);
+    };
+    
+    // Handle recognition results
+    if (recognition) {
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript.toLowerCase();
+            listeningText.textContent = transcript;
+            
+            setTimeout(() => {
+                processCommand(transcript);
+            }, 500);
+        };
+        
+        recognition.onend = () => {
+            startListeningBtn.classList.remove('listening');
+            soundWave.classList.add('inactive');
+        };
+        
+        recognition.onerror = (event) => {
+            console.error('Speech recognition error', event.error);
+            listeningText.textContent = `Error: ${event.error}. Please try again.`;
+            startListeningBtn.classList.remove('listening');
+            soundWave.classList.add('inactive');
+        };
+    }
+    
+    // Process voice command
+    function processCommand(command) {
+        responseText.classList.remove('hidden');
+        
+        // Extract product name using a more sophisticated approach
+        function extractProductName(cmd) {
+            // Common phrases that might come before product names
+            const phrases = [
+                'tell about', 'tell me about', 'what about', 'details for', 
+                'information on', 'when will', 'when does', 'expires', 
+                'expiration date for', 'expiry date of', 'how many', 
+                'quantity of', 'quantities of', 'amount of', 'where is',
+                'location of', 'where can i find'
+            ];
+            
+            let productName = cmd;
+            
+            // Remove question words and common phrases
+            phrases.forEach(phrase => {
+                productName = productName.replace(phrase, '');
+            });
+            
+            // Remove other common words that might appear
+            const fillerWords = ['the', 'a', 'an', 'this', 'that', 'these', 'those', 'some', 'expire', 'product'];
+            fillerWords.forEach(word => {
+                productName = productName.replace(new RegExp(`\\b${word}\\b`, 'gi'), '');
+            });
+            
+            return productName.trim();
+        }
+        
+        // Check for specific expiration date questions
+        if (command.includes('when') && 
+           (command.includes('expire') || command.includes('expiry') || command.includes('expiration'))) {
+            
+            const productName = extractProductName(command);
+            const product = findProduct(productName);
+            
+            if (product) {
+                const response = `${product.name} expires on ${product.expiryDate}, which is ${product.daysUntilExpiry} days from now.`;
+                responseText.textContent = response;
+                speak(response);
+            } else {
+                const response = `Sorry, I couldn't find any product matching "${productName}" in the inventory.`;
+                responseText.textContent = response;
+                speak(response);
+            }
+        }
+        // Check for quantity questions
+        else if ((command.includes('how many') || command.includes('quantity') || 
+                 command.includes('quantities') || command.includes('amount')) &&
+                 !command.includes('expiring soon')) {
+            
+            const productName = extractProductName(command);
+            const product = findProduct(productName);
+            
+            if (product) {
+                const response = `There are ${product.quantity} units of ${product.name} in your inventory.`;
+                responseText.textContent = response;
+                speak(response);
+            } else {
+                const response = `Sorry, I couldn't find any product matching "${productName}" in the inventory.`;
+                responseText.textContent = response;
+                speak(response);
+            }
+        }
+        // Check for location questions
+        else if (command.includes('where') || command.includes('location')) {
+            
+            const productName = extractProductName(command);
+            const product = findProduct(productName);
+            
+            if (product) {
+                const response = `${product.name} is located at ${product.location}.`;
+                responseText.textContent = response;
+                speak(response);
+            } else {
+                const response = `Sorry, I couldn't find any product matching "${productName}" in the inventory.`;
+                responseText.textContent = response;
+                speak(response);
+            }
+        }
+        // General product info (existing functionality)
+        else if (command.includes('tell about') || 
+                command.includes('tell me about') || 
+                command.includes('what about') || 
+                command.includes('details for') || 
+                command.includes('information on')) {
+            
+            const productName = extractProductName(command);
+            const product = findProduct(productName);
+            
+            if (product) {
+                const response = `${product.name} has a quantity of ${product.quantity}. It expires on ${product.expiryDate}, which is ${product.daysUntilExpiry} days from now. It's located at ${product.location}.`;
+                responseText.textContent = response;
+                speak(response);
+            } else {
+                const response = `Sorry, I couldn't find any product matching "${productName}" in the inventory.`;
+                responseText.textContent = response;
+                speak(response);
+            }
+        } else if (command.includes('search for') || command.includes('find')) {
+            // Handle search commands
+            let searchTerm = command
+                .replace('search for', '')
+                .replace('find', '')
+                .trim();
+            
+            // Trigger the search input
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.value = searchTerm;
+                searchInput.dispatchEvent(new Event('input'));
+                
+                const response = `Searching for "${searchTerm}" in inventory.`;
+                responseText.textContent = response;
+                speak(response);
+            }
+        } else if (command.includes('expiring soon') || command.includes('expires soon')) {
+            // Find products expiring soon
+            const products = getProductsData();
+            const expiringProducts = products.filter(p => {
+                const days = parseInt(p.daysUntilExpiry);
+                return !isNaN(days) && days <= 7;
+            });
+            
+            if (expiringProducts.length > 0) {
+                const response = `I found ${expiringProducts.length} products expiring within 7 days: ${expiringProducts.map(p => p.name).join(', ')}`;
+                responseText.textContent = response;
+                speak(response);
+            } else {
+                const response = "I didn't find any products expiring within the next 7 days.";
+                responseText.textContent = response;
+                speak(response);
+            }
+        } else {
+            const response = "I'm sorry, I didn't understand that command. You can ask about product details, expiration dates, quantities, locations, search for items, or check which products are expiring soon.";
+            responseText.textContent = response;
+            speak(response);
+        }
+        
+        listeningText.classList.add('hidden');
+    }
+    
+    // Function to start listening
+    function startListening() {
+        if (recognition) {
+            try {
+                responseText.classList.add('hidden');
+                listeningText.classList.remove('hidden');
+                listeningText.textContent = 'Listening...';
+                soundWave.classList.remove('inactive');
+                startListeningBtn.classList.add('listening');
+                
+                recognition.start();
+            } catch (e) {
+                console.error('Error starting recognition:', e);
+            }
+        } else {
+            responseText.classList.remove('hidden');
+            responseText.textContent = "Sorry, speech recognition is not supported in your browser.";
+            listeningText.classList.add('hidden');
+        }
+    }
+    
+    // Event listeners
+    micAssistant.addEventListener('click', () => {
+        voiceModal.classList.remove('hidden');
+        setTimeout(() => {
+            voiceModal.classList.add('show');
+            // Automatically start listening when modal opens
+            startListening();
+        }, 10);
+        
+        responseText.classList.add('hidden');
+        listeningText.classList.remove('hidden');
+        listeningText.textContent = 'Ask about a product...';
+        soundWave.classList.add('inactive');
+    });
+    
+    closeVoiceModal.addEventListener('click', () => {
+        voiceModal.classList.remove('show');
+        setTimeout(() => {
+            voiceModal.classList.add('hidden');
+            speechSynthesis.cancel(); // Stop any ongoing speech
+        }, 300);
+    });
+    
+    // Keep this button for manual activation if needed
+    startListeningBtn.addEventListener('click', startListening);
+    
+    // Close modal when clicking outside
+    voiceModal.addEventListener('click', function(e) {
+        if (e.target === voiceModal) {
+            closeVoiceModal.click();
+        }
+    });
+});
+</script>
+        
+    
+</body>
+</html>
