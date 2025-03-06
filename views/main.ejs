@@ -817,7 +817,7 @@ input[type="date"]::placeholder {
             <span class="close-modal" onclick="closeSensorModal()">&times;</span>
             
             <div class="header-container mb-6">
-                <h1 class="text-3xl font-bold mb-2">🌡️ DHT22 <span class="text-blue-400">Temperature & Humidity</span> Dashboard</h1>
+                <h1 class="text-3xl font-bold mb-2"><span class="text-blue-400">Temperature & Humidity 🌡️</span> Dashboard</h1>
                 <p class="text-gray-400">Monitor storage conditions for food safety and quality</p>
             </div>
 
@@ -1306,43 +1306,66 @@ function formatTimestamp(dateString) {
     return date.toLocaleString();
 }
 
+// Function to check temperature and return alert HTML based on screen size
+function getTemperatureAlert(temperature, isCompact = false) {
+    if (temperature > 10) {
+        if (isCompact) {
+            // Compact version for small screens or table rows
+            return `<span class="ml-1 text-red-500 font-bold text-xs md:text-sm">⚠️</span>`;
+        } else {
+            // Full version for larger spaces
+            return `<span class="ml-1 text-red-500 font-bold text-xs md:text-sm lg:text-base animate-pulse">⚠️ <span class="hidden sm:inline-block">HIGH TEMP</span> ALERT</span>`;
+        }
+    }
+    return '';
+}
+
 // Update the dashboard with the latest data
 async function updateSensorDashboard() {
     const sensorData = await fetchSensorData();
     
     if (sensorData && sensorData.length > 0) {
         const latestReading = sensorData[0];
+        const tempValue = latestReading.temperature.toFixed(1);
         
-        // Update mini-widget
-        document.getElementById('currentTemp').textContent = latestReading.temperature.toFixed(1) + '°C';
+        // Update mini-widget (main view)
+        const mainTempAlert = getTemperatureAlert(latestReading.temperature);
+        document.getElementById('currentTemp').innerHTML = tempValue + '°C' + mainTempAlert;
         document.getElementById('currentHumidity').textContent = latestReading.humidity.toFixed(1) + '%';
         
-        // Check if mobile elements exist before updating them
+        // Check if mobile elements exist before updating them (more compact for mobile)
         const tempMobile = document.getElementById('currentTempMobile');
         const humidityMobile = document.getElementById('currentHumidityMobile');
         
-        if(tempMobile) tempMobile.textContent = latestReading.temperature.toFixed(1) + '°C';
-        if(humidityMobile) humidityMobile.textContent = latestReading.humidity.toFixed(1) + '%';
+        if(tempMobile) {
+            const mobileTempAlert = getTemperatureAlert(latestReading.temperature, true);
+            tempMobile.innerHTML = tempValue + '°C' + mobileTempAlert;
+        }
         
-        // Update modal data
-        document.getElementById('modalTemp').textContent = latestReading.temperature.toFixed(1) + '°C';
+        if(humidityMobile) {
+            humidityMobile.textContent = latestReading.humidity.toFixed(1) + '%';
+        }
+        
+        // Update modal data (full alert for modal)
+        document.getElementById('modalTemp').innerHTML = tempValue + '°C' + mainTempAlert;
         document.getElementById('modalHumidity').textContent = latestReading.humidity.toFixed(1) + '%';
         
         document.getElementById('tempTimestamp').textContent = 'Last updated: ' + formatTimestamp(latestReading.timestamp);
         document.getElementById('humidityTimestamp').textContent = 'Last updated: ' + formatTimestamp(latestReading.timestamp);
         
-        // Update table
+        // Update table (compact alerts for table rows)
         const tableBody = document.getElementById('sensorTableBody');
         tableBody.innerHTML = '';
         
         sensorData.forEach(reading => {
             const row = document.createElement('tr');
             row.className = 'border-b border-gray-700';
+            const rowTempAlert = getTemperatureAlert(reading.temperature, true);
             
             row.innerHTML = `
                 <td class="px-4 py-2">${formatTimestamp(reading.timestamp)}</td>
-                <td class="px-4 py-2">${reading.temperature.toFixed(1)}</td>
-                <td class="px-4 py-2">${reading.humidity.toFixed(1)}</td>
+                <td class="px-4 py-2">${reading.temperature.toFixed(1)}°C ${rowTempAlert}</td>
+                <td class="px-4 py-2">${reading.humidity.toFixed(1)}%</td>
             `;
             
             tableBody.appendChild(row);
