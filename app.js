@@ -343,6 +343,9 @@ app.post('/dispose-product', authenticateToken, async (req, res) => {
 app.get('/donate', (req, res) => {
     res.render('donate');
 });
+app.get('/ngo', (req, res) => {
+    res.render('ngo');
+});
 
 app.post('/donate', async (req, res) => {
     try {
