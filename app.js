@@ -68,6 +68,32 @@ const sensorDataSchema = new mongoose.Schema({
     timestamp: { type: Date, default: Date.now }
 });
 
+const DisposedProduct = mongoose.model('DisposedProduct', {
+    userId: mongoose.Schema.Types.ObjectId,
+    productName: String,
+    quantity: Number,
+    price: Number, // Added price field for disposed products
+    companyName: String,
+    location: String,
+    email: String,
+    expiryDate: Date,
+    disposedDate: { type: Date, default: Date.now },
+    isExpired: Boolean // To differentiate between expired and expiring products
+});
+
+const ProductRequest = mongoose.model('ProductRequest', {
+    productId: mongoose.Schema.Types.ObjectId,
+    userId: mongoose.Schema.Types.ObjectId, // seller's user ID
+    requesterName: String,
+    requesterEmail: String,
+    requesterPhone: String,
+    requestDate: { type: Date, default: Date.now },
+    productName: String,
+    isExpired: Boolean, // To differentiate between expired and expiring products
+    status: { type: String, default: 'pending' } // pending, accepted, rejected
+});
+
+
 // Create models
 const Donation = mongoose.model('Donation', donationSchema);
 const Request = mongoose.model('Request', requestSchema);
@@ -204,7 +230,7 @@ app.post('/logout', (req, res) => {
     res.redirect('/');
 });
 
-// Protected Routes
+// Update the main route to include only pending and accepted requests
 app.get('/main', authenticateToken, async (req, res) => {
     try {
         const user = await User.findById(req.user.userId);
@@ -216,15 +242,22 @@ app.get('/main', authenticateToken, async (req, res) => {
             return daysToExpiry <= 10 && daysToExpiry > 0;
         });
         
-        // Add this new code to identify expired products
+        // Identify expired products
         const expiredProducts = products.filter(product => {
             return product.expiryDate < today;
         });
         
+        // Get pending product requests for this user
+        const productRequests = await ProductRequest.find({ 
+            userId: req.user.userId,
+            status: 'pending' // Only show pending requests
+        }).sort({ requestDate: -1 });
+        
         res.render('main', { 
             products, 
             expiringProducts,
-            expiredProducts, // Pass the expired products to the template
+            expiredProducts,
+            productRequests,
             user: {
                 username: user.username,
                 email: user.email,
@@ -288,8 +321,10 @@ app.post('/manage-all-products', authenticateToken, async (req, res) => {
     }
 });
 
+// Modified dispose-products route to save disposed products
 app.post('/dispose-products', authenticateToken, async (req, res) => {
     try {
+        const user = await User.findById(req.user.userId);
         const quantities = req.body.quantities;
         for (const [productId, quantity] of Object.entries(quantities)) {
             if (!quantity || quantity <= 0) continue;
@@ -300,6 +335,21 @@ app.post('/dispose-products', authenticateToken, async (req, res) => {
             });
             
             if (product) {
+                // Create a new disposed product entry
+                const disposedProduct = new DisposedProduct({
+                    userId: req.user.userId,
+                    productName: product.productName,
+                    quantity: parseInt(quantity),
+                    price: 0, // Default price, can be updated later
+                    companyName: user.companyName,
+                    location: product.manufacturer, // Using manufacturer field as location
+                    email: user.email,
+                    expiryDate: product.expiryDate,
+                    isExpired: false // Not expired, just expiring soon
+                });
+                await disposedProduct.save();
+                
+                // Update or remove the product from inventory
                 if (parseInt(quantity) >= product.quantity) {
                     await Product.deleteOne({ _id: product._id });
                 } else {
@@ -315,30 +365,134 @@ app.post('/dispose-products', authenticateToken, async (req, res) => {
     }
 });
 
+
+// Modified dispose-product route to handle both expiring and expired products
 app.post('/dispose-product', authenticateToken, async (req, res) => {
     try {
+        const user = await User.findById(req.user.userId);
         const product = await Product.findOne({ 
             _id: req.body.productId,
             userId: req.user.userId 
         });
         
-        if (product) {
-            const disposeQuantity = parseInt(req.body.quantity);
-            if (disposeQuantity >= product.quantity) {
-                await Product.deleteOne({ _id: product._id });
-            } else {
-                product.quantity -= disposeQuantity;
-                await product.save();
-            }
+        if (!product) {
+            return res.status(404).json({ success: false, message: 'Product not found' });
+        }
+
+        const disposeQuantity = parseInt(req.body.quantity);
+        if (isNaN(disposeQuantity)) {
+            return res.status(400).json({ success: false, message: 'Invalid quantity' });
+        }
+
+        // Determine if product is expired
+        const isExpired = product.expiryDate < new Date();
+        
+        // Create a new disposed product entry
+        const disposedProduct = new DisposedProduct({
+            userId: req.user.userId,
+            productName: product.productName,
+            quantity: disposeQuantity,
+            price: 0, // Default price, can be updated later
+            companyName: user.companyName,
+            location: product.manufacturer,
+            email: user.email,
+            expiryDate: product.expiryDate,
+            isExpired: isExpired
+        });
+        await disposedProduct.save();
+        
+        // Update or remove the product from inventory
+        if (disposeQuantity >= product.quantity) {
+            await Product.deleteOne({ _id: product._id });
+        } else {
+            product.quantity -= disposeQuantity;
+            await product.save();
         }
         
-        res.redirect('/main');
+        res.json({ success: true, message: 'Product disposed successfully' });
     } catch (error) {
         console.error('Error disposing product:', error);
-        res.redirect('/main');
+        res.status(500).json({ success: false, message: 'Error disposing product' });
+    }
+});
+// Update the expiring and expired routes to filter out products with accepted requests
+app.get('/expiring', async (req, res) => {
+    try {
+        // Get all product IDs from accepted requests
+        const acceptedRequests = await ProductRequest.find({ 
+            status: 'accepted',
+            isExpired: false
+        });
+        const acceptedProductIds = acceptedRequests.map(req => req.productId);
+        
+        // Find all non-expired disposed products that haven't been accepted
+        const disposedProducts = await DisposedProduct.find({ 
+            isExpired: false,
+            _id: { $nin: acceptedProductIds } // Exclude products with accepted requests
+        }).sort({ disposedDate: -1 });
+        
+        res.render('expiring', { disposedProducts });
+    } catch (error) {
+        console.error('Error fetching expiring products:', error);
+        res.status(500).send('Error fetching expiring products');
     }
 });
 
+app.get('/expired', async (req, res) => {
+    try {
+        // Get all product IDs from accepted requests
+        const acceptedRequests = await ProductRequest.find({ 
+            status: 'accepted',
+            isExpired: true
+        });
+        const acceptedProductIds = acceptedRequests.map(req => req.productId);
+        
+        // Find all expired disposed products that haven't been accepted
+        const disposedProducts = await DisposedProduct.find({ 
+            isExpired: true,
+            _id: { $nin: acceptedProductIds } // Exclude products with accepted requests
+        }).sort({ disposedDate: -1 });
+        
+        res.render('expired', { disposedProducts });
+    } catch (error) {
+        console.error('Error fetching expired products:', error);
+        res.status(500).send('Error fetching expired products');
+    }
+});
+
+// New route to handle product requests
+app.post('/request-product', async (req, res) => {
+    try {
+        const { productId, requesterName, requesterEmail, requesterPhone, isExpired } = req.body;
+        
+        const disposedProduct = await DisposedProduct.findById(productId);
+        if (!disposedProduct) {
+            return res.status(404).json({ success: false, message: 'Product not found' });
+        }
+        
+        const productRequest = new ProductRequest({
+            productId: disposedProduct._id,
+            userId: disposedProduct.userId,  // seller's user ID
+            requesterName,
+            requesterEmail,
+            requesterPhone,
+            productName: disposedProduct.productName,
+            isExpired: isExpired === 'true'
+        });
+        
+        await productRequest.save();
+        
+        res.json({ success: true, message: 'Request submitted successfully!' });
+    } catch (error) {
+        console.error('Error submitting product request:', error);
+        res.status(500).json({ success: false, message: 'Error submitting request' });
+    }
+});
+
+// Consumer portal route
+app.get('/consumer-portal', (req, res) => {
+    res.render('consumer-portal');
+});
 // Donation Routes
 app.get('/donate', (req, res) => {
     res.render('donate');
@@ -382,8 +536,10 @@ app.get('/donations', async (req, res) => {
     }
 });
 
+// Modified dispose-expired-products route to save disposed expired products
 app.post('/dispose-expired-products', authenticateToken, async (req, res) => {
     try {
+        const user = await User.findById(req.user.userId);
         const quantities = req.body.quantities;
         for (const [productId, quantity] of Object.entries(quantities)) {
             if (!quantity || quantity <= 0) continue;
@@ -394,6 +550,21 @@ app.post('/dispose-expired-products', authenticateToken, async (req, res) => {
             });
             
             if (product) {
+                // Create a new disposed product entry
+                const disposedProduct = new DisposedProduct({
+                    userId: req.user.userId,
+                    productName: product.productName,
+                    quantity: parseInt(quantity),
+                    price: 0, // Default price, can be updated later
+                    companyName: user.companyName,
+                    location: product.manufacturer, // Using manufacturer field as location
+                    email: user.email,
+                    expiryDate: product.expiryDate,
+                    isExpired: true // This is an expired product
+                });
+                await disposedProduct.save();
+                
+                // Update or remove the product from inventory
                 if (parseInt(quantity) >= product.quantity) {
                     await Product.deleteOne({ _id: product._id });
                 } else {
@@ -408,6 +579,7 @@ app.post('/dispose-expired-products', authenticateToken, async (req, res) => {
         res.redirect('/main');
     }
 });
+
 
 // Request Routes
 app.get('/donaters', (req, res) => {
@@ -515,7 +687,84 @@ app.use((err, req, res, next) => {
         error: err 
     });
 });
+// Route to handle accept request
+// Route to handle accept request
+app.post('/accept-request', authenticateToken, async (req, res) => {
+    try {
+        const requestId = req.body.requestId;
+        
+        // Find the request
+        const request = await ProductRequest.findById(requestId);
+        if (!request || request.userId.toString() !== req.user.userId) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Request not found or unauthorized' 
+            });
+        }
+        
+        // Find the disposed product
+        const disposedProduct = await DisposedProduct.findById(request.productId);
+        if (!disposedProduct) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Product not found' 
+            });
+        }
+        
+        // Update request status to accepted
+        request.status = 'accepted';
+        await request.save();
+        
+        // Remove the disposed product
+        await DisposedProduct.findByIdAndDelete(request.productId);
+        
+        res.json({ 
+            success: true, 
+            message: 'Request accepted successfully',
+            requestId: request._id
+        });
+    } catch (error) {
+        console.error('Error accepting request:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Error accepting request',
+            error: error.message 
+        });
+    }
+});
 
+// Route to handle reject request
+app.post('/reject-request', authenticateToken, async (req, res) => {
+    try {
+        const requestId = req.body.requestId;
+        
+        // Find the request
+        const request = await ProductRequest.findById(requestId);
+        if (!request || request.userId.toString() !== req.user.userId) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Request not found or unauthorized' 
+            });
+        }
+        
+        // Update request status to rejected
+        request.status = 'rejected';
+        await request.save();
+        
+        res.json({ 
+            success: true, 
+            message: 'Request rejected successfully',
+            requestId: request._id
+        });
+    } catch (error) {
+        console.error('Error rejecting request:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Error rejecting request',
+            error: error.message 
+        });
+    }
+});
 // Start server
 app.listen(port, () => {
     console.log(`🚀 Server running on port ${port}`);

@@ -1,0 +1,528 @@
+<!-- views/consumer-portal.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consumer Portal - FoodYield</title>
+    <link rel="icon" href="./files/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <style>
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+        text-decoration: none;
+        list-style: none;
+        scroll-behavior: smooth;
+    }
+
+    /* General Reset */
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        box-sizing: border-box;
+    }
+
+    /* Navbar */
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 20, 40, 0.95);
+        color: white;
+        padding: 0.5rem 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .navbar-logo {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    .website-name {
+        font-size: 2rem;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        margin-top: 7px;
+    }
+
+    .highlight-food {
+        color: #007bff;
+    }
+
+    .navbar-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    .nav-link {
+        color: #fff;
+        font-size: 1.2rem;
+        font-weight: 600;
+        padding: 5px 10px;
+        transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+        color: #0a0a0a;
+        background: #007bff;
+        border-radius: 5px;
+        box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .hamburger .line {
+        width: 30px;
+        height: 4px;
+        background: white;
+        border-radius: 2px;
+    }
+
+    /* Main Content Section */
+    .main-content {
+        padding: 110px 15%;
+        min-height: 100vh;
+        background-color: #0a0a0a;
+        color: white;
+    }
+
+    .content-wrapper {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .page-header {
+        margin-bottom: 50px;
+    }
+
+    .page-header h1 {
+        font-size: 80px;
+        margin-bottom: 20px;
+    }
+
+    .page-header h1 span {
+        color: #007bff;
+    }
+
+    .page-header p {
+        font-size: 20px;
+        color: #dddddd;
+    }
+
+    /* About Section */
+    .about-section {
+        background-color: #191919;
+        border-radius: 15px;
+        padding: 40px;
+        margin-bottom: 50px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .about-section h2 {
+        font-size: 35px;
+        color: #007bff;
+        margin-bottom: 20px;
+    }
+
+    .about-section p {
+        font-size: 18px;
+        line-height: 1.7;
+        margin-bottom: 15px;
+        color: #dddddd;
+    }
+
+    .about-section p strong {
+        color: #007bff;
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+
+    .card {
+        background-color: #191919;
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 123, 255, 0.2);
+    }
+
+    .card-icon {
+        width: 80px;
+        height: 80px;
+        background-color: #0a0a0a;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+    }
+
+    .yellow-icon {
+        color: #ffc107;
+        background-color: rgba(255, 193, 7, 0.1);
+    }
+
+    .red-icon {
+        color: #dc3545;
+        background-color: rgba(220, 53, 69, 0.1);
+    }
+
+    .card h3 {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: white;
+    }
+
+    .card p {
+        font-size: 16px;
+        color: #aaaaaa;
+        margin-bottom: 25px;
+    }
+
+    .card-btn {
+        display: inline-block;
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 18px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .yellow-btn {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    .yellow-btn:hover {
+        background-color: #e0a800;
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+    }
+
+    .red-btn {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .red-btn:hover {
+        background-color: #c82333;
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+    }
+
+    /* Footer */
+    .footer {
+        background-color: #001529;
+        padding-bottom: 13px;
+    }
+
+    .footer-content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        padding: 20px 0;
+    }
+
+    .footlinks h4,
+    .footlinkss h4 {
+        margin-top: 30px;
+        font-size: 20px;
+        font-weight: 600;
+        color: white;
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+    .footlinkss h4 {
+        margin-left: 100px;
+    }
+
+    .footlinks h4::before,
+    .footlinkss h4::before {
+        content: "";
+        position: absolute;
+        height: 2px;
+        width: 70px;
+        left: 0;
+        bottom: -7px;
+        background: #007bff;
+    }
+
+    .footlinks ul li {
+        margin-bottom: 15px;
+    }
+
+    .footlinks ul li a {
+        font-size: 17px;
+        color: #dddddd;
+        display: block;
+        transition: all 0.3s ease;
+    }
+
+    .footlinks ul li a:hover {
+        transform: translateX(6px);
+        color: #007bff;
+    }
+
+    .social a {
+        font-size: 25px;
+        margin: 4px;
+        height: 40px;
+        width: 40px;
+        color: #001529;
+        background-color: #007bff;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .social a:hover {
+        transform: scale(1.2);
+        background-color: white;
+        color: #007bff;
+    }
+
+    .end {
+        text-align: center;
+        padding-top: 20px;
+        color: #a0a0a0;
+    }
+
+    /* Fade Animation */
+    .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .fade-in.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Responsive Design */
+    @media screen and (max-width: 768px) {
+        .navbar-links {
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+            position: absolute;
+            top: 60px;
+            right: 10px;
+            background: rgba(0, 20, 40, 0.95);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            width: auto;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease-out;
+        }
+
+        .navbar-links.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hamburger {
+            display: flex;
+        }
+
+        .footlinkss h4 {
+            margin-left: 0;
+        }
+
+        .page-header h1 {
+            font-size: 50px;
+        }
+
+        .cards-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .main-content {
+            padding: 100px 5%;
+        }
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <img src="files/logo.png" alt="Logo" class="logo">
+            <span class="website-name">Food<span class="highlight-food">Yield</span></span>
+        </div>
+        <div class="navbar-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/info" class="nav-link">Donate</a>
+            <a href="/reqfood" class="nav-link">Ask for Donate</a>
+            <a href="/viewrequests" class="nav-link">Requests</a>
+            <a href="/donations" class="nav-link">Available Donations</a>
+            <a href="/register" class="nav-link">Administration</a>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </button>
+    </nav>
+
+    <section class="main-content">
+        <div class="content-wrapper fade-in">
+            <div class="page-header fade-in">
+                <h1>Consumer <span>Portal</span></h1>
+                <p>Helping businesses reduce waste and consumers access affordable food options</p>
+            </div>
+
+            <div class="about-section fade-in">
+                <h2>About Our Consumer Portal</h2>
+                <p>
+                    Welcome to FoodYield's Consumer Portal - your gateway to sustainable food options at discounted prices!
+                </p>
+                <p>
+                    Many food products that are nearing their expiry date or have recently expired are still perfectly good for consumption,
+                    especially for organic use, agricultural purposes, or immediate consumption. Instead of letting these products go to waste,
+                    we provide a platform where you can purchase them at significantly reduced rates.
+                </p>
+                <p>
+                    <strong>Soon-to-expire products</strong> are items that are approaching their best-before dates but are still safe to consume.
+                    These are available at 30-70% discounts from regular market prices.
+                </p>
+                <p>
+                    <strong>Expired products</strong> (within safe limits) are ideal for organic farming, animal feed, or composting.
+                    These are available at even greater discounts (70-90% off) or sometimes even for free.
+                </p>
+                <p>
+                    By purchasing these products, you're not just saving money - you're helping reduce food waste and contribute to a more sustainable food system!
+                </p>
+            </div>
+
+            <div class="cards-grid fade-in">
+                <div class="card">
+                    <div class="card-icon yellow-icon">
+                        <i class='bx bx-time' style="font-size: 40px;"></i>
+                    </div>
+                    <h3>Soon-to-Expire Products</h3>
+                    <p>Browse products that are nearing their expiry date but still perfectly good for consumption at discounted prices.</p>
+                    <a href="/expiring" class="card-btn yellow-btn">View Expiring Soon</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon red-icon">
+                        <i class='bx bx-trash' style="font-size: 40px;"></i>
+                    </div>
+                    <h3>Expired Products</h3>
+                    <p>Find recently expired products that are still suitable for organic use, agricultural purposes, or composting. Grab it here</p>
+                    <a href="/expired" class="card-btn red-btn">View Expired Items</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="footer">
+        <div class="footer-content">
+            <div class="footlinks">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/info">Donate</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footlinkss">
+                <h4>Connect</h4>
+                <div class="social">
+                    <a href="#"><i class='bx bxl-facebook'></i></a>
+                    <a href="#"><i class='bx bxl-instagram'></i></a>
+                    <a href="#"><i class='bx bxl-twitter'></i></a>
+                    <a href="#"><i class='bx bxl-linkedin'></i></a>
+                    <a href="#"><i class='bx bxl-youtube'></i></a>
+                    <a href="#"><i class='bx bxl-github'></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="end">
+            <p>Copyright © 2023 FoodYield | All Rights Reserved.</p>
+        </div>
+    </section>
+
+    <script>
+        // Hamburger menu toggle function
+        function toggleMenu() {
+            const navbarLinks = document.querySelector('.navbar-links');
+            navbarLinks.classList.toggle('active');
+        }
+
+        // Click outside to close menu
+        document.addEventListener('click', function(event) {
+            const navbar = document.querySelector('.navbar');
+            const navbarLinks = document.querySelector('.navbar-links');
+            const hamburger = document.querySelector('.hamburger');
+
+            if (!navbar.contains(event.target) && !hamburger.contains(event.target)) {
+                navbarLinks.classList.remove('active');
+            }
+        });
+
+        // Fade-in animation
+        document.addEventListener("DOMContentLoaded", () => {
+            const fadeInElements = document.querySelectorAll('.fade-in');
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeInElements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
