@@ -2457,5 +2457,583 @@ document.getElementById('singleDisposeQuantity').addEventListener('input', funct
     </script>
     </script>
 
+    <!-- The rest of your JavaScript code goes here -->
+       <!-- Add this to your HTML body, just before the closing </body> tag -->
+
+<!-- Microphone Icon -->
+<div id="mic-assistant" class="mic-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+        <line x1="12" y1="19" x2="12" y2="23"></line>
+        <line x1="8" y1="23" x2="16" y2="23"></line>
+    </svg>
+</div>
+
+<!-- Voice Assistant Modal -->
+<div id="voice-modal" class="voice-modal hidden">
+    <div class="voice-modal-content">
+        <div class="voice-header">
+            <h3>Voice Assistant</h3>
+            <button id="close-voice-modal" class="close-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="voice-body">
+            <div class="animation-container">
+                <div class="sound-wave">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+            <p id="listening-text">Ask about a product...</p>
+            <p id="response-text" class="hidden"></p>
+        </div>
+        <div class="voice-footer">
+            <button id="start-listening" class="mic-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+<!-- Add this to your existing <style> tag -->
+    <style>
+        /* Microphone Icon Styles */
+        .mic-icon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #3B82F6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+    
+        .mic-icon:hover {
+            transform: scale(1.1);
+            background-color: #2563EB;
+        }
+    
+        /* Voice Assistant Modal Styles */
+        .voice-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+    
+        .voice-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    
+        .voice-modal-content {
+            background-color: #1E293B;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+    
+        .voice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background-color: #0F172A;
+        }
+    
+        .voice-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+    
+        .close-btn {
+            background: none;
+            border: none;
+            color: #9CA3AF;
+            cursor: pointer;
+            padding: 4px;
+            margin: -4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+    
+        .close-btn:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    
+        .voice-body {
+            padding: 30px 20px;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        .animation-container {
+            margin-bottom: 20px;
+        }
+    
+        /* Sound Wave Animation */
+        .sound-wave {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60px;
+        }
+    
+        .sound-wave .bar {
+            display: inline-block;
+            width: 5px;
+            margin: 0 3px;
+            height: 20px;
+            background-color: #3B82F6;
+            border-radius: 3px;
+            animation: sound-wave-animation 1.2s infinite ease-in-out;
+        }
+    
+        .sound-wave .bar:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+    
+        .sound-wave .bar:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+    
+        .sound-wave .bar:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+    
+        .sound-wave .bar:nth-child(5) {
+            animation-delay: 0.4s;
+        }
+    
+        .sound-wave .bar:nth-child(6) {
+            animation-delay: 0.5s;
+        }
+    
+        .sound-wave .bar:nth-child(7) {
+            animation-delay: 0.6s;
+        }
+    
+        .sound-wave.inactive .bar {
+            animation: none;
+            height: 5px;
+        }
+    
+        @keyframes sound-wave-animation {
+            0%, 100% {
+                height: 20px;
+            }
+            50% {
+                height: 60px;
+            }
+        }
+    
+        #listening-text, #response-text {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+    
+        #response-text {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    
+        .voice-footer {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: center;
+            background-color: #0F172A;
+        }
+    
+        .mic-btn {
+            background-color: #3B82F6;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+    
+        .mic-btn:hover {
+            background-color: #2563EB;
+            transform: scale(1.05);
+        }
+    
+        .mic-btn.listening {
+            background-color: #EF4444;
+            animation: pulse 1.5s infinite;
+        }
+    
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+    
+    
+        /* Responsive styles */
+        @media screen and (max-width: 768px) {
+            .mic-icon {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+            }
+    
+            .voice-modal-content {
+                width: 95%;
+            }
+        }
+    </style>
+
+<!-- Add this to the end of your JavaScript section -->
+<script>
+    // Voice Assistant Functionality
+  document.addEventListener('DOMContentLoaded', function() {
+      // Elements
+      const micAssistant = document.getElementById('mic-assistant');
+      const voiceModal = document.getElementById('voice-modal');
+      const closeVoiceModal = document.getElementById('close-voice-modal');
+      const startListeningBtn = document.getElementById('start-listening');
+      const listeningText = document.getElementById('listening-text');
+      const responseText = document.getElementById('response-text');
+      const soundWave = document.querySelector('.sound-wave');
+      
+      // Product data from the page
+      function getProductsData() {
+          const products = [];
+          const rows = document.querySelectorAll('.product-row');
+          
+          rows.forEach(row => {
+              const cells = row.querySelectorAll('td');
+              if (cells.length >= 5) {
+                  products.push({
+                      name: cells[0].textContent.trim().toLowerCase(),
+                      quantity: cells[1].textContent.trim(),
+                      location: cells[2].textContent.trim(),
+                      expiryDate: cells[3].textContent.trim(),
+                      daysUntilExpiry: cells[4].textContent.trim()
+                  });
+              }
+          });
+          
+          return products;
+      }
+      
+      // Find product by name
+      function findProduct(productName) {
+          const products = getProductsData();
+          const searchName = productName.toLowerCase().trim();
+          
+          return products.find(product => 
+              product.name.includes(searchName) || 
+              searchName.includes(product.name)
+          );
+      }
+      
+      // Speech recognition setup
+      let recognition;
+      
+      try {
+          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+          recognition = new SpeechRecognition();
+          recognition.continuous = false;
+          recognition.lang = 'en-US';
+          recognition.interimResults = false;
+          recognition.maxAlternatives = 1;
+      } catch (e) {
+          console.error('Speech recognition not supported:', e);
+      }
+      
+      // Speech synthesis
+      const speak = (text) => {
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.rate = 1;
+          utterance.pitch = 1;
+          speechSynthesis.speak(utterance);
+      };
+      
+      // Handle recognition results
+      if (recognition) {
+          recognition.onresult = (event) => {
+              const transcript = event.results[0][0].transcript.toLowerCase();
+              listeningText.textContent = transcript;
+              
+              setTimeout(() => {
+                  processCommand(transcript);
+              }, 500);
+          };
+          
+          recognition.onend = () => {
+              startListeningBtn.classList.remove('listening');
+              soundWave.classList.add('inactive');
+          };
+          
+          recognition.onerror = (event) => {
+              console.error('Speech recognition error', event.error);
+              listeningText.textContent = `Error: ${event.error}. Please try again.`;
+              startListeningBtn.classList.remove('listening');
+              soundWave.classList.add('inactive');
+          };
+      }
+      
+      // Process voice command
+      function processCommand(command) {
+          responseText.classList.remove('hidden');
+          
+          // Extract product name using a more sophisticated approach
+          function extractProductName(cmd) {
+              // Common phrases that might come before product names
+              const phrases = [
+                  'tell about', 'tell me about', 'what about', 'details for', 
+                  'information on', 'when will', 'when does', 'expires', 
+                  'expiration date for', 'expiry date of', 'how many', 
+                  'quantity of', 'quantities of', 'amount of', 'where is',
+                  'location of', 'where can i find'
+              ];
+              
+              let productName = cmd;
+              
+              // Remove question words and common phrases
+              phrases.forEach(phrase => {
+                  productName = productName.replace(phrase, '');
+              });
+              
+              // Remove other common words that might appear
+              const fillerWords = ['the', 'a', 'an', 'this', 'that', 'these', 'those', 'some', 'expire', 'product'];
+              fillerWords.forEach(word => {
+                  productName = productName.replace(new RegExp(`\\b${word}\\b`, 'gi'), '');
+              });
+              
+              return productName.trim();
+          }
+          
+          // Check for specific expiration date questions
+          if (command.includes('when') && 
+             (command.includes('expire') || command.includes('expiry') || command.includes('expiration'))) {
+              
+              const productName = extractProductName(command);
+              const product = findProduct(productName);
+              
+              if (product) {
+                  const response = `${product.name} expires on ${product.expiryDate}, which is ${product.daysUntilExpiry} days from now.`;
+                  responseText.textContent = response;
+                  speak(response);
+              } else {
+                  const response = `Sorry, I couldn't find any product matching "${productName}" in the inventory.`;
+                  responseText.textContent = response;
+                  speak(response);
+              }
+          }
+          // Check for quantity questions
+          else if ((command.includes('how many') || command.includes('quantity') || 
+                   command.includes('quantities') || command.includes('amount')) &&
+                   !command.includes('expiring soon')) {
+              
+              const productName = extractProductName(command);
+              const product = findProduct(productName);
+              
+              if (product) {
+                  const response = `There are ${product.quantity} units of ${product.name} in your inventory.`;
+                  responseText.textContent = response;
+                  speak(response);
+              } else {
+                  const response = `Sorry, I couldn't find any product matching "${productName}" in the inventory.`;
+                  responseText.textContent = response;
+                  speak(response);
+              }
+          }
+          // Check for location questions
+          else if (command.includes('where') || command.includes('location')) {
+              
+              const productName = extractProductName(command);
+              const product = findProduct(productName);
+              
+              if (product) {
+                  const response = `${product.name} is located at ${product.location}.`;
+                  responseText.textContent = response;
+                  speak(response);
+              } else {
+                  const response = `Sorry, I couldn't find any product matching "${productName}" in the inventory.`;
+                  responseText.textContent = response;
+                  speak(response);
+              }
+          }
+          // General product info (existing functionality)
+          else if (command.includes('tell about') || 
+                  command.includes('tell me about') || 
+                  command.includes('what about') || 
+                  command.includes('details for') || 
+                  command.includes('information on')) {
+              
+              const productName = extractProductName(command);
+              const product = findProduct(productName);
+              
+              if (product) {
+                  const response = `${product.name} has a quantity of ${product.quantity}. It expires on ${product.expiryDate}, which is ${product.daysUntilExpiry} days from now. It's located at ${product.location}.`;
+                  responseText.textContent = response;
+                  speak(response);
+              } else {
+                  const response = `Sorry, I couldn't find any product matching "${productName}" in the inventory.`;
+                  responseText.textContent = response;
+                  speak(response);
+              }
+          } else if (command.includes('search for') || command.includes('find')) {
+              // Handle search commands
+              let searchTerm = command
+                  .replace('search for', '')
+                  .replace('find', '')
+                  .trim();
+              
+              // Trigger the search input
+              const searchInput = document.getElementById('searchInput');
+              if (searchInput) {
+                  searchInput.value = searchTerm;
+                  searchInput.dispatchEvent(new Event('input'));
+                  
+                  const response = `Searching for "${searchTerm}" in inventory.`;
+                  responseText.textContent = response;
+                  speak(response);
+              }
+          } else if (command.includes('expiring soon') || command.includes('expires soon')) {
+              // Find products expiring soon
+              const products = getProductsData();
+              const expiringProducts = products.filter(p => {
+                  const days = parseInt(p.daysUntilExpiry);
+                  return !isNaN(days) && days <= 7;
+              });
+              
+              if (expiringProducts.length > 0) {
+                  const response = `I found ${expiringProducts.length} products expiring within 7 days: ${expiringProducts.map(p => p.name).join(', ')}`;
+                  responseText.textContent = response;
+                  speak(response);
+              } else {
+                  const response = "I didn't find any products expiring within the next 7 days.";
+                  responseText.textContent = response;
+                  speak(response);
+              }
+          } else {
+              const response = "I'm sorry, I didn't understand that command. You can ask about product details, expiration dates, quantities, locations, search for items, or check which products are expiring soon.";
+              responseText.textContent = response;
+              speak(response);
+          }
+          
+          listeningText.classList.add('hidden');
+      }
+      
+      // Function to start listening
+      function startListening() {
+          if (recognition) {
+              try {
+                  responseText.classList.add('hidden');
+                  listeningText.classList.remove('hidden');
+                  listeningText.textContent = 'Listening...';
+                  soundWave.classList.remove('inactive');
+                  startListeningBtn.classList.add('listening');
+                  
+                  recognition.start();
+              } catch (e) {
+                  console.error('Error starting recognition:', e);
+              }
+          } else {
+              responseText.classList.remove('hidden');
+              responseText.textContent = "Sorry, speech recognition is not supported in your browser.";
+              listeningText.classList.add('hidden');
+          }
+      }
+      
+      // Event listeners
+      micAssistant.addEventListener('click', () => {
+          voiceModal.classList.remove('hidden');
+          setTimeout(() => {
+              voiceModal.classList.add('show');
+              // Automatically start listening when modal opens
+              startListening();
+          }, 10);
+          // This element doesn't exist in your HTML
+  document.getElementById('sensorDashboardLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      openSensorModal();
+  });
+          
+          responseText.classList.add('hidden');
+          listeningText.classList.remove('hidden');
+          listeningText.textContent = 'Ask about a product...';
+          soundWave.classList.add('inactive');
+      });
+      
+      closeVoiceModal.addEventListener('click', () => {
+          voiceModal.classList.remove('show');
+          setTimeout(() => {
+              voiceModal.classList.add('hidden');
+              speechSynthesis.cancel(); // Stop any ongoing speech
+          }, 300);
+      });
+      
+      // Keep this button for manual activation if needed
+      startListeningBtn.addEventListener('click', startListening);
+      
+      // Close modal when clicking outside
+      voiceModal.addEventListener('click', function(e) {
+          if (e.target === voiceModal) {
+              closeVoiceModal.click();
+          }
+      });
+  });
+  </script>
+
 </body>
 </html>
