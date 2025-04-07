@@ -407,8 +407,17 @@ transform: translateY(0);
     <section class="main fade-in">
         <h1>Food <span>Donations</span></h1>
         <div class="card-container">
-            <% if (donations && donations.length > 0) { %>
-                <% donations.forEach(donation => { %>
+            <% 
+            // Filter out expired donations
+            const currentDate = new Date();
+            const validDonations = donations && donations.filter(donation => {
+                const expiryDate = new Date(donation.expiry);
+                return expiryDate >= currentDate;
+            });
+            
+            if (validDonations && validDonations.length > 0) { 
+            %>
+                <% validDonations.forEach(donation => { %>
                     <div class="card">
                         <h3><%= donation.name %></h3>
                         <div class="card-row">
