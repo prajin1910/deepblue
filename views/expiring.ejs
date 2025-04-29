@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expiring Products | FoodYield</title>
+    <link rel="icon" href="./files/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none;
+            list-style: none;
+            scroll-behavior: smooth;
+        }
+        
+        /* General Reset */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+        
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 20, 40, 0.95);
+            color: white;
+            padding: 0.5rem 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+        }
+        
+        .website-name {
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            margin-top: 7px;
+        }
+        
+        .highlight-food {
+            color: #007bff;
+        }
+        
+        .navbar-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .nav-link {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding: 5px 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #0a0a0a;
+            background: #007bff;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+        }
+        
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .hamburger .line {
+            width: 30px;
+            height: 4px;
+            background: white;
+            border-radius: 2px;
+        }
+
+        /* Container Section */
+        .container {
+            padding: 110px 15%;
+            min-height: 100vh;
+            background-color: #0a0a0a;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .container h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: white;
+            text-align: center;
+        }
+        
+        .container h1 span {
+            color: #007bff;
+        }
+        
+        .container p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 800px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        
+        .alert {
+            background-color: rgba(0, 123, 255, 0.2);
+            border: 1px solid #007bff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .alert p {
+            margin-bottom: 0;
+            font-size: 18px;
+        }
+        
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .product-card {
+            background-color: #191919;
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 123, 255, 0.2);
+        }
+        
+        .product-card h3 {
+            font-size: 22px;
+            color: #007bff;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        
+        .product-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-details p {
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-align: left;
+            line-height: 1.5;
+        }
+        
+        .product-details strong {
+            color: #007bff;
+            font-weight: 600;
+            display: inline-block;
+            width: 130px;
+        }
+        
+        .expiry-warning {
+            color: #ffdd00;
+            font-weight: 600;
+        }
+        
+        .expiry-urgent {
+            color: #ff4d4d;
+            font-weight: 600;
+        }
+        
+        .expiry-fresh {
+            color: #00cc66;
+            font-weight: 600;
+        }
+        
+        .request-btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .request-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
+        }
+        
+        .request-btn.disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        /* Modal - Updated for perfect centering */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1100;
+        }
+        
+        .modal-content {
+            background-color: #191919;
+            color: white;
+            padding: 35px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            animation: modalPop 0.3s ease-out;
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+        
+        @keyframes modalPop {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #007bff;
+            transition: color 0.2s ease;
+        }
+        
+        .close:hover {
+            color: #0056b3;
+        }
+        
+        .modal-content h2 {
+            font-size: 26px;
+            margin-bottom: 25px;
+            color: #007bff;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #dddddd;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            background-color: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+        
+        .submit-btn {
+            display: block;
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.02);
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #001529;
+            padding-bottom: 13px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 30px 0;
+        }
+        
+        .footlinks h4,
+        .footlinkss h4 {
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .footlinkss h4 {
+            margin-left: 100px;
+        }
+        
+        .footlinks h4::before,
+        .footlinkss h4::before {
+            content: "";
+            position: absolute;
+            height: 2px;
+            width: 70px;
+            left: 0;
+            bottom: -7px;
+            background: #007bff;
+        }
+        
+        .footlinks ul li {
+            margin-bottom: 15px;
+        }
+        
+        .footlinks ul li a {
+            font-size: 17px;
+            color: #dddddd;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .footlinks ul li a:hover {
+            transform: translateX(6px);
+            color: #007bff;
+        }
+        
+        .social a {
+            font-size: 25px;
+            margin: 8px;
+            height: 45px;
+            width: 45px;
+            color: #001529;
+            background-color: #007bff;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .social a:hover {
+            transform: scale(1.2);
+            background-color: white;
+            color: #007bff;
+        }
+        
+        .end {
+            text-align: center;
+            padding-top: 20px;
+            color: #a0a0a0;
+        }
+        
+        /* Fade Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .fade-in.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Improved Responsive Design */
+        @media screen and (max-width: 1200px) {
+            .container {
+                padding: 110px 10%;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 20px;
+            }
+        }
+        
+        @media screen and (max-width: 992px) {
+            .container {
+                padding: 110px 5%;
+            }
+            
+            .container h1 {
+                font-size: 42px;
+            }
+            
+            .footlinkss h4 {
+                margin-left: 0;
+            }
+            
+            .product-details strong {
+                width: 120px;
+            }
+        }
+        
+        @media screen and (max-width: 768px) {
+            .navbar {
+                padding: 0.5rem 1rem;
+            }
+            
+            .navbar-links {
+                display: none;
+                flex-direction: column;
+                gap: 1rem;
+                position: absolute;
+                top: 60px;
+                right: 10px;
+                background: rgba(0, 20, 40, 0.95);
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+                width: auto;
+                text-align: left;
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: all 0.3s ease-out;
+            }
+            
+            .navbar-links.active {
+                display: flex;
+                opacity: 1;
+                transform: translateY(0);
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .container h1 {
+                font-size: 36px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .footlinks h4::before,
+            .footlinkss h4::before {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .product-details strong {
+                width: 110px;
+            }
+            
+            .product-card {
+                padding: 20px;
+            }
+        }
+        
+        @media screen and (max-width: 576px) {
+            .container h1 {
+                font-size: 30px;
+            }
+            
+            .container p {
+                font-size: 16px;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-card h3 {
+                font-size: 20px;
+            }
+            
+            .product-details p {
+                font-size: 15px;
+            }
+            
+            .product-details strong {
+                width: auto;
+                margin-right: 8px;
+                display: block;
+                margin-bottom: 4px;
+            }
+            
+            .modal-content {
+                padding: 25px 20px;
+            }
+            
+            .modal-content h2 {
+                font-size: 22px;
+            }
+            
+            .website-name {
+                font-size: 1.5rem;
+            }
+            
+            .logo {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <img src="files/logo.png" alt="Logo" class="logo">
+            <span class="website-name">Food<span class="highlight-food">Yield</span></span>
+        </div>
+        <div class="navbar-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/info" class="nav-link">Donate</a>
+            <a href="/reqfood" class="nav-link">Request Food</a>
+            <a href="/viewrequests" class="nav-link">Requests</a>
+            <a href="/donations" class="nav-link">Available Donations</a>
+            <a href="/register" class="nav-link">Administration</a>
+        </div>
+        <button class="hamburger" aria-label="Toggle menu" onclick="toggleMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </button>
+    </nav>
+
+    <div class="container fade-in">
+        <h1>Expiring <span>Products</span> Available</h1>
+        <p>These products are approaching their expiration dates but are still safe to consume. Contact suppliers directly to acquire these items at significantly reduced prices, helping reduce food waste while saving money.</p>
+        
+        <% if (disposedProducts.length === 0) { %>
+            <div class="alert">
+                <p>No expiring products are available at the moment. Please check back soon as our inventory is updated regularly.</p>
+            </div>
+        <% } else { %>
+            <div class="products-grid">
+                <% disposedProducts.forEach(product => { %>
+                    <div class="product-card fade-in" id="product-<%= product._id %>">
+                        <h3><%= product.productName %></h3>
+                        <div class="product-details">
+                            <p><strong>Quantity:</strong> <%= product.quantity %> <%= product.quantity > 1 ? 'units' : 'unit' %></p>
+                            <p><strong>Price:</strong> <%= product.price ? '$' + product.price : 'Contact supplier for pricing' %></p>
+                            <p><strong>Supplier:</strong> <%= product.companyName %></p>
+                            <p><strong>Location:</strong> <%= product.location %></p>
+                            <p><strong>Contact:</strong> <%= product.email %></p>
+                            <p><strong>Expiry Date:</strong> <%= product.expiryDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                            <p>
+                                <strong>Days Remaining:</strong> 
+                                <% const daysToExpiry = Math.ceil((product.expiryDate - new Date()) / (1000 * 60 * 60 * 24)); %>
+                                <span class="<%= daysToExpiry <= 0 ? 'expiry-urgent' : daysToExpiry <= 3 ? 'expiry-warning' : 'expiry-fresh' %>">
+                                    <%= daysToExpiry > 0 ? daysToExpiry + (daysToExpiry === 1 ? ' day' : ' days') : 'Expired' %>
+                                </span>
+                            </p>
+                            <button onclick="showRequestForm('<%= product._id %>', <%= daysToExpiry <= 0 %>)" class="request-btn">
+                                Contact Supplier
+                            </button>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Request Form Modal -->
+    <div id="requestModal" class="modal" style="display: none;" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-labelledby="modalTitle">
+            <span class="close" onclick="hideRequestForm()" aria-label="Close">&times;</span>
+            <h2 id="modalTitle">Contact Supplier</h2>
+            <form id="requestForm">
+                <input type="hidden" id="productId" name="productId">
+                <input type="hidden" id="isExpired" name="isExpired">
+                
+                <div class="form-group">
+                    <label for="requesterName">Your Name:</label>
+                    <input type="text" id="requesterName" name="requesterName" required aria-required="true" placeholder="Enter your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="requesterEmail">Your Email:</label>
+                    <input type="email" id="requesterEmail" name="requesterEmail" required aria-required="true" placeholder="Enter your email address">
+                </div>
+                
+                <div class="form-group">
+                    <label for="requesterPhone">Your Phone Number:</label>
+                    <input type="tel" id="requesterPhone" name="requesterPhone" required aria-required="true" placeholder="Enter your phone number">
+                </div>
+                
+                <button type="submit" class="submit-btn">Submit Request</button>
+            </form>
+        </div>
+    </div>
+
+    <section class="footer">
+        <div class="footer-content">
+            <div class="footlinks">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="donate.ejs">Donate Food</a></li>
+                    <li><a href="about.html">About FoodYield</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footlinkss">
+                <h4>Connect With Us</h4>
+                <div class="social">
+                    <a href="#" aria-label="Facebook"><i class='bx bxl-facebook'></i></a>
+                    <a href="#" aria-label="Instagram"><i class='bx bxl-instagram'></i></a>
+                    <a href="#" aria-label="Twitter"><i class='bx bxl-twitter'></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+                    <a href="#" aria-label="YouTube"><i class='bx bxl-youtube'></i></a>
+                    <a href="#" aria-label="GitHub"><i class='bx bxl-github'></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="end">
+            <p>Copyright © 2023 FoodYield | All Rights Reserved.</p>
+        </div>
+    </section>
+
+    <script>
+        // Hamburger menu toggle function
+        function toggleMenu() {
+            const navbarLinks = document.querySelector('.navbar-links');
+            navbarLinks.classList.toggle('active');
+        }
+
+        // Click outside to close menu
+        document.addEventListener('click', function(event) {
+            const navbar = document.querySelector('.navbar');
+            const navbarLinks = document.querySelector('.navbar-links');
+            const hamburger = document.querySelector('.hamburger');
+
+            if (!navbar.contains(event.target) && !hamburger.contains(event.target)) {
+                navbarLinks.classList.remove('active');
+            }
+        });
+
+        // Fade-in animation with improved performance
+        document.addEventListener("DOMContentLoaded", () => {
+            const fadeInElements = document.querySelectorAll('.fade-in');
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('show');
+                        }, 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '20px' });
+
+            fadeInElements.forEach(el => observer.observe(el));
+        });
+        
+        function showRequestForm(productId, isExpired) {
+            document.getElementById('productId').value = productId;
+            document.getElementById('isExpired').value = isExpired;
+            document.getElementById('requestModal').style.display = 'flex';
+            
+            // Prevent page scrolling when modal is open
+            document.body.style.overflow = 'hidden';
+            
+            // Focus on the first input field for better UX
+            setTimeout(() => {
+                document.getElementById('requesterName').focus();
+            }, 100);
+            
+            // Announce for screen readers
+            document.getElementById('requestModal').setAttribute('aria-hidden', 'false');
+        }
+        
+        function hideRequestForm() {
+            document.getElementById('requestModal').style.display = 'none';
+            
+            // Restore page scrolling
+            document.body.style.overflow = 'auto';
+            
+            // Update for screen readers
+            document.getElementById('requestModal').setAttribute('aria-hidden', 'true');
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('requestModal');
+            if (event.target === modal) {
+                hideRequestForm();
+            }
+        }
+        
+        // Close modal on Escape key press
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                hideRequestForm();
+            }
+        });
+        
+        // Handle form submission with improved validation and feedback
+        document.getElementById('requestForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic form validation
+            const name = document.getElementById('requesterName').value.trim();
+            const email = document.getElementById('requesterEmail').value.trim();
+            const phone = document.getElementById('requesterPhone').value.trim();
+            
+            if (!name || !email || !phone) {
+                alert('Please complete all fields in the form.');
+                return;
+            }
+            
+            // Email validation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            
+            const formData = {
+                productId: document.getElementById('productId').value,
+                requesterName: name,
+                requesterEmail: email,
+                requesterPhone: phone,
+                isExpired: document.getElementById('isExpired').value
+            };
+            
+            // Visual feedback that request is being processed
+            const submitBtn = document.querySelector('.submit-btn');
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            fetch('/request-product', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Thank you! Your request has been submitted successfully. The supplier will review your information and contact you shortly.');
+                    hideRequestForm();
+                    
+                    // Clear form fields
+                    document.getElementById('requesterName').value = '';
+                    document.getElementById('requesterEmail').value = '';
+                    document.getElementById('requesterPhone').value = '';
+                    
+                    // Update the request button for this product
+                    const productId = document.getElementById('productId').value;
+                    const requestButton = document.querySelector(`#product-${productId} .request-btn`);
+                    if (requestButton) {
+                        requestButton.disabled = true;
+                        requestButton.classList.add('disabled');
+                        requestButton.textContent = 'Request Sent';
+                    }
+                } else {
+                    alert('Error submitting request: ' + (data.message || 'Please try again later.'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while submitting your request. Please try again later.');
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.textContent = 'Submit Request';
+                submitBtn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>

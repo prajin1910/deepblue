@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Donation - FoodYield</title>
+    <link rel="icon" href="./files/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none;
+            list-style: none;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #101010;
+            color: white;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 20, 40, 0.95);
+    color: white;
+    padding: 0.5rem 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+}
+
+.website-name {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    margin-top: 7px;
+}
+
+.highlight-food {
+    color: #007bff;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 5px 10px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #0a0a0a;
+    background: #007bff;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+}
+
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.hamburger .line {
+    width: 30px;
+    height: 4px;
+    background: white;
+    border-radius: 2px;
+}
+
+
+
+/* Simplified Style for Links */
+.navbar-links a {
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+
+        .contactbody {
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .contact {
+            padding: 80px 20px;
+            min-height: 100vh;
+            margin-top: -20px;
+            text-align: center;
+        }
+
+        .contact-content h1 {
+            font-size: 52px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            margin-top: 100px;
+            color: white;
+        }
+
+        .contact-content h1 span {
+            color: #007bff;  /* Changed from #fc0050 to match donate.ejs */
+        }
+
+        .contact-content p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            color: #d4d4d4;
+        }
+
+        .button {
+            background-color: #007bff;  /* Changed from #fc0050 to match donate.ejs */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin: 10px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;  /* Changed to a darker blue */
+            transform: scale(1.05);
+        }
+
+        
+/* Footer */
+.footer {
+    background-color: #001529;
+    padding-bottom: 13px;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px 0;
+}
+
+.footlinks h4,
+.footlinkss h4 {
+    margin-top: 30px;
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.footlinkss h4 {
+    margin-left: 100px;
+}
+
+.footlinks h4::before,
+.footlinkss h4::before {
+    content: "";
+    position: absolute;
+    height: 2px;
+    width: 70px;
+    left: 0;
+    bottom: -7px;
+    background: #007bff;
+}
+
+.footlinks ul li {
+    margin-bottom: 15px;
+}
+
+.footlinks ul li a {
+    font-size: 17px;
+    color: #dddddd;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.footlinks ul li a:hover {
+    transform: translateX(6px);
+    color: #007bff;
+}
+
+.social a {
+    font-size: 25px;
+    margin: 4px;
+    height: 40px;
+    width: 40px;
+    color: #001529;
+    background-color: #007bff;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.social a:hover {
+    transform: scale(1.2);
+    background-color: white;
+    color: #007bff;
+}
+
+.end {
+    text-align: center;
+    padding-top: 20px;
+    color: #a0a0a0;
+}
+
+
+/* Fade Animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+        .highlight-food {
+            color: #007bff;  /* Changed from #ffa500 to match donate.ejs */
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hamburger .line {
+            width: 25px;
+            height: 3px;
+            background: white;
+        }
+
+        @media screen and (max-width: 768px) {
+            .navbar-links {
+                display: none;
+                flex-direction: column;
+                gap: 1.5rem;
+                position: absolute;
+                top: 70px;
+                right: 10px;
+                background: rgba(0, 0, 0, 0.8);
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: all 0.3s ease-out;
+            }
+
+            .navbar-links.active {
+                display: flex;
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .footlinkss h4 {
+                margin-left: 100px;
+            }
+
+            .contact-content h1 {
+                margin-top: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar fade-in">
+        <div class="navbar-logo">
+            <img src="files/logo.png" alt="Logo" class="logo">
+            <span class="website-name">Food<span class="highlight-food">Yield</span></span>
+        </div>
+        <div class="navbar-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/info" class="nav-link">Donate</a>
+            <a href="/reqfood" class="nav-link">Ask for Donate</a>
+            <a href="/viewrequests" class="nav-link">Requests</a>
+            <a href="/donations" class="nav-link">Available Donations</a>
+            <a href="/register" class="nav-link">Administration</a>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </button>
+    </nav>
+    <div class="contactbody fade-in">
+        <div class="contact">
+            <div class="contact-content">
+                <h1>Welcome to <span>FoodYield</span></h1>
+                <p>This page is dedicated to those who wish to make donations. Donations can see the list of NGOs and can donate using the existing button and the new button below for posting the donating details.</p>
+                <p>Donating to NGOs not only helps in providing essential services to the underprivileged but also supports various causes such as education, health care, and community development. Every donation, no matter how small, can help create a positive impact.</p>
+                <button class="button" onclick="window.location.href='ngo'">View NGO List</button>
+                <button class="button" onclick="window.location.href='donate'">Post Donate</button>
+                <p style="margin-top: 20px;">We encourage you to reach out to these organizations and find out how you can contribute to their efforts in making a difference.</p>
+            </div>
+        </div>
+    </div>
+
+    <section class="footer fade-in">
+        <div class="foot fade-in">
+            <div class="footer-content fade-in">
+                <div class="footlinks fade-in">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="./register.html">Donate</a></li>
+                        <li><a href="./about.html">About Us</a></li>
+                        <li><a href="./contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footlinkss fade-in">
+                    <h4>Connect</h4>
+                    <div class="social fade-in">
+                        <a href="" target="_blank"><i class='bx bxl-facebook'></i></a>
+                        <a href="" target="_blank"><i class='bx bxl-instagram'></i></a>
+                        <a href="" target="_blank"><i class='bx bxl-twitter'></i></a>
+                        <a href="" target="_blank"><i class='bx bxl-linkedin'></i></a>
+                        <a href="" target="_blank"><i class='bx bxl-youtube'></i></a>
+                        <a href="" target="_blank"><i class='bx bxl-github'></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="end fade-in">
+            <p>Copyright © 2023 FoodYard | All Rights Reserved.<br>Website developed by: Prajin | Nevesh | Prathicksha | Hussain</p>
+        </div>
+    </section>
+
+    <script>
+        function toggleMenu() {
+            const navbarLinks = document.querySelector('.navbar-links');
+            navbarLinks.classList.toggle('active');
+        }
+
+        document.addEventListener('click', function(event) {
+            const navbar = document.querySelector('.navbar');
+            const navbarLinks = document.querySelector('.navbar-links');
+            const hamburger = document.querySelector('.hamburger');
+            if (!navbar.contains(event.target) && !hamburger.contains(event.target)) {
+                navbarLinks.classList.remove('active');
+            }
+        });
+
+         // Fade-in animation
+         document.addEventListener("DOMContentLoaded", () => {
+            const fadeInElements = document.querySelectorAll('.fade-in');
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeInElements.forEach(el => observer.observe(el));
+        });
+
+    </script>
+</body>
+</html>

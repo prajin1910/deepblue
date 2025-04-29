@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodYard | Saving Food</title>
+    <link rel="icon" href="./files/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <style>
+    /* General styles */
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+        text-decoration: none;
+        list-style: none;
+        scroll-behavior: smooth;
+    }/* General Reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 20, 40, 0.95);
+    color: white;
+    padding: 0.5rem 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+}
+
+.website-name {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    margin-top: 7px;
+}
+
+.highlight-food {
+    color: #007bff;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 5px 10px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #0a0a0a;
+    background: #007bff;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+}
+
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.hamburger .line {
+    width: 30px;
+    height: 4px;
+    background: white;
+    border-radius: 2px;
+}
+
+
+
+/* Simplified Style for Links */
+.navbar-links a {
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+    /* Home page */
+    .banner {
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .banner img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    .content {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100vh;
+        background-image: linear-gradient(rgba(1, 0, 5, 0.6), rgba(4, 1, 17, 0.6));
+    }
+
+    .title {
+        font-size: 4vh;
+        color: rgb(255, 255, 255);
+        padding: 14px 17px;
+        margin-top: 32vh;
+        text-align: center;
+    }
+
+    .title h1 {
+        font-size: 10vh;
+        text-shadow: 2px black;
+        transition: ease 0.3s;
+    }
+
+    .title h1:hover {
+        color: transparent;
+        -webkit-text-stroke: 1px white;
+    }
+
+    .button {
+        display: inline-block;
+        margin-top: 5vh;
+        font-size: 25px;
+        padding: 10px 30px;
+        color: #001529;
+        box-shadow: 5px 10px 30px rgba(0, 0, 0, 0.4);
+        background-color: white;
+        border-radius: 20px;
+        text-decoration: none;
+        transition: ease 0.30s;
+    }
+
+    .button:hover {
+        transform: scale(1.1);
+    }
+
+    .text h2 {
+    font-size: 40px;
+    font-weight: 650;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    text-align: center;
+    color: #001529;
+}
+
+.rowitems {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center; /* Align content in the center */
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.container-box {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 30px;
+    transition: all 0.3s ease;
+    max-width: 100%;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    flex: 1 1 calc(33% - 20px); /* Ensure boxes take equal space */
+    box-sizing: border-box;
+}
+
+.container-box h4 {
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.container-box h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.container-box ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.container-box ul li {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.container-box ul li::before {
+    content: "•";
+    color: #007bff;
+    margin-right: 10px;
+}
+
+.container-box img {
+    width: 100%;
+    height: auto;
+    max-width: 400px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.container-box .image-gallery {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.container-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+}
+
+.highlight {
+    color: #007bff; /* Red color for important keywords */
+    font-weight: 600;
+}
+
+.fwm-title h2 {
+    font-size: 40px;
+    font-weight: 650;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    text-align: center;
+    color: #001529;
+}
+
+.container-box {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 100%;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+}
+
+.container-box h4 {
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    color: #333; /* Keep the main text black */
+    line-height: 1.6;
+}
+
+.container-box a {
+    color: #007bff; /* Red for links */
+    font-weight: 600;
+}
+
+.container-box a:hover {
+    text-decoration: underline;
+}
+
+.container-box img {
+    width: 100%;
+    height: auto;
+    max-width: 400px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.fwm-title {
+    text-align: center;
+}
+
+.fwm-title h2 {
+    font-size: 40px;
+    font-weight: 650;
+    padding-top: 75px;
+    padding-bottom: 10px;
+    line-height: 1.5;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .text h2 {
+        font-size: 30px;
+    }
+
+    .rowitems {
+        margin-left: 10px;
+        margin-right: 10px;
+        justify-content: center; /* Align content in the center */
+    }
+
+    .container-box {
+        padding: 20px;
+        max-width: 100%;
+        flex: 1 1 calc(50% - 20px); /* Adjust for tablet view */
+    }
+
+    .container-box h4 {
+        font-size: 16px;
+    }
+
+    .container-box h2 {
+        font-size: 20px;
+    }
+
+    .container-box img {
+        max-width: 100%;
+    }
+
+    .container-box .image-gallery {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .text h2 {
+        font-size: 25px;
+    }
+
+    .container-box h4 {
+        font-size: 14px;
+    }
+
+    .container-box h2 {
+        font-size: 18px;
+    }
+
+    .container-box {
+        padding: 15px;
+    }
+}
+
+
+    /* Footer */
+    .footer {
+        margin-top: 80px;
+        background-color: #001529;
+    }
+
+    .foot {
+        padding: 20px 0;
+    }
+
+    .footer-content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .footlinks h4 {
+        margin-top: 30px;
+        font-size: 20px;
+        font-weight: 600;
+        color: white;
+        margin-bottom: 30px;
+        position: relative;
+    }
+    @media (max-width: 768px){
+        .footlinkss h4{
+            margin-left: 130px;
+            margin-top: 30px;
+        font-size: 20px;
+        font-weight: 600;
+        color: white;
+        margin-bottom: 30px;
+        position: relative;
+        }
+
+        .footlinkss h4::before {
+        content: "";
+        position: absolute;
+        height: 2px;
+        width: 70px;
+        left: 0;
+        bottom: -7px;
+        background: white;
+    }
+    }
+    .footlinkss h4{
+            
+            margin-top: 30px;
+        font-size: 20px;
+        font-weight: 600;
+        color: white;
+        margin-bottom: 30px;
+        position: relative;
+        }
+
+        .footlinkss h4::before {
+        content: "";
+        position: absolute;
+        height: 2px;
+        width: 70px;
+        left: 0;
+        bottom: -7px;
+        background: white;
+    }
+    .footlinks h4::before {
+        content: "";
+        position: absolute;
+        height: 2px;
+        width: 70px;
+        left: 0;
+        bottom: -7px;
+        background: white;
+    }
+
+    .footlinks ul li {
+        margin-bottom: 15px;
+    }
+
+    .footlinks ul li a {
+        font-size: 17px;
+        color: #dddddd;
+        display: block;
+        transition: ease 0.30s;
+    }
+
+    .footlinks ul li a:hover {
+        transform: translate(6px);
+        color: white;
+    }
+
+    .social a {
+        font-size: 25px;
+        margin: 4px;
+        height: 40px;
+        width: 40px;
+        color: #001529;
+        background-color: #007bff;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+        transition: ease 0.30s;
+    }
+
+    .social a:hover {
+        transform: scale(1.2);
+    }
+
+    .end {
+        text-align: center;
+        padding-top: 60px;
+        padding-bottom: 12px;
+    }
+
+    .end p {
+        font-size: 15px;
+        color: white;
+        letter-spacing: 1px;
+        font-weight: 300;
+    }
+
+    .social-icons a {
+        height: 40px;
+        width: 40px;
+        margin: 4px;
+        font-size: 30px;
+        color: #101010;
+        background-color: white;
+        border-radius: 20px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        transition: ease 0.30s;
+    }
+
+    .social-icons a:hover {
+        transform: scale(1.2);
+    }
+
+    /* Media Queries for responsiveness */
+    @media (max-width: 768px) {
+        .banner {
+            height: 80vh;
+        }
+
+        .title h2 {
+            padding-top: 300px;
+        }
+
+        .title h1 {
+            font-size: 6vh;
+        }
+
+        .container-box {
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        .fwm-content {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-content {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footlinks ul li {
+            text-align: center;
+        }
+
+        .social a {
+            margin: 8px;
+        }
+
+        .social-icons a {
+            margin: 8px;
+        }
+
+        /* Adjust What is Food Waste section for smaller screens */
+        .container {
+            margin-top: 10vh; /* Reduced gap further */
+            padding-top: 0;
+        }
+
+        .container-box {
+            margin: 0;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .title {
+            font-size: 3vh;
+        }
+
+        .title h1 {
+            font-size: 5vh;
+        }
+
+        .button {
+            font-size: 18px;
+            padding: 8px 20px;
+        }
+
+        .container-box img {
+            height: 250px;
+        }
+
+        .fwm-title h2 {
+            font-size: 30px;
+        }
+
+        .footer-content {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+    /* Initial state: elements are hidden */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* When the element is in view */
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+.banner {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: #007bff; /* Base color */
+    overflow: hidden; /* Prevent overflow */
+}
+
+.banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.1) 25%,
+        rgba(0, 123, 255, 0.1) 25%,
+        rgba(0, 123, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.1) 75%,
+        rgba(0, 123, 255, 0.1) 75%,
+        rgba(0, 123, 255, 0.1) 100%
+    );
+    animation: zigzag 2s linear infinite; /* Add animation */
+}
+
+@keyframes zigzag {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px); /* Adjust the zigzag height */
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .navbar-links {
+        display: none;
+        flex-direction: column;
+        gap: 1rem;
+        position: absolute;
+        top: 60px;
+        right: 10px;
+        background: rgba(0, 20, 40, 0.95);
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        width: auto;
+        text-align: left;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease-out;
+    }
+
+    .navbar-links.active {
+        display: flex;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .footlinkss h4 {
+        margin-left: 130px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <img src="files/logo.png" alt="Logo" class="logo">
+            <span class="website-name">Food<span class="highlight-food">Yield</span></span>
+        </div>
+        <div class="navbar-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/info" class="nav-link">Donate</a>
+            <a href="/reqfood" class="nav-link">Ask for Donate</a>
+            <a href="/viewrequests" class="nav-link">Requests</a>
+            <a href="/donations" class="nav-link">Available Donations</a>
+            <a href="/register" class="nav-link">Administration</a>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </button>
+    </nav>
+
+
+<!-- Background & Header -->
+   <!-- Background & Header -->
+<div class="banner fade-in">
+    <div class="content" id="home"> 
+        <div class="title">
+            <h1>FoodYield</h1>
+            <p>“If you’re throwing away food, you’re throwing away life.” – Anthony Bourdain</p>
+            <a href="/donate" class="button">Donate Food!</a>
+            <a href="/donations" class="button">Donations Available!</a>
+            <a href="/consumer-portal" class="button">Green Basket</a>
+        </div>
+    </div>
+</div>
+<!-- What is food waste? -->
+<section class="container fade-in">
+    <div class="text">
+        <h2>What is Food Waste?</h2>
+    </div>
+    <div class="rowitems">
+        <div class="container-box">
+            <h4>Food waste refers to any food that is discarded or not eaten. This includes uneaten food from meals, spoiled food, trimmings from food preparation, and food products that are damaged and deemed unfit for consumption.</h4> 
+            <h2>Types of Food Waste:</h2>
+            <ul>
+                <li>Fruit and Vegetable Waste</li>
+                <li>Beverage Waste</li>
+                <li>Fish, Meat & Poultry Waste</li>
+                <li>Sugar Industry Waste</li>
+                <li>Dairy Waste</li>
+                <li>Mineral Waste</li>
+                <li>Oil Residue Waste</li>
+            </ul>
+            <h4>Below are a few images from the hostel mess of LPU.</h4>  
+            <center><img src="/files/1.jpg" alt=""> <img src="/files/2.jpg" alt=""></center> <br>
+            
+        </div>
+    </div>
+</section>
+
+<section class="fwm fade-in" id="fwm">
+    <div class="fwm-title fade-in">
+        <h2>How can we manage food waste?</h2>
+    </div>
+    <div class="container-box fade-in">
+        <h4> Here are few steps which we can follow in order to minimize food wastage: <br>
+            1) <span class="highlight">Reduce food waste at home</span> by buying only what you need, planning meals, and storing food properly. <br>
+            2) <span class="highlight">Compost food scraps</span> to create nutrient-rich soil for plants. <br>
+            3) <span class="highlight">Donate extra food</span> to food banks, shelters, and other organizations. <br>
+            4) <span class="highlight">Recycle food packaging and containers.</span>  <br>
+            5) <span class="highlight">Use leftovers creatively</span> in new meals and recipes. <br>
+            6) Contact your local government to find out what food waste programs are available in your area. <br> <br>
+            Solutions for food waste management in India: <br>
+            1)<span class="highlight">Recycle by Composting:</span> Food producers will solve 100% of their waste matter issues by merely organizing a good composting strategy. And doing therefore not solely eliminates waste, it saves you cash as a result of you don’t have to be compelled to “outsource” your compost production. <br>
+            2)<span class="highlight">Turn Wasted Food into Animal Feed:</span> Cultivating compost is a method to recycle food, however it also can be drained of the bellies of cows, sheep, pigs, and alternative ethereal (themselves destined to become food). <br>
+            3)<span class="highlight">Use Waste Food to provide Products:</span> From biofuels to liquid fertilizer, there are several helpful merchandises that may be factory-made from bound styles of waste foods, and infrequently “leftovers” of one company might be helpful in another business for the food scrap. <br>
+            4)<span class="highlight">Source Reduction and Food Donation:</span> The easiest method to curtail waste matter is to simply turn out less whenever production is clearly resulting in waste. Once excess foodstuffs are still safe to eat, there will be hungry and poor people who find it difficult to afford decent food in today’s expensive economy.
+            <center><img src="./files/5.jpg" alt=""> <img src="./files/6.jpg" alt=""></center> <br>
+        </h4>
+    </div>
+</section>
+
+<section class="fwm fade-in" id="fwm">
+    <div class="fwm-title fade-in">
+        <h2>Together We Can!</h2>
+    </div>
+    <div class="container-box fade-in">
+        <h4>
+            We are trying our best to solve the problem of food waste and its management. But we need help from your side as well. Apart from donating food, you can contribute much more towards society. 
+            <a href="https://economictimes.indiatimes.com/news/economy/indicators/estimated-931-mn-tonnes-of-food-wasted-globally-in-2019-indias-share-68-mn-un-report/articleshow/81345719.cms" target="_blank">Click here</a> to view how much food was wasted globally in 2019. There are a few books available on food waste and its management. Some of them are: <br>
+            1) <span class="highlight">Food Waste Management: Principles and Practices</span> - Ram K. Vashist, Neelam Dhingra <br>
+            2) <span class="highlight">Achieving Zero Food Waste: Strategies and Solutions for Food Service and Retail Operations</span> - Andrew Shakman and Martin K. Law <br> <br>
+            We recommend you read the books mentioned above and actively participate in food waste awareness campaigns. <br>
+            Lovely Professional University NSS organized a food waste awareness week. 
+            <a href="https://happenings.lpu.in/lpu-nss-organizes-food-waste-awareness-week/" target="_blank">Click here</a> to view the details. 
+            <br> <br>
+            <center><img src="./files/3.jpg" alt=""> <img src="./files/4.jpg" alt=""></center> <br>
+        </h4>
+    </div>
+</section>
+
+</section>
+<!-- Footer -->
+<section class="footer fade-in">
+    <div class="foot fade-in">
+        <div class="footer-content fade-in">
+            <div class="footlinks fade-in">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="donate.ejs">Donate</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footlinkss fade-in">
+                <h4>Connect</h4>
+                <div class="social fade-in">
+                    <a href="" target="_blank"><i class='bx bxl-facebook'></i></a>
+                    <a href="" target="_blank"><i class='bx bxl-instagram' ></i></a>
+                    <a href="" target="_blank"><i class='bx bxl-twitter' ></i></a>
+                    <a href="" target="_blank"><i class='bx bxl-linkedin' ></i></a>
+                    <a href="" target="_blank"><i class='bx bxl-youtube' ></i></a>
+                    <a href="" target="_blank"><i class='bx bxl-github'></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="end fade-in">
+        <p> | Copyright © 2023 FoodYard | All Rights Reserved. <br>Website developed by: Prajin | Nevesh | Prathicksha | Hussain</p>
+    </div>
+</section>
+<script>
+   // Function to toggle the hamburger menu
+function toggleMenu() {
+    const navbarLinks = document.querySelector('.navbar-links');
+    navbarLinks.classList.toggle('active');
+}
+
+// Event listener to close the hamburger menu when clicking outside
+document.addEventListener('click', function(event) {
+    const navbar = document.querySelector('.navbar');
+    const navbarLinks = document.querySelector('.navbar-links');
+    const hamburger = document.querySelector('.hamburger');
+
+    // Check if the click is outside the navbar or hamburger icon
+    if (!navbar.contains(event.target) && !hamburger.contains(event.target)) {
+        navbarLinks.classList.remove('active');
+    }
+});
+
+    document.addEventListener("DOMContentLoaded", () => {
+    const fadeInElements = document.querySelectorAll('.fade-in');
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+                observer.unobserve(entry.target); // Stop observing once shown
+            }
+        });
+    }, { threshold: 0.1 }); // Trigger when 10% of the element is visible
+
+    fadeInElements.forEach(el => observer.observe(el));
+});
+// Fade-in animation
+document.addEventListener("DOMContentLoaded", () => {
+            const fadeInElements = document.querySelectorAll('.fade-in');
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeInElements.forEach(el => observer.observe(el));
+        });
+
+
+</script>
+</body>
+</html>
