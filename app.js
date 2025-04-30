@@ -19,19 +19,6 @@ mongoose.connect(uri)
         process.exit(1);
     });
 
-// Schema definitions for donation system
-const donationSchema = new mongoose.Schema({
-    name: String,
-    email: String,
-    phone: String,
-    company: String,
-    address: String,
-    category: String,
-    quantity: Number,
-    foodPrepDateTime: Date,
-    expiry: Date,
-    specialNote: String
-});
 
 const requestSchema = new mongoose.Schema({
     orgName: String,
@@ -107,11 +94,68 @@ const ngoSchema = new mongoose.Schema({
     }
 });
 
+// Define schemas
+const donationSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    phone: String,
+    company: String,
+    address: String,
+    category: String,
+    quantity: Number,
+    prepDateTime: Date,
+    expiryDate: Date,
+    specialNote: String,
+    pin: String, // Added PIN field
+    createdAt: {
+      type: Date,
+      default: Date.now
+    },
+    availableQuantity: Number // To track remaining quantity after requests
+  });
+  
+  // Renamed schema from 'Request' to 'NeedRequest'
+  const needRequestSchema = new mongoose.Schema({
+    donationId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Donation'
+    },
+    requesterName: String,
+    requestedQuantity: Number,
+    requestSummary: String,
+    status: {
+      type: String,
+      enum: ['pending', 'approved', 'rejected', 'completed'],
+      default: 'pending'
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now
+    },
+    completedDate: {
+      type: Date
+    }
+  });
+  
+  // Add pre-save middleware to update the updatedAt field
+  needRequestSchema.pre('save', function(next) {
+    this.updatedAt = Date.now();
+    next();
+  });
+  
+  const Donation = mongoose.model('Donation', donationSchema);
+  // Changed model name from 'Request' to 'NeedRequest'
+  const NeedRequest = mongoose.model('NeedRequest', needRequestSchema);
+  
+
 // Create the NGO model
 const NGO = mongoose.model('NGO', ngoSchema);
 
 // Create models
-const Donation = mongoose.model('Donation', donationSchema);
 const Request = mongoose.model('Request', requestSchema);
 const SensorData = mongoose.model('SensorData', sensorDataSchema);
 
@@ -245,6 +289,406 @@ app.post('/logout', (req, res) => {
     res.clearCookie('token');
     res.redirect('/');
 });
+
+
+app.post('/api/donations', async (req, res) => {
+    try {
+      // Check if this email already has a pin
+      const existingDonation = await Donation.findOne({ email: req.body.myemail });
+      let pin = req.body.pin;
+      
+      // If email exists, use the existing pin instead of creating a new one
+      if (existingDonation && existingDonation.pin) {
+        pin = existingDonation.pin;
+      }
+      
+      const donation = new Donation({
+        name: req.body.myname1,
+        email: req.body.myemail,
+        phone: req.body.myphone,
+        company: req.body.mycompany,
+        address: req.body.myadd,
+        category: req.body.category,
+        quantity: req.body.quantity,
+        prepDateTime: req.body.foodprepdatetime,
+        expiryDate: req.body.expiry,
+        specialNote: req.body.specialnote,
+        pin: pin, // Store the PIN with the donation
+        availableQuantity: req.body.quantity // Initially, available quantity equals total quantity
+      });
+  
+      await donation.save();
+      res.status(201).json({ success: true, message: 'Donation submitted successfully!' });
+    } catch (error) {
+      console.error('Error saving donation:', error);
+      res.status(500).json({ success: false, message: 'Error submitting donation' });
+    }
+  });
+  
+  // Check if user exists with specific email
+  app.get('/api/check-user', async (req, res) => {
+    try {
+      const { email } = req.query;
+      if (!email) {
+        return res.status(400).json({ success: false, message: 'Email is required' });
+      }
+      
+      const existingDonation = await Donation.findOne({ email });
+      if (existingDonation) {
+        return res.json({ 
+          success: true, 
+          userExists: true,
+          hasPin: !!existingDonation.pin
+        });
+      }
+      
+      return res.json({ success: true, userExists: false });
+    } catch (error) {
+      console.error('Error checking user:', error);
+      res.status(500).json({ success: false, message: 'Error checking user' });
+    }
+  });
+  
+  // Verify PIN for dashboard access
+  app.post('/api/verify-pin', async (req, res) => {
+    try {
+      const { email, pin } = req.body;
+      if (!email || !pin) {
+        return res.status(400).json({ success: false, message: 'Email and PIN are required' });
+      }
+      
+      const donation = await Donation.findOne({ email, pin });
+      if (!donation) {
+        return res.status(401).json({ success: false, message: 'Invalid email or PIN' });
+      }
+      
+      res.json({ success: true, message: 'PIN verified successfully' });
+    } catch (error) {
+      console.error('Error verifying PIN:', error);
+      res.status(500).json({ success: false, message: 'Error verifying PIN' });
+    }
+  });
+  
+  app.get('/donations', async (req, res) => {
+    try {
+      const donations = await Donation.find({ availableQuantity: { $gt: 0 } }).sort({ createdAt: -1 });
+      res.render('donations', { donations });
+    } catch (error) {
+      console.error('Error fetching donations:', error);
+      res.status(500).send('Error fetching available donations');
+    }
+  });
+  
+  // Update the POST /api/requests endpoint
+app.post('/api/requests', async (req, res) => {
+    try {
+      const { donationId, requesterName, requestedQuantity, requestSummary } = req.body;
+      
+      // Validate the requested quantity
+      const donation = await Donation.findById(donationId);
+      if (!donation) {
+        return res.status(404).json({ success: false, message: 'Donation not found' });
+      }
+      
+      if (requestedQuantity > donation.availableQuantity) {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Requested quantity exceeds available amount' 
+        });
+      }
+      
+      // Create the request - multiple requests allowed for same donation
+      const needRequest = new NeedRequest({
+        donationId,
+        requesterName,
+        requestedQuantity: Number(requestedQuantity),
+        requestSummary,
+        status: 'pending'
+      });
+      
+      await needRequest.save();
+      res.status(201).json({ success: true, message: 'Request sent to donor successfully!' });
+    } catch (error) {
+      console.error('Error creating request:', error);
+      res.status(500).json({ success: false, message: 'Error submitting request' });
+    }
+  });
+  
+  // Modify the dashboard API to use NeedRequest instead of Request
+  app.get('/api/donor/dashboard', async (req, res) => {
+    try {
+      const { email } = req.query;
+      if (!email) {
+        return res.status(400).json({ success: false, message: 'Email is required' });
+      }
+      
+      // Get all donations by this donor
+      const donations = await Donation.find({ email }).sort({ createdAt: -1 });
+      
+      // Get all pending requests for these donations
+      const donationIds = donations.map(donation => donation._id);
+      const pendingRequests = await NeedRequest.find({ 
+        donationId: { $in: donationIds },
+        status: 'pending'
+      }).populate('donationId');
+      
+      // Get all approved/allocated requests for these donations (exclude completed ones)
+      const allocatedRequests = await NeedRequest.find({ 
+        donationId: { $in: donationIds },
+        status: 'approved'
+      }).sort({ updatedAt: -1 });
+      
+      // Get completed requests separately
+      const completedRequests = await NeedRequest.find({ 
+        donationId: { $in: donationIds },
+        status: 'completed'
+      }).sort({ updatedAt: -1 });
+      
+      // Enrich the allocated requests with donation details
+      const allocatedDonations = [];
+      for (const request of [...allocatedRequests, ...completedRequests]) {
+        const donation = await Donation.findById(request.donationId);
+        if (donation) {
+          allocatedDonations.push({
+            _id: request._id,
+            requesterName: request.requesterName,
+            requestedQuantity: request.requestedQuantity,
+            requestSummary: request.requestSummary,
+            approvedDate: request.updatedAt || request.createdAt,
+            completedDate: request.completedDate,
+            status: request.status, // Include status to differentiate completed vs approved
+            donationDetails: {
+              _id: donation._id,
+              name: donation.name,
+              category: donation.category,
+              company: donation.company,
+              prepDateTime: donation.prepDateTime,
+              expiryDate: donation.expiryDate
+            }
+          });
+        }
+      }
+      
+      res.json({ 
+        success: true, 
+        donations,
+        requests: pendingRequests,
+        allocatedDonations: [...allocatedDonations] // Send all allocated donations
+    });
+    } catch (error) {
+      console.error('Error fetching donor dashboard:', error);
+      res.status(500).json({ success: false, message: 'Error fetching donor information' });
+    }
+  });
+  
+  // Update the PUT /api/requests/:requestId endpoint
+app.put('/api/requests/:requestId', async (req, res) => {
+    try {
+      const { requestId } = req.params;
+      const { status } = req.body;
+      
+      if (!['approved', 'rejected'].includes(status)) {
+        return res.status(400).json({ success: false, message: 'Invalid status' });
+      }
+      
+      const request = await NeedRequest.findById(requestId);
+      if (!request) {
+        return res.status(404).json({ success: false, message: 'Request not found' });
+      }
+      
+      // Only update if the status is changing from its current value
+      if (request.status !== status) {
+        if (status === 'approved') {
+          // Update the donation's available quantity
+          const donation = await Donation.findById(request.donationId);
+          if (!donation) {
+            return res.status(404).json({ success: false, message: 'Donation not found' });
+          }
+          
+          if (request.requestedQuantity > donation.availableQuantity) {
+            return res.status(400).json({ 
+              success: false, 
+              message: 'Cannot approve: requested quantity exceeds available amount' 
+            });
+          }
+          
+          // Reduce the available quantity
+          donation.availableQuantity -= request.requestedQuantity;
+          await donation.save();
+          
+          // Check other pending requests for this donation
+          const pendingRequests = await NeedRequest.find({
+            donationId: request.donationId,
+            status: 'pending',
+            _id: { $ne: request._id } // Exclude current request
+          });
+          
+          // Reject requests that now exceed available quantity
+          for (const pendingRequest of pendingRequests) {
+            if (pendingRequest.requestedQuantity > donation.availableQuantity) {
+              pendingRequest.status = 'rejected';
+              await pendingRequest.save();
+            }
+          }
+        } 
+        else if (status === 'rejected') {
+          // If a previously approved request is being rejected, return the quantity to available
+          if (request.status === 'approved') {
+            const donation = await Donation.findById(request.donationId);
+            if (donation) {
+              donation.availableQuantity += request.requestedQuantity;
+              await donation.save();
+            }
+          }
+        }
+        
+        // Update request status
+        request.status = status;
+        await request.save();
+      }
+      
+      res.json({ 
+        success: true, 
+        message: `Request ${status === 'approved' ? 'approved' : 'rejected'} successfully` 
+      });
+    } catch (error) {
+      console.error('Error updating request status:', error);
+      res.status(500).json({ success: false, message: 'Error processing request' });
+    }
+  });
+  
+  // Add a new endpoint to mark an allocation as donated/completed
+  app.post('/api/allocations/:requestId/complete', async (req, res) => {
+    try {
+      const { requestId } = req.params;
+      
+      // Find the request using NeedRequest model
+      const request = await NeedRequest.findById(requestId);
+      if (!request) {
+        return res.status(404).json({ success: false, message: 'Request allocation not found' });
+      }
+      
+      // Verify it's an approved request
+      if (request.status !== 'approved') {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Only approved requests can be marked as donated' 
+        });
+      }
+      
+      // Add a completed status field to the request
+      request.status = 'completed';
+      request.completedDate = new Date();
+      await request.save();
+      
+      res.json({ 
+        success: true, 
+        message: 'Donation marked as completed successfully' 
+      });
+    } catch (error) {
+      console.error('Error marking donation as completed:', error);
+      res.status(500).json({ success: false, message: 'Error processing request' });
+    }
+  });
+  
+  app.delete('/api/donations/:donationId', async (req, res) => {
+    try {
+      const { donationId } = req.params;
+      
+      const donation = await Donation.findById(donationId);
+      if (!donation) {
+        return res.status(404).json({ success: false, message: 'Donation not found' });
+      }
+      
+      // Check if there are any approved requests
+      const approvedRequests = await NeedRequest.find({
+        donationId: donationId,
+        status: 'approved'
+      });
+      
+      if (approvedRequests.length > 0) {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Cannot delete: This donation has approved requests. Please contact support.' 
+        });
+      }
+      
+      // Delete all associated requests
+      await NeedRequest.deleteMany({ donationId });
+      
+      // Delete the donation
+      await Donation.findByIdAndDelete(donationId);
+      
+      res.json({ success: true, message: 'Donation deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting donation:', error);
+      res.status(500).json({ success: false, message: 'Error deleting donation' });
+    }
+  });
+  
+  // Update donation endpoint
+  app.put('/api/donations/:donationId', async (req, res) => {
+    try {
+      const { donationId } = req.params;
+      
+      const donation = await Donation.findById(donationId);
+      if (!donation) {
+        return res.status(404).json({ success: false, message: 'Donation not found' });
+      }
+      
+      // Find the amount of food already allocated through approved requests
+      const approvedRequests = await NeedRequest.find({ 
+        donationId: donationId, 
+        status: 'approved' 
+      });
+      
+      const allocatedQuantity = approvedRequests.reduce((total, request) => {
+        return total + request.requestedQuantity;
+      }, 0);
+      
+      // Update basic fields
+      const updatableFields = [
+        'name', 'phone', 'company', 'address', 'category', 
+        'prepDateTime', 'expiryDate', 'specialNote'
+      ];
+      
+      updatableFields.forEach(field => {
+        if (req.body[field] !== undefined) {
+          donation[field] = req.body[field];
+        }
+      });
+      
+      // Update quantity with special handling
+      if (req.body.quantity !== undefined) {
+        const newQuantity = parseFloat(req.body.quantity);
+        
+        // Ensure new quantity is not less than what's already been allocated
+        if (newQuantity < allocatedQuantity) {
+          return res.status(400).json({ 
+            success: false, 
+            message: `Cannot reduce quantity below ${allocatedQuantity}kg which is already allocated to approved requests`
+          });
+        }
+        
+        // Set the new total quantity
+        donation.quantity = newQuantity;
+        
+        // Set the new available quantity (total minus allocated)
+        donation.availableQuantity = newQuantity - allocatedQuantity;
+      }
+      
+      await donation.save();
+      
+      res.json({ 
+        success: true, 
+        message: 'Donation updated successfully', 
+        donation 
+      });
+    } catch (error) {
+      console.error('Error updating donation:', error);
+      res.status(500).json({ success: false, message: 'Error updating donation' });
+    }
+  });
 
 // Update the main route to include only pending and accepted requests
 app.get('/main', authenticateToken, async (req, res) => {
@@ -607,17 +1051,7 @@ app.post('/donate', async (req, res) => {
     }
 });
 
-app.get('/donations', async (req, res) => {
-    try {
-        const donations = await Donation.find()
-            .sort({ expiry: 1 })
-            .exec();
-        res.render('donations', { donations });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error fetching donations');
-    }
-});
+
 
 // Modified dispose-expired-products route to save disposed expired products
 app.post('/dispose-expired-products', authenticateToken, async (req, res) => {

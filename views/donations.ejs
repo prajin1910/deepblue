@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Food Donations</title>
-<link rel="icon" href="./files/logo.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-<style>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Donations - FoodYield</title>
+    <link rel="icon" href="./files/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
     * {
         padding: 0;
         margin: 0;
@@ -19,291 +22,467 @@
         scroll-behavior: smooth;
     }
 
-    body {
+    /* Navbar */
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 20, 40, 0.95);
+        color: white;
+        padding: 0.5rem 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .navbar-logo {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    .website-name {
+        font-size: 1.8rem;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        margin-top: 7px;
+    }
+
+    .highlight-food {
+        color: #007bff;
+    }
+
+    .navbar-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    .nav-link {
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 600;
+        padding: 5px 10px;
+        transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+        color: #0a0a0a;
+        background: #007bff;
+        border-radius: 5px;
+        box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+    }
+
+    .hamburger .line {
+        width: 30px;
+        height: 3px;
+        background: white;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+
+    .hamburger.active .line:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    .hamburger.active .line:nth-child(2) {
+        opacity: 0;
+    }
+    .hamburger.active .line:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* Main Content */
+    .available-food {
+        padding: 100px 5% 50px;
+        min-height: 100vh;
         background-color: #0a0a0a;
         color: white;
     }
 
-    /* Navbar Styles */
-.navbar {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-background: rgba(0, 20, 40, 0.95);
-color: white;
-padding: 0.5rem 2rem;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-display: flex;
-justify-content: space-between;
-align-items: center;
-z-index: 1000;
-}
-
-.navbar-logo {
-display: flex;
-align-items: center;
-gap: 5px;
-}
-
-.logo {
-width: 50px;
-height: 50px;
-}
-
-.website-name {
-font-size: 2rem;
-font-weight: bold;
-letter-spacing: 0.5px;
-margin-top: 7px;
-}
-
-.highlight-food {
-color: #007bff;
-}
-
-.navbar-links {
-display: flex;
-gap: 1.5rem;
-}
-
-.nav-link {
-color: #fff;
-font-size: 1.2rem;
-font-weight: 600;
-padding: 5px 10px;
-transition: all 0.3s ease;
-}
-
-.nav-link:hover {
-color: #0a0a0a;
-background: #007bff;
-border-radius: 5px;
-box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
-}
-
-/* Hamburger Menu */
-.hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.hamburger .line {
-    width: 30px;
-    height: 4px;
-    background: white;
-    border-radius: 2px;
-}
-
-/* Simplified Style for Links */
-.navbar-links a {
-padding: 10px 20px;
-border-radius: 4px;
-transition: background-color 0.3s ease;
-}
-
-    .main {
-        padding: 110px 20px;
-        text-align: center;
-    }
-
-    .main h1 {
-        font-size: 50px;
+    .page-title {
         margin-bottom: 40px;
-        font-weight: 700;
-        letter-spacing: 1px;
-    }
-
-    .main h1 span {
-        color: #007bff;
-    }
-
-    /* Grid card container */
-    .card-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-        gap: 25px;
-        padding: 0 15px;
-    }
-
-    .card {
-        background: linear-gradient(145deg, #151515, #1c1c1c);
-        border: 1px solid #232323;
-        border-radius: 12px;
-        padding: 25px;
-        transition: all 0.4s ease;
-        position: relative;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .card:hover {
-        border-color: #007bff;
-        box-shadow: 0 10px 20px rgba(0, 123, 255, 0.15);
-        transform: translateY(-5px);
-    }
-
-/* Fade Animation */
-.fade-in {
-opacity: 0;
-transform: translateY(30px);
-transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-.fade-in.show {
-opacity: 1;
-transform: translateY(0);
-}
-    .card h3 {
-        color: #007bff;
-        font-size: 22px;
-        margin-bottom: 20px;
-        padding-right: 40px;
-        font-weight: 600;
-        border-bottom: 2px solid rgba(0, 123, 255, 0.3);
-        padding-bottom: 12px;
-        text-align: left;
-    }
-
-    /* Improved card rows styling */
-    .card-row {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        padding: 8px 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        text-align: left;
-    }
-
-    .card-row:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-    }
-
-    .label {
-        font-weight: 600;
-        color: #007bff;
-        width: 100px;
-        font-size: 14px;
-    }
-
-    .card-row span:last-child {
-        flex: 1;
-        text-align: right;
-        color: #e0e0e0;
-        font-size: 14px;
-    }
-
-    .delete-icon {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        color: #dc3545;
-        font-size: 24px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .delete-icon:hover {
-        transform: scale(1.1);
-        color: #ff0000;
-    }
-
-    /* Improved empty state */
-    .no-records {
         text-align: center;
-        margin-top: 40px;
-        background: rgba(0, 123, 255, 0.05);
-        padding: 40px 30px;
-        border-radius: 12px;
-        border: 1px dashed rgba(0, 123, 255, 0.3);
-        grid-column: 1 / -1;
     }
 
-    .no-records p {
-        color: #a0a0a0;
-        line-height: 30px;
-        letter-spacing: 1px;
+    .page-title h1 {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        line-height: 1.2;
     }
 
-    .no-records button {
+    .page-title h1 span {
+        color: #007bff;
+    }
+
+    .page-title p {
+        font-size: 1.1rem;
+        color: #aaa;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    /* Filter Container */
+    .filter-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 15px;
+        background: #191919;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .filter-group {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        flex-grow: 1;
+    }
+
+    .filter-select, .search-box {
+        padding: 12px 15px;
+        background-color: #0a0a0a;
+        color: white;
+        border: 1px solid #333;
+        border-radius: 8px;
+        font-size: 1rem;
+        min-width: 200px;
+        flex-grow: 1;
+    }
+
+    .filter-select {
+        cursor: pointer;
+    }
+ /* Adjust the dropdown arrow position and size */
+.filter-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 20px; /* Increased from 16px to 20px */
+    padding-right: 40px; /* Increased from 35px to 40px to accommodate larger icon */
+}
+
+    .search-box {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    /* Food Listings */
+    .food-listings {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 25px;
+    }
+
+    .food-card {
+        background-color: #191919;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .food-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 123, 255, 0.2);
+    }
+
+    .food-info {
+        padding: 20px;
+    }
+
+    .food-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .food-title h3 {
+        font-size: 1.3rem;
+        color: white;
+        line-height: 1.3;
+    }
+
+    .category-badge {
+        font-size: 0.8rem;
+        padding: 5px 12px;
+        border-radius: 20px;
+        color: white;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .veg {
+        background-color: #28a745;
+    }
+
+    .non-veg {
+        background-color: #dc3545;
+    }
+
+    .groceries {
+        background-color: #fd7e14;
+    }
+
+    .both {
+        background-color: #6f42c1;
+    }
+
+    .food-details {
+        margin-bottom: 20px;
+    }
+
+    .food-details p {
+        margin-bottom: 12px;
+        color: #aaa;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .food-details i {
+        color: #007bff;
+        margin-right: 8px;
+        width: 16px;
+        text-align: center;
+    }
+
+    .food-quantity {
+        font-size: 1.1rem;
+        color: white;
+        margin-bottom: 20px;
+        font-weight: 600;
+        text-align: center;
+        padding: 10px;
+        background: rgba(0, 123, 255, 0.1);
+        border-radius: 5px;
+    }
+
+    .action-btn {
         background-color: #007bff;
         color: white;
-        font-size: 18px;
-        font-weight: 600;
         border: none;
-        border-radius: 40px;
-        width: 250px;
-        padding: 15px;
-        margin: 20px auto 0;
+        padding: 12px 20px;
+        border-radius: 8px;
+        width: 100%;
+        font-size: 1rem;
+        font-weight: 600;
         cursor: pointer;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
     }
 
-    .no-records button:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 20px rgba(0, 123, 255, 0.4);
+    .action-btn:hover {
         background-color: #0056b3;
+        transform: scale(1.02);
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
     }
 
+    .no-results {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 40px;
+        color: #666;
+        font-size: 1.1rem;
+        font-style: italic;
+        background: #191919;
+        border-radius: 10px;
+    }
+
+    /* Modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1001;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.7);
+        backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+        background-color: #191919;
+        margin: auto;
+        padding: 30px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 0 30px rgba(0, 123, 255, 0.3);
+        color: white;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    
+    .close-btn {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s;
+        line-height: 1;
+    }
+
+    .close-btn:hover {
+        color: white;
+    }
+
+    .modal-title {
+        margin-bottom: 25px;
+        font-size: 1.5rem;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #333;
+    }
+
+    .request-form input, 
+    .request-form textarea {
+        width: 100%;
+        padding: 12px 15px;
+        background-color: #0a0a0a;
+        font-size: 1rem;
+        border: 1px solid #333;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        color: white;
+    }
+
+    .request-form label {
+        display: block;
+        margin-bottom: 8px;
+        color: #aaa;
+        font-size: 0.95rem;
+    }
+
+    .request-form textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .success-message {
+        display: none;
+        background-color: #28a745;
+        color: white;
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    .error-message {
+        color: white;
+        background-color: #dc3545;
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 1rem;
+        display: none;
+    }
+
+    small {
+        color: #aaa;
+        font-size: 0.85rem;
+        display: block;
+        margin-top: -15px;
+        margin-bottom: 15px;
+    }
+
+    /* Footer */
     .footer {
         background-color: #001529;
-        padding-bottom: 13px;
-        margin-top: 50px;
+        padding: 30px 0 15px;
     }
 
     .footer-content {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
-        padding: 20px 0;
+        padding: 20px 5%;
+        max-width: 1200px;
+        margin: 0 auto;
+        gap: 30px;
     }
 
     .footlinks h4,
     .footlinkss h4 {
-        margin-top: 30px;
-        font-size: 20px;
+        margin-top: 0;
+        font-size: 1.2rem;
         font-weight: 600;
         color: white;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         position: relative;
     }
 
-    .footlinks h4::before,
-    .footlinkss h4::before {
+    .footlinks h4::before {
         content: "";
         position: absolute;
         height: 2px;
-        width: 70px;
+        width: 50px;
         left: 0;
         bottom: -7px;
         background: #007bff;
     }
 
-    .footlinks a {
-        color: white;
-        transition: all 0.3s ease;
-        font-size: 17px;
-    display: block;
+    .footlinks ul li {
+        margin-bottom: 12px;
     }
 
-    .footlinks a:hover {
+    .footlinks ul li a {
+        font-size: 0.95rem;
+        color: #dddddd;
+        display: block;
+        transition: all 0.3s ease;
+    }
+
+    .footlinks ul li a:hover {
+        transform: translateX(6px);
         color: #007bff;
-        padding-left: 8px;
+    }
+
+    .social {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
     }
 
     .social a {
-        font-size: 25px;
-        margin: 4px;
+        font-size: 1.2rem;
         height: 40px;
         width: 40px;
         color: #001529;
@@ -311,12 +490,12 @@ transform: translateY(0);
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        border-radius: 20px;
+        border-radius: 50%;
         transition: all 0.3s ease;
     }
 
     .social a:hover {
-        transform: scale(1.2);
+        transform: scale(1.1);
         background-color: white;
         color: #007bff;
     }
@@ -325,42 +504,50 @@ transform: translateY(0);
         text-align: center;
         padding-top: 20px;
         color: #a0a0a0;
+        font-size: 0.9rem;
+        margin-top: 20px;
     }
 
-    /* Enhanced responsive styles */
-    @media screen and (min-width: 1200px) {
-        .card-container {
-            grid-template-columns: repeat(3, 1fr);
-        }
+    /* Fade Animation */
+    .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     }
 
-    @media screen and (min-width: 768px) and (max-width: 1199px) {
-        .card-container {
-            grid-template-columns: repeat(2, 1fr);
-        }
+    .fade-in.show {
+        opacity: 1;
+        transform: translateY(0);
     }
 
-    @media screen and (max-width: 767px) {
-        .card-container {
-            grid-template-columns: 1fr;
+    /* Responsive Design */
+    @media screen and (max-width: 768px) {
+        .navbar {
+            padding: 0.5rem 1rem;
         }
         
-        .footlinkss h4 {
-            margin-left: 100px;
+        .website-name {
+            font-size: 1.5rem;
         }
         
+        .logo {
+            width: 40px;
+            height: 40px;
+        }
+
         .navbar-links {
             display: none;
             flex-direction: column;
             gap: 1rem;
             position: absolute;
-            top: 60px;
-            right: 10px;
+            top: 70px;
+            right: 15px;
             background: rgba(0, 20, 40, 0.95);
-            padding: 1rem 1.5rem;
+            padding: 1.5rem;
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
             width: auto;
+            min-width: 200px;
             text-align: left;
             opacity: 0;
             transform: translateY(-10px);
@@ -373,16 +560,72 @@ transform: translateY(0);
             transform: translateY(0);
         }
 
+        .nav-link {
+            font-size: 1rem;
+            padding: 8px 12px;
+        }
+
         .hamburger {
             display: flex;
         }
-        
-        .main h1 {
-            font-size: 32px;
-            margin-bottom: 25px;
+
+        .available-food {
+            padding: 90px 5% 40px;
+        }
+
+        .page-title h1 {
+            font-size: 2rem;
+        }
+
+        .page-title p {
+            font-size: 1rem;
+        }
+
+        .filter-container {
+            flex-direction: column;
+            padding: 15px;
+        }
+
+        .filter-group {
+            flex-direction: column;
+            width: 100%;
+            gap: 10px;
+        }
+
+        .filter-select, .search-box {
+            width: 100%;
+            min-width: auto;
+        }
+
+        .food-listings {
+            grid-template-columns: 1fr;
+        }
+
+        .modal-content {
+            width: 95%;
+            padding: 20px;
         }
     }
-</style>
+
+    @media screen and (max-width: 480px) {
+        .page-title h1 {
+            font-size: 1.8rem;
+        }
+        
+        .food-card {
+            min-width: 0;
+        }
+        
+        .footer-content {
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .footlinkss h4 {
+            margin-left: 0;
+        }
+    }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -395,7 +638,7 @@ transform: translateY(0);
             <a href="/info" class="nav-link">Donate</a>
             <a href="/reqfood" class="nav-link">Ask for Donate</a>
             <a href="/viewrequests" class="nav-link">Requests</a>
-            <a href="/donations" class="nav-link">Available Donations</a>
+            <a href="/donations" class="nav-link active">Available Donations</a>
             <a href="/register" class="nav-link">Administration</a>
         </div>
         <button class="hamburger" onclick="toggleMenu()">
@@ -404,79 +647,112 @@ transform: translateY(0);
             <div class="line"></div>
         </button>
     </nav>
-    <section class="main fade-in">
-        <h1>Food <span>Donations</span></h1>
-        <div class="card-container">
-            <% 
-            // Filter out expired donations
-            const currentDate = new Date();
-            const validDonations = donations && donations.filter(donation => {
-                const expiryDate = new Date(donation.expiry);
-                return expiryDate >= currentDate;
-            });
+
+    <section class="available-food fade-in">
+        <div class="page-title fade-in">
+            <h1>Available <span>Donations</span></h1>
+            <p>Browse through available food donations and request what you need</p>
+        </div>
+        
+        <div class="filter-container fade-in">
+            <div class="filter-group">
+                <select class="filter-select" id="categoryFilter">
+                    <option value="all">All Categories</option>
+                    <option value="Veg">Vegetarian</option>
+                    <option value="Non-Veg">Non-Vegetarian</option>
+                    <option value="Groceries">Groceries</option>
+                    <option value="Both">Both</option>
+                </select>
+                
+                <select class="filter-select" id="sortFilter">
+                    <option value="newest">Newest First</option>
+                    <option value="expiry">Expiry Date</option>
+                    <option value="quantity">Highest Quantity</option>
+                </select>
+            </div>
             
-            if (validDonations && validDonations.length > 0) { 
-            %>
-                <% validDonations.forEach(donation => { %>
-                    <div class="card">
-                        <h3><%= donation.name %></h3>
-                        <div class="card-row">
-                            <span class="label">Email:</span>
-                            <span><%= donation.email %></span>
-                        </div>
-                        <div class="card-row">
-                            <span class="label">Phone:</span>
-                            <span><%= donation.phone %></span>
-                        </div>
-                        <div class="card-row">
-                            <span class="label">Company:</span>
-                            <span><%= donation.company %></span>
-                        </div>
-                        <div class="card-row">
-                            <span class="label">Address:</span>
-                            <span><%= donation.address %></span>
-                        </div>
-                        <div class="card-row">
-                            <span class="label">Category:</span>
-                            <span><%= donation.category %></span>
-                        </div>
-                        <div class="card-row">
-                            <span class="label">Quantity:</span>
-                            <span><%= donation.quantity %> Kg</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="label">Prepared:</span>
-                            <span><%= new Date(donation.foodPrepDateTime).toLocaleString() %></span>
-                        </div>
-                        <div class="card-row">
-                            <span class="label">Expiry:</span>
-                            <span><%= new Date(donation.expiry).toLocaleDateString() %></span>
-                        </div>
-                        <div class="card-row">
-                            <span class="label">Note:</span>
-                            <span><%= donation.specialNote || 'None' %></span>
+            <input type="text" class="search-box" id="searchBox" placeholder="Search by location or donor name...">
+        </div>
+        
+        <div class="food-listings" id="foodListings">
+            <% if (donations && donations.length > 0) { %>
+                <% donations.forEach(donation => { %>
+                    <div class="food-card fade-in" data-id="<%= donation._id %>" data-category="<%= donation.category %>">
+                        <div class="food-info">
+                            <div class="food-title">
+                                <h3><%= donation.name %></h3>
+                                <span class="category-badge <%= donation.category.toLowerCase().replace('-', '') %>"><%= donation.category %></span>
+                            </div>
+                            <div class="food-details">
+                                <p><i class="fas fa-building"></i> <%= donation.company %></p>
+                                <p><i class="fas fa-map-marker-alt"></i> <%= donation.address %></p>
+                                <p><i class="fas fa-calendar-alt"></i> Prepared: <%= new Date(donation.prepDateTime).toLocaleString() %></p>
+                                <p><i class="fas fa-clock"></i> Expires: <%= new Date(donation.expiryDate).toLocaleDateString() %></p>
+                                <% if (donation.specialNote) { %>
+                                    <p><i class="fas fa-sticky-note"></i> <%= donation.specialNote %></p>
+                                <% } %>
+                            </div>
+                            <div class="food-quantity">
+                                Available: <%= donation.availableQuantity %> kg
+                            </div>
+                            <button class="action-btn request-btn" data-id="<%= donation._id %>" data-max="<%= donation.availableQuantity %>">
+                                <i class="fas fa-hand-holding-heart"></i> Request This Food
+                            </button>
                         </div>
                     </div>
                 <% }); %>
             <% } else { %>
-                <div class="no-records">
-                    <p style="font-size: 1.5rem;">Oops! Nothing is here.</p>
-                    <p style="font-size: 1.2rem;">Put a request that donators can donate by contacting us.</p>
-                    <button onclick="window.location.href='reqfood'">Go to Request Donation</button>
+                <div class="no-results fade-in">
+                    <p>No food donations available at the moment. Please check back later.</p>
                 </div>
             <% } %>
         </div>
     </section>
 
-    <!-- Footer section remains the same -->
-    <section class="footer fade-in">
+    <!-- Request Modal -->
+    <div id="requestModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <h2 class="modal-title">Request Food</h2>
+            <form id="requestForm" class="request-form">
+                <input type="hidden" id="donationId" name="donationId">
+                <input type="hidden" id="maxQuantity" name="maxQuantity">
+                
+                <div>
+                    <label for="requesterName">Your Name</label>
+                    <input type="text" id="requesterName" name="requesterName" placeholder="Enter Name" required>
+                </div>
+                
+                <div>
+                    <label for="requestedQuantity">How much do you need? (kg)</label>
+                    <input type="number" id="requestedQuantity" name="requestedQuantity" min="0.1" step="0.1" placeholder="Enter Quantity" required>
+                    <small id="quantityHelper">Maximum available: <span id="availableQuantity"></span> kg</small>
+                </div>
+                
+                <div>
+                    <label for="requestSummary">Request Summary (Optional)</label>
+                    <textarea id="requestSummary" name="requestSummary" placeholder="Let the donor know why you need this food or how it will be used..."></textarea>
+                </div>
+                
+                <button type="submit" class="action-btn">
+                    <i class="fas fa-paper-plane"></i> Send Request
+                </button>
+            </form>
+            <div id="successMessage" class="success-message">
+                <i class="fas fa-check-circle"></i> Request has been sent to the donor successfully!
+            </div>
+            <div id="errorMessage" class="error-message"></div>
+        </div>
+    </div>
+
+    <section class="footer">
         <div class="footer-content">
             <div class="footlinks">
                 <h4>Quick Links</h4>
                 <ul>
-                    <li><a href="donate.ejs">Donate</a></li>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="/info">Donate</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
                 </ul>
             </div>
             <div class="footlinkss">
@@ -486,8 +762,6 @@ transform: translateY(0);
                     <a href="#"><i class='bx bxl-instagram'></i></a>
                     <a href="#"><i class='bx bxl-twitter'></i></a>
                     <a href="#"><i class='bx bxl-linkedin'></i></a>
-                    <a href="#"><i class='bx bxl-youtube'></i></a>
-                    <a href="#"><i class='bx bxl-github'></i></a>
                 </div>
             </div>
         </div>
@@ -500,7 +774,9 @@ transform: translateY(0);
         // Hamburger menu toggle function
         function toggleMenu() {
             const navbarLinks = document.querySelector('.navbar-links');
+            const hamburger = document.querySelector('.hamburger');
             navbarLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
         }
 
         // Click outside to close menu
@@ -511,8 +787,10 @@ transform: translateY(0);
 
             if (!navbar.contains(event.target) && !hamburger.contains(event.target)) {
                 navbarLinks.classList.remove('active');
+                hamburger.classList.remove('active');
             }
         });
+
         // Fade-in animation
         document.addEventListener("DOMContentLoaded", () => {
             const fadeInElements = document.querySelectorAll('.fade-in');
@@ -527,6 +805,223 @@ transform: translateY(0);
             }, { threshold: 0.1 });
 
             fadeInElements.forEach(el => observer.observe(el));
+        });
+
+        // Modal functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get DOM elements
+            const requestButtons = document.querySelectorAll('.request-btn');
+            const requestModal = document.getElementById('requestModal');
+            const closeModalBtn = document.getElementById('closeModal');
+            const requestForm = document.getElementById('requestForm');
+            const donationIdInput = document.getElementById('donationId');
+            const maxQuantityInput = document.getElementById('maxQuantity');
+            const requestedQuantityInput = document.getElementById('requestedQuantity');
+            const availableQuantitySpan = document.getElementById('availableQuantity');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Add event listeners to all request buttons
+            requestButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const donationId = this.getAttribute('data-id');
+                    const maxQuantity = this.getAttribute('data-max');
+                    
+                    // Set values in the form
+                    donationIdInput.value = donationId;
+                    maxQuantityInput.value = maxQuantity;
+                    availableQuantitySpan.textContent = maxQuantity;
+                    
+                    // Set max attribute for quantity input
+                    requestedQuantityInput.max = maxQuantity;
+                    
+                    // Show the modal
+                    requestModal.style.display = 'block';
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling
+                    
+                    // Reset form and messages
+                    requestForm.reset();
+                    successMessage.style.display = 'none';
+                    errorMessage.style.display = 'none';
+                });
+            });
+            
+            // Close modal when X is clicked
+            closeModalBtn.addEventListener('click', function() {
+                requestModal.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Re-enable scrolling
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === requestModal) {
+                    requestModal.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Re-enable scrolling
+                }
+            });
+            
+            // Handle request form submission
+            requestForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const donationId = donationIdInput.value;
+                const requesterName = document.getElementById('requesterName').value;
+                const requestedQuantity = parseFloat(requestedQuantityInput.value);
+                const requestSummary = document.getElementById('requestSummary').value;
+                const maxQuantity = parseFloat(maxQuantityInput.value);
+                
+                // Validate quantity
+                if (requestedQuantity <= 0) {
+                    showError('Please enter a valid quantity.');
+                    return;
+                }
+                
+                if (requestedQuantity > maxQuantity) {
+                    showError(`The requested quantity exceeds the available amount (${maxQuantity} kg).`);
+                    return;
+                }
+                
+                // Send request to server
+                fetch('/api/requests', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        donationId,
+                        requesterName,
+                        requestedQuantity,
+                        requestSummary
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Show success message
+                        successMessage.style.display = 'block';
+                        errorMessage.style.display = 'none';
+                        
+                        // Disable form
+                        const formElements = requestForm.elements;
+                        for (let i = 0; i < formElements.length; i++) {
+                            formElements[i].disabled = true;
+                        }
+                        
+                        // Close modal after 3 seconds
+                        setTimeout(() => {
+                            requestModal.style.display = 'none';
+                            document.body.style.overflow = 'auto'; // Re-enable scrolling
+                            // Refresh the page to update available quantities
+                            window.location.reload();
+                        }, 3000);
+                    } else {
+                        showError(data.message || 'An error occurred while processing your request.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showError('An error occurred. Please try again.');
+                });
+            });
+            
+            // Show error message
+            function showError(message) {
+                errorMessage.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+            }
+            
+            // Filter functionality
+            function applyFilters() {
+                const category = categoryFilter.value;
+                const searchTerm = searchBox.value.toLowerCase();
+                const cards = document.querySelectorAll('.food-card');
+                
+                cards.forEach(card => {
+                    const cardCategory = card.getAttribute('data-category');
+                    const cardText = card.textContent.toLowerCase();
+                    
+                    let categoryMatch = category === 'all' || cardCategory === category;
+                    let searchMatch = searchTerm === '' || cardText.includes(searchTerm);
+                    
+                    if (categoryMatch && searchMatch) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Check if any cards are visible
+                checkNoResults();
+            }
+            
+            // Check if no results are found
+            function checkNoResults() {
+                const visibleCards = document.querySelectorAll('.food-card[style="display: block;"]');
+                const noResultsDiv = document.querySelector('.no-results');
+                
+                if (visibleCards.length === 0) {
+                    // If no existing no-results div, create one
+                    if (!noResultsDiv) {
+                        const div = document.createElement('div');
+                        div.className = 'no-results fade-in';
+                        div.innerHTML = '<p>No food donations match your filters. Try adjusting your search criteria.</p>';
+                        foodListings.appendChild(div);
+                        // Trigger fade-in animation
+                        setTimeout(() => div.classList.add('show'), 10);
+                    } else {
+                        noResultsDiv.style.display = 'block';
+                    }
+                } else if (noResultsDiv) {
+                    noResultsDiv.style.display = 'none';
+                }
+            }
+            
+            // Get filter elements
+            const categoryFilter = document.getElementById('categoryFilter');
+            const searchBox = document.getElementById('searchBox');
+            const sortFilter = document.getElementById('sortFilter');
+            const foodListings = document.getElementById('foodListings');
+            
+            // Add event listeners for filtering
+            if (categoryFilter) categoryFilter.addEventListener('change', applyFilters);
+            if (searchBox) searchBox.addEventListener('input', applyFilters);
+            
+            // Sort functionality
+            if (sortFilter) {
+                sortFilter.addEventListener('change', function() {
+                    const cards = Array.from(document.querySelectorAll('.food-card'));
+                    const sortBy = this.value;
+                    
+                    cards.sort((a, b) => {
+                        if (sortBy === 'newest') {
+                            // Already sorted by newest in the backend
+                            return 0;
+                        } else if (sortBy === 'expiry') {
+                            // Sort by expiry date (closest first)
+                            const aExpiry = a.querySelector('.food-details p:nth-child(4)').textContent;
+                            const bExpiry = b.querySelector('.food-details p:nth-child(4)').textContent;
+                            const aDate = new Date(aExpiry.replace('Expires: ', ''));
+                            const bDate = new Date(bExpiry.replace('Expires: ', ''));
+                            return aDate - bDate;
+                        } else if (sortBy === 'quantity') {
+                            // Sort by quantity (highest first)
+                            const aQuantity = parseFloat(a.querySelector('.food-quantity').textContent.match(/\d+(\.\d+)?/)[0]);
+                            const bQuantity = parseFloat(b.querySelector('.food-quantity').textContent.match(/\d+(\.\d+)?/)[0]);
+                            return bQuantity - aQuantity;
+                        }
+                        return 0;
+                    });
+                    
+                    // Reappend cards in the new order
+                    cards.forEach(card => {
+                        foodListings.appendChild(card);
+                    });
+                    
+                    // Reapply filters after sorting
+                    applyFilters();
+                });
+            }
         });
     </script>
 </body>
