@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant | FoodYield</title>
+    <link rel="icon" href="./files/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none;
+            list-style: none;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 20, 40, 0.95);
+            color: white;
+            padding: 0.5rem 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            min-height: 40px;
+        }
+
+        .website-name {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            margin-top: 5px;
+        }
+
+        .highlight-food {
+            color: #007bff;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            color: #fff;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-weight: 600;
+            padding: 8px 12px;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            color: #0a0a0a;
+            background: #007bff;
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .hamburger .line {
+            width: 25px;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* Chat Section - Full Screen */
+        .chat-section {
+            padding-top: 70px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .chat-container {
+            width: 100%;
+            height: calc(100vh - 70px);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #151515 0%, #1f1f1f 100%);
+            border-bottom: 1px solid #333;
+            flex-shrink: 0;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 10px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #00ff00;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .clear-chat {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .clear-chat:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: linear-gradient(135deg, #151515 0%, #1f1f1f 100%);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        }
+
+        .message.bot .message-avatar {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+        }
+
+        .message-content {
+            max-width: calc(100% - 60px);
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            font-size: clamp(0.85rem, 2.5vw, 15px);
+            line-height: 1.4;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            overflow-wrap: break-word;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            border-bottom-right-radius: 6px;
+        }
+
+        .message.bot .message-content {
+            background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+            color: white;
+            border: 1px solid #444;
+            border-bottom-left-radius: 6px;
+        }
+
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+            border-radius: 18px;
+            border-bottom-left-radius: 6px;
+            border: 1px solid #444;
+            max-width: calc(100% - 60px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 5px;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #007bff;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% { opacity: 0.3; transform: scale(0.8); }
+            30% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background: linear-gradient(135deg, #151515 0%, #1f1f1f 100%);
+            gap: 8px;
+            flex-shrink: 0;
+            border-top: 1px solid #333;
+        }
+
+        .input-container {
+            flex: 1;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        #messageInput {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #333;
+            border-radius: 20px;
+            font-size: clamp(0.9rem, 2.5vw, 16px);
+            outline: none;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+            min-height: 44px;
+        }
+
+        #messageInput:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.3), inset 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .voice-btn, .send-btn {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+
+        .voice-btn {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            color: white;
+        }
+
+        .voice-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .voice-btn.recording {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            animation: pulse 1s infinite;
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+        }
+
+        .send-btn:disabled {
+            background: linear-gradient(135deg, #6c757d 0%, #545b62 100%);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .welcome-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #a0a0a0;
+        }
+
+        .welcome-message h3 {
+            color: #007bff;
+            margin-bottom: 15px;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            font-weight: 600;
+        }
+
+        .welcome-message p {
+            font-size: clamp(0.9rem, 3vw, 1.2rem);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #001529;
+            padding: 20px 0 13px;
+            margin-top: 0;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 0 20px;
+            gap: 20px;
+        }
+
+        .footlinks, .footlinkss {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footlinks ul li {
+            margin-bottom: 12px;
+        }
+
+        .footlinks ul li a {
+            font-size: clamp(0.9rem, 2.5vw, 17px);
+            color: #dddddd;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .footlinks ul li a:hover {
+            transform: translateX(6px);
+            color: #007bff;
+        }
+
+        .footlinks h4,
+        .footlinkss h4 {
+            margin-top: 10px;
+            font-size: clamp(1.1rem, 3vw, 20px);
+            font-weight: 600;
+            color: white;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .footlinks h4::before,
+        .footlinkss h4::before {
+            content: "";
+            position: absolute;
+            height: 2px;
+            width: 50px;
+            left: 0;
+            bottom: -7px;
+            background: #007bff;
+        }
+
+        .social {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .social a {
+            font-size: clamp(1.2rem, 3vw, 25px);
+            height: 35px;
+            width: 35px;
+            color: #001529;
+            background-color: #007bff;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .social a:hover {
+            transform: scale(1.1);
+            background-color: white;
+            color: #007bff;
+        }
+
+        .end {
+            text-align: center;
+            padding-top: 20px;
+            color: #a0a0a0;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+        }
+
+        /* Mobile Responsiveness */
+        @media screen and (max-width: 768px) {
+            .navbar {
+                padding: 0.5rem 1rem;
+            }
+
+            .navbar-links {
+                display: none;
+                flex-direction: column;
+                gap: 0.5rem;
+                position: absolute;
+                top: 60px;
+                right: 10px;
+                background: rgba(0, 20, 40, 0.98);
+                padding: 1rem;
+                border-radius: 10px;
+                box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
+                width: 200px;
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: all 0.3s ease-out;
+                backdrop-filter: blur(10px);
+            }
+
+            .navbar-links.active {
+                display: flex;
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .chat-section {
+                padding-top: 60px;
+            }
+
+            .chat-container {
+                height: calc(100vh - 60px);
+            }
+
+            .chat-header {
+                padding: 8px 10px;
+            }
+
+            .status-indicator {
+                padding: 4px 8px;
+                font-size: 0.7rem;
+            }
+
+            .status-dot {
+                width: 8px;
+                height: 8px;
+            }
+
+            .clear-chat {
+                padding: 6px 10px;
+            }
+
+            .chat-messages {
+                padding: 10px;
+            }
+
+            .message {
+                margin-bottom: 12px;
+                gap: 6px;
+            }
+
+            .message-avatar {
+                width: 30px;
+                height: 30px;
+                font-size: 1rem;
+            }
+
+            .message-content {
+                max-width: calc(100% - 45px);
+                padding: 10px 12px;
+                border-radius: 15px;
+            }
+
+            .typing-indicator {
+                max-width: calc(100% - 45px);
+                padding: 10px 12px;
+                border-radius: 15px;
+            }
+
+            .chat-input {
+                padding: 10px;
+                gap: 6px;
+            }
+
+            .voice-btn, .send-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 30px;
+            }
+
+            .footlinks, .footlinkss {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .social {
+                justify-content: center;
+            }
+        }
+
+        /* Small mobile devices */
+        @media screen and (max-width: 480px) {
+            .navbar {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .logo {
+                width: 35px;
+                height: 35px;
+                min-width: 35px;
+                min-height: 35px;
+            }
+
+            .website-name {
+                font-size: 1.1rem;
+            }
+
+            .navbar-links {
+                width: 180px;
+                right: 5px;
+            }
+
+            .chat-messages {
+                padding: 8px;
+            }
+
+            .message-content {
+                max-width: calc(100% - 40px);
+                padding: 8px 10px;
+            }
+
+            .typing-indicator {
+                max-width: calc(100% - 40px);
+                padding: 8px 10px;
+            }
+
+            .chat-input {
+                padding: 8px;
+            }
+
+            .voice-btn, .send-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 0.9rem;
+            }
+
+            #messageInput {
+                font-size: 0.9rem;
+                padding: 10px 12px;
+                min-height: 38px;
+            }
+
+            .welcome-message {
+                padding: 30px 15px;
+            }
+
+            .footer-content {
+                padding: 0 15px;
+            }
+        }
+
+        /* Very small devices */
+        @media screen and (max-width: 320px) {
+            .navbar {
+                padding: 0.4rem 0.5rem;
+            }
+
+            .logo {
+                width: 30px;
+                height: 30px;
+                min-width: 30px;
+                min-height: 30px;
+            }
+
+            .website-name {
+                font-size: 1rem;
+            }
+
+            .navbar-links {
+                width: 160px;
+            }
+
+            .chat-header {
+                padding: 6px 8px;
+            }
+
+            .clear-chat {
+                font-size: 0.7rem;
+                padding: 4px 8px;
+            }
+
+            .status-indicator {
+                padding: 3px 6px;
+                font-size: 0.6rem;
+            }
+
+            .message-avatar {
+                width: 28px;
+                height: 28px;
+                font-size: 0.9rem;
+            }
+
+            .voice-btn, .send-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 0.85rem;
+            }
+
+            #messageInput {
+                font-size: 0.85rem;
+                padding: 8px 10px;
+                min-height: 36px;
+            }
+        }
+
+        /* Landscape orientation on mobile */
+        @media screen and (max-height: 500px) and (orientation: landscape) {
+            .chat-header {
+                padding: 6px 8px;
+            }
+
+            .chat-messages {
+                padding: 8px;
+            }
+
+            .chat-input {
+                padding: 8px;
+            }
+
+            .welcome-message {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <img src="files/logo.png" alt="Logo" class="logo">
+            <span class="website-name">Food<span class="highlight-food">Yield</span></span>
+        </div>
+        <div class="navbar-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/info" class="nav-link">Donate</a>
+            <a href="/reqfood" class="nav-link">Ask for Donate</a>
+            <a href="/viewrequests" class="nav-link">Requests</a>
+            <a href="/donations" class="nav-link">Available Donations</a>
+            <a href="/register" class="nav-link">Administration</a>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </button>
+    </nav>
+
+    <div class="chat-section">
+        <div class="chat-container">
+            <div class="chat-header">
+                <button class="clear-chat" onclick="clearChat()">
+                    <i class='bx bx-trash'></i> Clear Chat
+                </button>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>Online</span>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="welcome-message">
+                    <h3>Welcome to FoodYield AI Assistant!</h3>
+                    <p>I'm here to help you with food waste management questions and provide expert guidance on sustainability practices. You can type your message or use voice input to get started!</p>
+                </div>
+            </div>
+
+            <div class="chat-input">
+                <div class="input-container">
+                    <input type="text" id="messageInput" placeholder="Ask about food waste management, sustainability practices..." onkeypress="handleKeyPress(event)">
+                    <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceInput()">
+                        <i class='bx bx-microphone'></i>
+                    </button>
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                        <i class='bx bx-send'></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="footer">
+        <div class="footer-content">
+            <div class="footlinks">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="donate.ejs">Donate</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footlinkss">
+                <h4>Connect</h4>
+                <div class="social">
+                    <a href="#"><i class='bx bxl-facebook'></i></a>
+                    <a href="#"><i class='bx bxl-instagram'></i></a>
+                    <a href="#"><i class='bx bxl-twitter'></i></a>
+                    <a href="#"><i class='bx bxl-linkedin'></i></a>
+                    <a href="#"><i class='bx bxl-youtube'></i></a>
+                    <a href="#"><i class='bx bxl-github'></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="end">
+            <p>Copyright © 2023 FoodYield | All Rights Reserved.</p>
+        </div>
+    </section>
+
+    <script>
+        let isRecording = false;
+        let recognition = null;
+        const API_KEY = "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";
+        const API_URL = "https://openrouter.ai/api/v1/chat/completions";
+
+        // Hamburger menu toggle function
+        function toggleMenu() {
+            const navbarLinks = document.querySelector('.navbar-links');
+            navbarLinks.classList.toggle('active');
+        }
+
+        // Click outside to close menu
+        document.addEventListener('click', function(event) {
+            const navbar = document.querySelector('.navbar');
+            const navbarLinks = document.querySelector('.navbar-links');
+            const hamburger = document.querySelector('.hamburger');
+
+            if (!navbar.contains(event.target) && !hamburger.contains(event.target)) {
+                navbarLinks.classList.remove('active');
+            }
+        });
+
+        // Initialize speech recognition
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('messageInput').value = transcript;
+                stopRecording();
+            };
+
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error:', event.error);
+                stopRecording();
+            };
+
+            recognition.onend = function() {
+                stopRecording();
+            };
+        }
+
+        function toggleVoiceInput() {
+            if (!recognition) {
+                alert('Speech recognition not supported in this browser');
+                return;
+            }
+
+            if (isRecording) {
+                recognition.stop();
+            } else {
+                recognition.start();
+                startRecording();
+            }
+        }
+
+        function startRecording() {
+            isRecording = true;
+            const voiceBtn = document.getElementById('voiceBtn');
+            voiceBtn.classList.add('recording');
+            voiceBtn.innerHTML = '<i class="bx bx-stop"></i>';
+        }
+
+        function stopRecording() {
+            isRecording = false;
+            const voiceBtn = document.getElementById('voiceBtn');
+            voiceBtn.classList.remove('recording');
+            voiceBtn.innerHTML = '<i class="bx bx-microphone"></i>';
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            
+            if (!message) return;
+
+            // Clear input
+            messageInput.value = '';
+
+            // Add user message
+            addMessage(message, 'user');
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Disable send button
+            const sendBtn = document.getElementById('sendBtn');
+            sendBtn.disabled = true;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${API_KEY}`,
+                        "HTTP-Referer": window.location.origin,
+                        "X-Title": "FoodYield AI Assistant",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        "model": "deepseek/deepseek-r1:free",
+                        "messages": [
+                            {
+                                "role": "system",
+                                "content": "You are a helpful AI assistant specialized in food waste management, reduction strategies, sustainability, and environmental impact. Only answer questions related to food waste, food management, sustainability, recycling, composting, and related environmental topics. If users ask about unrelated topics, politely redirect them to ask about food waste management."
+                            },
+                            {
+                                "role": "user",
+                                "content": message
+                            }
+                        ]
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.choices && data.choices[0] && data.choices[0].message) {
+                    addMessage(data.choices[0].message.content, 'bot');
+                } else {
+                    addMessage("Sorry, I couldn't process your request. Please try again.", 'bot');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                addMessage("Sorry, there was an error processing your request. Please try again later.", 'bot');
+            } finally {
+                // Hide typing indicator and enable send button
+                hideTypingIndicator();
+                sendBtn.disabled = false;
+            }
+        }
+
+        function addMessage(content, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.innerHTML = sender === 'user' ? '<i class="bx bx-user"></i>' : '<i class="bx bx-bot"></i>';
+
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            messageContent.textContent = content;
+
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(messageContent);
+
+            // Remove welcome message if it exists
+            const welcomeMessage = chatMessages.querySelector('.welcome-message');
+            if (welcomeMessage) {
+                welcomeMessage.remove();
+            }
+
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const chatMessages = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot';
+            typingDiv.id = 'typingIndicator';
+
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.innerHTML = '<i class="bx bx-bot"></i>';
+
+            const typingContent = document.createElement('div');
+            typingContent.className = 'typing-indicator';
+            typingContent.style.display = 'flex';
+            typingContent.innerHTML = `
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+                <span style="margin-left: 10px; color: #a0a0a0;">AI is typing...</span>
+            `;
+
+            typingDiv.appendChild(avatar);
+            typingDiv.appendChild(typingContent);
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        function clearChat() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = `
+                <div class="welcome-message">
+                    <h3>Welcome to FoodYield AI Assistant!</h3>
+                    <p>I'm here to help you with food waste management questions and provide expert guidance on sustainability practices. You can type your message or use voice input to get started!</p>
+                </div>
+            `;
+        }
+
+        // Focus on input when page loads
+        window.addEventListener('load', function() {
+            document.getElementById('messageInput').focus();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head section remains exactly the same until the table styles -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Requests - FoodYield</title>
+    <link rel="icon" href="./files/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <style>
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+    list-style: none;
+}
+
+:root {
+    --primary-blue: #007bff;
+    --dark-blue: #001529;
+    --bg-dark: #0a0a0a;
+    --text-light: #ffffff;
+    --text-gray: #a0a0a0;
+    --border-color: #1a2635;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 20, 40, 0.95);
+    color: white;
+    padding: 0.5rem 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+}
+
+.website-name {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    margin-top: 7px;
+}
+
+.highlight-food {
+    color: #007bff;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 5px 10px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #0a0a0a;
+    background: #007bff;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+}
+
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.hamburger .line {
+    width: 30px;
+    height: 4px;
+    background: white;
+    border-radius: 2px;
+}
+@media screen and (max-width: 480px) {
+    .request-section h1 {
+        margin-top: 30px;
+        font-size: 1.75rem;
+    }
+}
+@media screen and (max-width: 768px) {
+    .request-section h1 {
+        margin-top: 30px;
+        font-size: 1.75rem;
+    }
+}
+
+
+
+/* Simplified Style for Links */
+.navbar-links a {
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+/* Main Content Section */
+.request-section {
+    flex: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 100px 2rem 4rem;
+    width: 100%;
+}
+
+.request-section h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+.request-section h1 span{
+    color:#007bff;
+}
+.footlinks h4,
+        .footlinkss h4 {
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 30px;
+            position: relative;
+        }
+/* Table Styles */
+.table-container {
+    background: rgba(0, 20, 40, 0.4);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--dark-blue);
+    border-radius: 8px;
+}
+
+th {
+    background: var(--primary-blue);
+    color: var(--text-light);
+    font-weight: 600;
+    text-align: left;
+    padding: 1rem;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+/* Footer Styles */
+.footer {
+    background-color: var(--dark-blue);
+    padding: 2rem 0 1rem;
+    margin-top: auto;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.footlinks h4,
+.footlinkss h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.footlinks h4::before,
+.footlinkss h4::before {
+    content: "";
+    position: absolute;
+    height: 2px;
+    width: 70px;
+    left: 0;
+    bottom: -7px;
+    background: var(--primary-blue);
+}
+
+.footlinks ul li {
+    margin-bottom: 15px;
+}
+
+.footlinks ul li a {
+    font-size: 17px;
+    color: #dddddd;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.footlinks a:hover {
+    color: var(--primary-blue);
+    padding-left: 8px;
+}
+
+.social {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.social a {
+    font-size: 1.5rem;
+    height: 40px;
+    width: 40px;
+    color: var(--dark-blue);
+    background-color: var(--primary-blue);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.social a:hover {
+    transform: scale(1.1);
+    background-color: var(--text-light);
+}
+
+.end {
+    text-align: center;
+    padding-top: 2rem;
+    color: var(--text-gray);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+    .request-section {
+        padding: 90px 1.5rem 3rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .navbar-links {
+        display: none;
+        flex-direction: column;
+        gap: 1rem;
+        position: absolute;
+        top: 60px;
+        right: 10px;
+        background: rgba(0, 20, 40, 0.95);
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        width: auto;
+        text-align: left;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease-out;
+    }
+
+    .navbar-links.active {
+        display: flex;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .footlinkss h4 {
+        margin-left: 0px;
+    }
+
+    .request-section h1 {
+        font-size: 2rem;
+    }
+
+    .table-container {
+        padding: 1rem;
+    }
+
+    th, td {
+        padding: 0.75rem;
+        font-size: 0.85rem;
+    }
+
+    .footer-content {
+        gap: 2rem;
+        padding: 0 1rem;
+    }
+
+    .footlinks, .footlinkss {
+        width: 100%;
+        text-align: center;
+    }
+    .footlinks h4::before,
+        .footlinkss h4::before {
+            content: "";
+            position: absolute;
+            height: 2px;
+            width: 70px;
+            left: 0;
+            bottom: -7px;
+            background: #007bff;
+        }
+
+    .footlinks h4::before,
+    .footlinkss h4::before {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .social {
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 480px) {
+
+    .request-section {
+        padding: 80px 1rem 2rem;
+    }
+
+    .request-section h1 {
+        font-size: 1.75rem;
+    }
+}
+
+/* Fade Animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+       
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <img src="files/logo.png" alt="Logo" class="logo">
+            <span class="website-name">Food<span class="highlight-food">Yield</span></span>
+        </div>
+        <div class="navbar-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/info" class="nav-link">Donate</a>
+            <a href="/reqfood" class="nav-link">Ask for Donate</a>
+            <a href="/viewrequests" class="nav-link">Requests</a>
+            <a href="/donations" class="nav-link">Available Donations</a>
+            <a href="/register" class="nav-link">Administration</a>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </button>
+    </nav>
+
+
+    <main class="request-section fade-in">
+        <h1>Food <span>Requests</span></h1>
+        <div class="table-container">
+            <% if (requests.length === 0) { %>
+                <p class="no-requests">No food requests are currently available.</p>
+            <% } else { %>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Organization</th>
+                            <th>Address</th>
+                            <th>Contact</th>
+                            <th>Members</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% requests.forEach(request => { %>
+                            <tr>
+                                <td><%= request.orgName %></td>
+                                <td><%= request.address %></td>
+                                <td><%= request.contactDetails %></td>
+                                <td><%= request.membersCount %></td>
+                                <td><%= request.description || 'N/A' %></td>
+                                <td><%= formatDate(request.createdAt) %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } %>
+        </div>
+    </main>
+
+    <section class="footer fade-in">
+        <div class="footer-content">
+            <div class="footlinks">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="donate.ejs">Donate</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footlinkss">
+                <h4>Connect</h4>
+                <div class="social">
+                    <a href="#"><i class='bx bxl-facebook'></i></a>
+                    <a href="#"><i class='bx bxl-instagram'></i></a>
+                    <a href="#"><i class='bx bxl-twitter'></i></a>
+                    <a href="#"><i class='bx bxl-linkedin'></i></a>
+                    <a href="#"><i class='bx bxl-youtube'></i></a>
+                    <a href="#"><i class='bx bxl-github'></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="end fade-in">
+            <p>Copyright © 2023 FoodYield | All Rights Reserved.</p>
+        </div>
+    </section>
+
+    <script>
+
+        // Hamburger menu toggle function
+        function toggleMenu() {
+            const navbarLinks = document.querySelector('.navbar-links');
+            navbarLinks.classList.toggle('active');
+        }
+
+        // Click outside to close menu
+        document.addEventListener('click', function(event) {
+            const navbar = document.querySelector('.navbar');
+            const navbarLinks = document.querySelector('.navbar-links');
+            const hamburger = document.querySelector('.hamburger');
+
+            if (!navbar.contains(event.target) && !hamburger.contains(event.target)) {
+                navbarLinks.classList.remove('active');
+            }
+        });
+
+        // Only keep the fade-in animation
+        document.addEventListener("DOMContentLoaded", () => {
+            const fadeInElements = document.querySelectorAll('.fade-in');
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeInElements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>

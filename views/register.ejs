@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Registration</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="icon" href="./files/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <style>
+        body {
+    background: #0a0a0a;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column; /* Change to column layout */
+    position: relative; /* Add relative positioning */
+}
+         /* General styles */
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+        text-decoration: none;
+        list-style: none;
+        scroll-behavior: smooth;
+    }/* General Reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 20, 40, 0.95);
+    color: white;
+    padding: 0.5rem 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+}
+
+.website-name {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    margin-top: 7px;
+}
+
+.highlight-food {
+    color: #007bff;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 5px 10px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #0a0a0a;
+    background: #007bff;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+}
+
+/* Hamburger Menu */
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    margin-left: auto;
+    z-index: 1001;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.hamburger .line {
+    width: 25px;
+    height: 3px;
+    background: white;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+
+
+/* Simplified Style for Links */
+.navbar-links a {
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+/* Authentication Section Styles */
+.section {
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95));
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s ease-in-out;
+    padding: 2.5rem;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 480px;
+    text-align: center;
+    margin: 100px auto;
+    border: 1px solid rgba(59, 130, 246, 0.1);
+}
+
+.section h2 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1rem;
+    letter-spacing: -0.5px;
+}
+
+.section p {
+    color: #94a3b8;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    background: rgba(30, 41, 59, 0.5);
+    padding: 0.5rem;
+    border-radius: 12px;
+}
+
+.tab {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+    color: #94a3b8;
+    cursor: pointer;
+}
+
+.tab:hover:not(.active) {
+    background: rgba(59, 130, 246, 0.1);
+    color: #fff;
+}
+
+.tab.active {
+    background: #3B82F6;
+    color: white;
+    box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
+}
+
+input {
+    background: rgba(30, 41, 59, 0.5);
+    color: white;
+    border: 2px solid transparent;
+    padding: 1rem 1.25rem;
+    width: 100%;
+    border-radius: 12px;
+    outline: none;
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    border-color: #3B82F6;
+    background: rgba(30, 41, 59, 0.7);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+input::placeholder {
+    color: #64748b;
+}
+
+button {
+    background: linear-gradient(145deg, #3B82F6, #2563eb);
+    color: white;
+    border: none;
+    padding: 1rem;
+    width: 100%;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 12px rgba(59, 130, 246, 0.3);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.error-message {
+    color: #ef4444;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    padding: 0.75rem;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 8px;
+    border-left: 4px solid #ef4444;
+}
+
+.success-message {
+    color: #22c55e;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    padding: 0.75rem;
+    background: rgba(34, 197, 94, 0.1);
+    border-radius: 8px;
+    border-left: 4px solid #22c55e;
+}
+
+.hidden {
+    display: none;
+}
+
+#loginForm, #registerForm {
+    transition: all 0.3s ease-in-out;
+}
+.footer {
+            background-color: #001529;
+            padding-bottom: 13px;
+            margin-top: 0;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px 0;
+        }
+
+        .footlinks h4,
+        .footlinkss h4 {
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        /* Fade Animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+.footlinks ul li {
+    margin-bottom: 15px;
+}
+
+.footlinks ul li a {
+    font-size: 17px;
+    color: #dddddd;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+        .footlinks h4::before,
+        .footlinkss h4::before {
+            content: "";
+            position: absolute;
+            height: 2px;
+            width: 70px;
+            left: 0;
+            bottom: -7px;
+            background: #007bff;
+        }
+
+        .footlinks a {
+            color: #a0a0a0;
+            transition: all 0.3s ease;
+        }
+
+        .footlinks a:hover {
+            color: #007bff;
+            padding-left: 8px;
+        }
+
+        .social a {
+            font-size: 25px;
+            margin: 4px;
+            height: 40px;
+            width: 40px;
+            color: #001529;
+            background-color: #007bff;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .social a:hover {
+            transform: scale(1.2);
+            background-color: white;
+            color: #007bff;
+        }
+
+        .end {
+            text-align: center;
+            padding-top: 20px;
+            color: #a0a0a0;
+        }
+
+        /* Responsive Design */
+@media screen and (max-width: 768px) {
+    .navbar-links {
+        display: none;
+        flex-direction: column;
+        gap: 1rem;
+        position: absolute;
+        top: 60px;
+        right: 10px;
+        background: rgba(0, 20, 40, 0.95);
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        width: auto;
+        text-align: left;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease-out;
+    }
+
+    .navbar-links.active {
+        display: flex;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+
+    .hamburger {
+        display: flex;
+    }
+
+    .footlinkss h4 {
+        margin-left: 100px;
+    }
+    
+
+}
+    </style>
+</head>
+<body>
+    <nav class="navbar fade-in">
+        <div class="navbar-logo">
+            <img src="files/logo.png" alt="Logo" class="logo">
+            <span class="website-name">Food<span class="highlight-food">Yield</span></span>
+        </div>
+        <div class="navbar-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/info" class="nav-link">Donate</a>
+            <a href="/reqfood" class="nav-link">Ask for Donate</a>
+            <a href="/viewrequests" class="nav-link">Requests</a>
+            <a href="/donations" class="nav-link">Available Donations</a>
+            <a href="/register" class="nav-link">Administration</a>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </button>
+    </nav>
+
+    <div class="section fade-in">
+        <h2 class="text-3xl font-bold mb-4">Welcome</h2>
+        <p class="mb-6 text-gray-300">Your gateway to secure registration & login</p>
+    
+        <% if (typeof message !== 'undefined') { %>
+            <p class="<%= message.includes('successfully') ? 'success-message' : 'error-message' %>">
+                <%= message %>
+            </p>
+        <% } %>
+    
+        <div class="tabs">
+            <span class="tab active" id="loginTab" onclick="showLogin()">Login</span>
+            <span class="tab" id="registerTab" onclick="showRegister()">Register</span>
+        </div>
+    
+        <div id="loginForm">
+            <form action="/login" method="POST" class="space-y-6">
+                <input type="email" name="email" placeholder="Email Address" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+        
+        <div id="registerForm" class="hidden">
+            <form action="/register" method="POST" class="space-y-6">
+                <input type="text" name="companyName" placeholder="Company Name" required>
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="email" name="email" placeholder="Email Address" required>
+                <input type="password" name="password" placeholder="Password" required minlength="6">
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+    <section class="footer fade-in">
+        <div class="footer-content">
+            <div class="footlinks">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="donate.ejs">Donate</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footlinkss">
+                <h4>Connect</h4>
+                <div class="social">
+                    <a href="#"><i class='bx bxl-facebook'></i></a>
+                    <a href="#"><i class='bx bxl-instagram'></i></a>
+                    <a href="#"><i class='bx bxl-twitter'></i></a>
+                    <a href="#"><i class='bx bxl-linkedin'></i></a>
+                    <a href="#"><i class='bx bxl-youtube'></i></a>
+                    <a href="#"><i class='bx bxl-github'></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="end">
+            <p>Copyright © 2023 FoodYield | All Rights Reserved.</p>
+        </div>
+    </section>
+    
+    <script>
+        function showLogin() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('loginTab').classList.add('active');
+            document.getElementById('registerTab').classList.remove('active');
+        }
+
+        function showRegister() {
+            document.getElementById('registerForm').classList.remove('hidden');
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerTab').classList.add('active');
+            document.getElementById('loginTab').classList.remove('active');
+        }
+
+        // Fade-in animation
+        document.addEventListener("DOMContentLoaded", () => {
+            const fadeInElements = document.querySelectorAll('.fade-in');
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeInElements.forEach(el => observer.observe(el));
+        });
+
+        // Hamburger menu toggle function
+        function toggleMenu() {
+            const navbarLinks = document.querySelector('.navbar-links');
+            navbarLinks.classList.toggle('active');
+        }
+
+        // Click outside to close menu
+        document.addEventListener('click', function(event) {
+            const navbar = document.querySelector('.navbar');
+            const navbarLinks = document.querySelector('.navbar-links');
+            const hamburger = document.querySelector('.hamburger');
+
+            if (!navbar.contains(event.target) && !hamburger.contains(event.target)) {
+                navbarLinks.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

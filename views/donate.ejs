@@ -1,0 +1,2239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate Food - Food Sharing Platform</title>
+    <link rel="icon" href="./files/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Core styles */
+        :root {
+            --primary-color: #007bff;
+            --primary-dark: #0056b3;
+            --secondary-color: #6c757d;
+            --dark-bg: #0a0a0a;
+            --card-bg: #191919;
+            --text-light: #f8f9fa;
+            --text-muted: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            scroll-behavior: smooth;
+            line-height: 1.6;
+            font-size: 16px; /* Base font size increased */
+        }
+        
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 20, 40, 0.95);
+            color: white;
+            padding: 0.8rem 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+        }
+
+        .website-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            color: white;
+            font-family: 'Paytone One', sans-serif;
+        }
+
+        .highlight-food {
+            color: var(--primary-color);
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 1.8rem;
+        }
+
+        .nav-link {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 8px 12px;
+            transition: var(--transition);
+            border-radius: var(--border-radius);
+            text-decoration: none;
+        }
+
+        .nav-link:hover {
+            color: #0a0a0a;
+            background: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+        }
+
+        .hamburger .line {
+            width: 30px;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .hamburger.active .line:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger.active .line:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active .line:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Form Section */
+        section {
+            padding: 120px 10% 80px;
+            min-height: 100vh;
+            background-color: var(--dark-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0,123,255,0.1) 0%, rgba(0,0,0,0) 70%);
+            z-index: 0;
+        }
+        
+        .donation-form {
+            width: 100%;
+            max-width: 650px;
+            color: var(--text-light);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .donation-form h1 {
+            font-size: 5.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            font-weight: 700;
+            background: linear-gradient(to right, #fff 50%, var(--primary-color) 50%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .donation-form p {
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+            max-width: 90%;
+        }
+        
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+        
+        .donation-form label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        
+        .donation-form input, 
+        .donation-form select, 
+        .donation-form textarea {
+            width: 100%;
+            padding: 16px 18px;
+            background-color: var(--card-bg);
+            font-size: 1.1rem;
+            border: 1px solid #333;
+            border-radius: var(--border-radius);
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+        
+        .donation-form input:focus, 
+        .donation-form select:focus, 
+        .donation-form textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+        }
+        
+        .donation-form textarea {
+            resize: vertical;
+            min-height: 140px;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin: 2.5rem 0 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 3px;
+        }
+        
+        .submitbtn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding: 16px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+        
+        .submitbtn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 123, 255, 0.2);
+        }
+        
+        .submitbtn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Fade Animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            background-color: var(--success-color);
+            color: white;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            width: 100%;
+            animation: fadeIn 0.5s ease;
+            font-size: 1.1rem;
+        }
+
+        /* PIN field styles */
+        .pin-field {
+            position: relative;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        
+        .info-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            cursor: help;
+            font-size: 1.1rem;
+        }
+        
+        .info-icon:hover::after {
+            content: attr(title);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 100%;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            width: 250px;
+            z-index: 10;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 10px;
+        }
+        
+        #pinMatchMessage {
+            margin-top: -10px;
+            margin-bottom: 10px;
+            color: var(--danger-color);
+            font-size: 0.95rem;
+            display: none;
+        }
+        
+        #existingUserMessage {
+            background-color: rgba(0, 123, 255, 0.15);
+            color: var(--primary-color);
+            padding: 14px;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+            font-size: 1rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        /* Calendar Icon */
+        input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(70%);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+        
+        input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover,
+        input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        
+        .status {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.status.approved {
+    background-color: rgba(40, 167, 69, 0.2);
+    color: #28a745;
+}
+
+.status.completed {
+    background-color: rgba(13, 110, 253, 0.2);
+    color: #0d6efd;
+}
+        
+
+        /* Dashboard styles */
+        .chat-icon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: var(--box-shadow);
+            cursor: pointer;
+            z-index: 99;
+            transition: var(--transition);
+        }
+        
+        .chat-icon:hover {
+            transform: translateY(-5px) scale(1.1);
+            background-color: var(--primary-dark);
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+        }
+        
+        .chat-icon i {
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            overflow: auto;
+            backdrop-filter: blur(3px);
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .modal-content {
+    background-color: var(--dark-bg);
+    margin: 5% auto;
+    padding: 0;
+    border-radius: var(--border-radius);
+    width: 85%;
+    max-width: 900px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: slideIn 0.4s ease-out;
+    color: white;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    height: 85vh; /* Add fixed height */
+}
+        
+        .modal-header {
+            background-color: var(--primary-color);
+            padding: 1.2rem 1.5rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+        
+        .close {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            line-height: 1;
+        }
+        
+        .close:hover {
+            transform: rotate(90deg);
+            color: #f1f1f1;
+        }
+        
+        #loginSection {
+            padding: 2rem;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .login-form input {
+            background-color: var(--card-bg);
+            color: white;
+            border: 1px solid #333;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            font-size: 1rem;
+            transition: var(--transition);
+            margin-bottom: 10px;
+        }
+        
+        .login-form input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+        }
+        
+        #loginBtn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        
+        #loginBtn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2);
+        }
+        
+        #loginErrorMsg {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: var(--danger-color);
+            padding: 12px;
+            border-radius: var(--border-radius);
+            margin-top: 1rem;
+            border-left: 4px solid var(--danger-color);
+            display: none;
+            font-size: 0.95rem;
+        }
+        
+        .donor-dashboard {
+    display: none;
+    flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 60px); /* Adjust height calculation */
+}
+
+.custom-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* ... existing styles ... */
+    z-index: 1100; /* Ensure it's above everything else */
+}
+
+.custom-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 1099; /* Just below the popup */
+    backdrop-filter: blur(3px);
+}
+        /* Update the tab container styles */
+.tab-container {
+    display: flex;
+    border-bottom: 1px solid #333;
+    background-color: #111;
+    padding: 0 1rem;
+    flex-shrink: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-top: 5px;
+}
+        
+        .tab-container::-webkit-scrollbar {
+            display: none; /* For Chrome, Safari and Opera */
+        }
+        
+        .tab {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+            color: var(--text-muted);
+            font-weight: 500;
+            position: relative;
+            white-space: nowrap;
+        }
+        
+        .tab:hover {
+            color: var(--text-light);
+        }
+        
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .tab-content {
+    display: none;
+    padding: 1.5rem;
+    flex-grow: 1;
+    overflow-y: auto;
+    height: calc(100% - 60px); /* Adjust height calculation */
+    animation: fadeIn 0.4s ease;
+}
+
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .dashboard-section h3 {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #333;
+        }
+        
+        .no-items-message {
+            text-align: center;
+            color: var(--text-muted);
+            font-style: italic;
+            padding: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .donation-card, 
+        .request-card, 
+        .allocation-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.2rem;
+            transition: var(--transition);
+            border-left: 4px solid transparent;
+        }
+        
+        .donation-card {
+            border-left-color: var(--primary-color);
+        }
+        
+        .request-card {
+            border-left-color: var(--warning-color);
+        }
+        
+        .allocation-card {
+            border-left-color: var(--success-color);
+        }
+        
+        .donation-card:hover,
+        .request-card:hover,
+        .allocation-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        
+        .donation-details, 
+        .request-details, 
+        .allocation-details {
+            flex: 1;
+        }
+        
+        .donation-details p, 
+        .request-details p, 
+        .allocation-details p {
+            margin: 0.6rem 0;
+            font-size: 1rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+        
+        .donation-details strong,
+        .request-details strong,
+        .allocation-details strong {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .donation-actions, 
+        .request-actions,
+        .allocation-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.7rem 1.3rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 120px;
+            justify-content: center;
+        }
+        
+        .btn i {
+            font-size: 0.95rem;
+        }
+        
+        .btn-edit {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        .btn-edit:hover {
+            background-color: #0b7dda;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(33, 150, 243, 0.3);
+        }
+        
+        .btn-delete {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-delete:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(220, 53, 69, 0.3);
+        }
+
+        /* Donated button styling */
+        .btn-donated {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.3rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            min-width: 160px;
+        }
+
+        .btn-donated:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-approve {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-approve:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);
+        }
+        
+        .btn-reject {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-reject:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(220, 53, 69, 0.3);
+        }
+
+        /* Allocation card styling */
+        .allocation-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.2rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        /* Edit Modal */
+        .edit-modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            overflow: auto;
+            backdrop-filter: blur(3px);
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .edit-modal-content {
+            background-color: var(--dark-bg);
+            margin: 5% auto;
+            padding: 0;
+            border-radius: var(--border-radius);
+            width: 85%;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: slideIn 0.4s ease-out;
+            position: relative;
+            color: white;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .edit-modal-header {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .edit-modal-header h2 {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .edit-modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .edit-modal-body .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .edit-modal-body label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .edit-modal-body input,
+        .edit-modal-body select,
+        .edit-modal-body textarea {
+            background-color: var(--card-bg);
+            color: white;
+            border: 1px solid #333;
+            border-radius: var(--border-radius);
+            padding: 12px 15px;
+            width: 100%;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .edit-modal-body input:focus,
+        .edit-modal-body select:focus,
+        .edit-modal-body textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+        }
+
+        .edit-modal-footer {
+            padding: 1rem 1rem;
+            border-top: 1px solid #333;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        #quantityNote p {
+            margin-top: 0.5rem;
+            margin-bottom: 0;
+            color: var(--danger-color);
+            font-size: 0.95rem;
+        }
+
+        /* Custom Popup */
+        .custom-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--dark-bg);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 1100;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .custom-popup h3 {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            font-size: 1.3rem;
+        }
+
+        .custom-popup p {
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .custom-popup-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .custom-popup-btn {
+            padding: 0.7rem 1.3rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .custom-popup-btn-confirm {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .custom-popup-btn-cancel {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .custom-popup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .custom-popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1099;
+            backdrop-filter: blur(3px);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 992px) {
+            .donation-form h1 {
+                font-size: 2.5rem;
+            }
+            
+            section {
+                padding: 120px 5% 60px;
+            }
+            
+            .modal-content {
+                width: 90%;
+                margin: 10% auto;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                font-size: 17px; /* Slightly larger font on mobile */
+            }
+            
+            .navbar {
+                padding: 0.8rem 1.5rem;
+            }
+            
+            .website-name {
+                font-size: 1.5rem;
+            }
+            
+            .navbar-links {
+                display: none;
+                flex-direction: column;
+                gap: 1rem;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 280px;
+                height: 100vh;
+                background: rgba(0, 20, 40, 0.98);
+                padding: 6rem 2rem 2rem;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+                transform: translateX(100%);
+                transition: transform 0.3s ease-out;
+            }
+
+            .navbar-links.active {
+                display: flex;
+                transform: translateX(0);
+            }
+
+            .nav-link {
+                padding: 0.8rem;
+                font-size: 1.1rem;
+                border-radius: 4px;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .donation-form h1 {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+            }
+            
+            .donation-form p {
+                font-size: 1rem;
+                max-width: 100%;
+            }
+            
+            section {
+                padding: 100px 5% 60px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .footlinks {
+                margin-bottom: 1.5rem;
+                width: 100%;
+            }
+            
+            .footlinks h4::before {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 15% auto;
+            }
+            
+            .tab-container {
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+            
+            .tab {
+                white-space: nowrap;
+                font-size: 0.9rem;
+                padding: 0.8rem 1rem;
+            }
+
+            .donation-actions,
+            .request-actions,
+            .allocation-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .custom-popup-buttons {
+                flex-direction: column;
+            }
+
+            .edit-modal-content {
+                width: 95%;
+            }
+            
+            /* Ensure allocation cards are scrollable on mobile */
+            .allocation-card {
+                overflow-x: auto;
+            }
+            
+            /* Make sure buttons don't get cut off */
+            .allocation-actions {
+                padding-bottom: 10px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .donation-form h1 {
+                font-size: 2.8rem;
+            }
+            
+            .submitbtn {
+                width: 100%;
+                padding: 14px;
+            }
+
+            .modal-header h2 {
+                font-size: 1.3rem;
+            }
+
+            .tab {
+                padding: 0.8rem;
+            }
+            
+            /* Make sure buttons are properly visible */
+            .btn-donated {
+                min-width: 100%;
+            }
+        }
+
+      /* Footer Styles */
+footer {
+    background-color: #001529;
+    color: var(--text-light);
+    padding: 2rem 10%;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.footlinks {
+    flex: 1;
+    min-width: 200px;
+    text-align: left;
+}
+
+.footlinks h4 {
+    color: var(--text-light);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+    margin-left: 150px;
+}
+
+.footlinks h4::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 2px;
+    background: var(--primary-color);
+}
+
+.footlinks ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footlinks ul li {
+    margin-bottom: 0.8rem;
+}
+
+.footlinks ul li a {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: var(--transition);
+    font-size: 0.95rem;
+    margin-left: 150px;
+}
+
+.footlinks ul li a:hover {
+    color: var(--primary-color);
+    padding-left: 5px;
+}
+
+.footlinkss {
+    flex: 1;
+    min-width: 200px;
+    text-align: left;
+}
+
+.footlinkss h4 {
+    color: var(--text-light);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+    margin-left: 150px;
+}
+
+.footlinkss h4::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 2px;
+    background: var(--primary-color);
+}
+
+.social {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-left: 150px;
+}
+
+.social a {
+    color: var(--text-light);
+    font-size: 2rem;
+    transition: var(--transition);
+}
+
+.social a:hover {
+    color: var(--primary-color);
+    transform: translateY(-3px);
+}
+
+.end {
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+/* Responsive Footer */
+@media (max-width: 1200px) {
+    .footlinks h4,
+    .footlinkss h4,
+    .footlinks ul li a,
+    .social {
+        margin-left: 100px;
+    }
+}
+
+@media (max-width: 992px) {
+    .footlinks h4,
+    .footlinkss h4,
+    .footlinks ul li a,
+    .social {
+        margin-left: 50px;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .footlinks, .footlinkss {
+        text-align: center;
+        width: 100%;
+    }
+    
+    .footlinks h4, 
+    .footlinkss h4,
+    .footlinks ul li a,
+    .social {
+        margin-left: 0;
+    }
+    
+    .footlinks h4::after, 
+    .footlinkss h4::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .social {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    footer {
+        padding: 2rem 5%;
+    }
+    
+    .social a {
+        font-size: 1.5rem;
+    }
+    
+    .end {
+        font-size: 0.8rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Custom Popup -->
+    <div class="custom-popup-overlay" id="popupOverlay"></div>
+    <div class="custom-popup" id="customPopup">
+        <h3 id="popupTitle">Confirm Action</h3>
+        <p id="popupMessage">Are you sure you want to perform this action?</p>
+        <div class="custom-popup-buttons">
+            <button class="custom-popup-btn custom-popup-btn-confirm" id="popupConfirm">Confirm</button>
+            <button class="custom-popup-btn custom-popup-btn-cancel" id="popupCancel">Cancel</button>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <img src="files/logo.png" alt="Logo" class="logo">
+            <span class="website-name">Food<span class="highlight-food">Yield</span></span>
+        </div>
+        <div class="navbar-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/info" class="nav-link">Donate</a>
+            <a href="/reqfood" class="nav-link">Ask for Donate</a>
+            <a href="/viewrequests" class="nav-link">Requests</a>
+            <a href="/donations" class="nav-link">Available Donations</a>
+            <a href="/register" class="nav-link">Administration</a>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </button>
+    </nav>
+
+    <section>
+        <div class="donation-form fade-in">
+            <h1>Donate <span>Food</span></h1>
+            <p>It's not how much we give, but how much love we put into giving! Your donation helps reduce food waste and feed those in need.</p>
+            <form id="donationForm">
+                <div class="form-group">
+                    <label for="myname1">Your Name</label>
+                    <input type="text" name="myname1" id="myname1" placeholder="Your Name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="myemail">Your Email</label>
+                    <input type="email" name="myemail" id="donorEmail" placeholder="Your Email" required>
+                </div>
+                
+                <!-- PIN fields - will be shown or hidden based on email check -->
+                <div id="pinCreationFields" style="display: none;">
+                    <div class="form-group fade-in">
+                        <label for="pin">Create PIN</label>
+                        <div class="pin-field">
+                            <input type="password" name="pin" id="pin" placeholder="Create PIN (4-6 digits)" 
+                                pattern="[0-9]{4,6}" title="PIN must be 4-6 digits" required>
+                            <span class="info-icon" title="This PIN will be required to access your donations and requests dashboard">ⓘ</span>
+                        </div>
+                        <label for="confirmPin">Confirm PIN</label>
+                        <input type="password" name="confirmPin" id="confirmPin" placeholder="Confirm PIN" required>
+                        <p id="pinMatchMessage" style="margin-top: 4px;" >PINs do not match</p>
+                    </div>
+                </div>
+                <div id="existingUserMessage" style="display: none;">
+                    You already have an account. Your existing PIN will be used to access your dashboard.
+                </div>
+
+                <div class="form-group">
+                    <label for="myphone">Your Phone Number</label>
+                    <input type="tel" name="myphone" id="myphone" placeholder="Your Phone Number" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="mycompany">Your Company/Organization Name</label>
+                    <input type="text" name="mycompany" id="mycompany" placeholder="Your Company/Organization Name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="myadd">Collection Address</label>
+                    <input type="text" name="myadd" id="myadd" placeholder="Collection Address" required>
+                </div>
+
+                <h4 class="section-title">Food Details</h4>
+                
+                <div class="form-group">
+                    <label for="category">Food Category</label>
+                    <select name="category" id="category" required>
+                        <option value="" disabled selected>Select Food Category</option>
+                        <option value="Veg">Vegetarian</option>
+                        <option value="Non-Veg">Non-Vegetarian</option>
+                        <option value="Both">Mixed (Veg & Non-Veg)</option>
+                        <option value="Groceries">Groceries</option>
+                    </select>                
+                </div>
+
+                <div class="form-group">
+                    <label for="quantity">Quantity (in kilograms)</label>
+                    <input type="number" name="quantity" id="quantity" placeholder="Enter quantity in Kg" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="foodprepdatetime">Food Preparation Date & Time</label>
+                    <input type="datetime-local" name="foodprepdatetime" id="foodprepdatetime" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="expiry">Expiry Date</label>
+                    <input type="date" name="expiry" id="expiry" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="specialnote">Special Notes</label>
+                    <textarea name="specialnote" id="specialnote" placeholder="Add any special notes (allergies, ingredients, storage instructions, etc.)"></textarea>
+                </div>
+
+                <button class="submitbtn" type="submit">
+                    <i class="fas fa-paper-plane"></i> Submit Donation
+                </button>
+            </form>
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i> Your donation has been submitted successfully!
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat/Donor Dashboard Icon -->
+    <div class="chat-icon" id="chatIcon" title="Donor Dashboard">
+        <i class="fas fa-user"></i>
+    </div>
+
+    <!-- Donor Dashboard Modal -->
+    <div id="donorModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Donor Dashboard</h2>
+                <span class="close">&times;</span>
+            </div>
+            
+            <!-- Login Form -->
+            <div id="loginSection">
+                <p style="margin-bottom: 1.5rem;">Please enter your email and PIN to access your donations and requests:</p>
+                <div class="login-form">
+                    <input type="email" id="loginEmail" placeholder="Your Email">
+                    <input type="password" id="loginPin" placeholder="Your PIN">
+                    <button id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <div id="loginErrorMsg">
+                        <i class="fas fa-exclamation-circle"></i> Invalid email or PIN. Please try again.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Donor Dashboard Content -->
+            <div id="donorDashboard" class="donor-dashboard">
+                <div class="tab-container">
+                    <button class="tab active" data-tab="myDonations">My Donations</button>
+                    <button class="tab" data-tab="myRequests">Requests</button>
+                    <button class="tab" data-tab="myAllocations">Allocations</button>
+                </div>
+                
+                <!-- My Donations Tab -->
+                <div id="myDonations" class="tab-content active">
+                    <div class="dashboard-section">
+                        <h3>Your Donations</h3>
+                        <div id="donationsList">
+                            <p class="no-items-message">No donations found.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Requests Tab -->
+                <div id="myRequests" class="tab-content">
+                    <div class="dashboard-section">
+                        <h3>Pending Requests</h3>
+                        <div id="requestsList">
+                            <p class="no-items-message">No pending requests found.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Allocated Donations Tab -->
+                <div id="myAllocations" class="tab-content">
+                    <div class="dashboard-section">
+                        <h3>Allocated Donations</h3>
+                        <div id="allocationsList">
+                            <p class="no-items-message">No allocated donations found.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Donation Modal -->
+    <div id="editModal" class="edit-modal">
+        <div class="edit-modal-content">
+            <div class="edit-modal-header">
+                <h2>Edit Donation</h2>
+                <span class="close" id="editModalClose">&times;</span>
+            </div>
+            <div class="edit-modal-body">
+                <form id="editDonationForm">
+                    <input type="hidden" id="editDonationId">
+                    
+                    <div class="form-group">
+                        <label for="editName">Your Name</label>
+                        <input type="text" id="editName" name="name" placeholder="Your Name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editPhone">Phone Number</label>
+                        <input type="tel" id="editPhone" name="phone" placeholder="Your Phone No." required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editCompany">Company Name</label>
+                        <input type="text" id="editCompany" name="company" placeholder="Your Company Name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editAddress">Collection Address</label>
+                        <input type="text" id="editAddress" name="address" placeholder="Collection Address" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editCategory">Category</label>
+                        <select id="editCategory" name="category" required>
+                            <option value="Veg">Veg</option>
+                            <option value="Non-Veg">Non-Veg</option>
+                            <option value="Groceries">Groceries</option>
+                            <option value="Both">Both</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editQuantity">Quantity (in Kg)</label>
+                        <input type="number" id="editQuantity" name="quantity" placeholder="Enter quantity in Kg" required>
+                        <div id="quantityNote"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editPrepDateTime">Food Preparation Date and Time</label>
+                        <input type="datetime-local" id="editPrepDateTime" name="prepDateTime" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editExpiry">Expiry date</label>
+                        <input type="date" id="editExpiry" name="expiry" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editSpecialNote">Special Note</label>
+                        <textarea id="editSpecialNote" name="specialNote" rows="5" placeholder="Add any special notes (optional)"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="edit-modal-footer">
+                <button class="submitbtn" type="submit" form="editDonationForm">Update Donation</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footlinks">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">Donate</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            
+            <div class="footlinkss">
+                <h4>Connect</h4>
+                <div class="social">
+                    <a href="#"><i class='bx bxl-facebook'></i></a>
+                    <a href="#"><i class='bx bxl-instagram'></i></a>
+                    <a href="#"><i class='bx bxl-twitter'></i></a>
+                    <a href="#"><i class='bx bxl-linkedin'></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="end">
+            <p>Copyright © 2023 FoodYard | All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+
+
+<script>
+     // Custom popup functions
+     function showPopup(title, message, confirmCallback, cancelCallback) {
+            document.getElementById('popupTitle').textContent = title;
+            document.getElementById('popupMessage').textContent = message;
+            document.getElementById('popupOverlay').style.display = 'block';
+            document.getElementById('customPopup').style.display = 'block';
+            
+            const confirmBtn = document.getElementById('popupConfirm');
+            const cancelBtn = document.getElementById('popupCancel');
+            
+            // Remove previous event listeners
+            const newConfirmBtn = confirmBtn.cloneNode(true);
+            const newCancelBtn = cancelBtn.cloneNode(true);
+            
+            confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+            cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+            
+            // Add new event listeners
+            newConfirmBtn.addEventListener('click', function() {
+                hidePopup();
+                if (confirmCallback) confirmCallback();
+            });
+            
+            newCancelBtn.addEventListener('click', function() {
+                hidePopup();
+                if (cancelCallback) cancelCallback();
+            });
+        }
+        
+        function hidePopup() {
+            document.getElementById('popupOverlay').style.display = 'none';
+            document.getElementById('customPopup').style.display = 'none';
+        }
+
+        // Hamburger menu toggle function
+        function toggleMenu() {
+            const navbarLinks = document.querySelector('.navbar-links');
+            const hamburger = document.querySelector('.hamburger');
+            navbarLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        // Click outside to close menu
+        document.addEventListener('click', function(event) {
+            const navbar = document.querySelector('.navbar');
+            const navbarLinks = document.querySelector('.navbar-links');
+            const hamburger = document.querySelector('.hamburger');
+
+            if (!navbar.contains(event.target) && !hamburger.contains(event.target)) {
+                navbarLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
+
+        // Global variables to store session info after login
+        let currentUserEmail = '';
+        let isAuthenticated = false;
+
+        // Check if email exists when user enters email
+        document.getElementById('donorEmail').addEventListener('blur', function() {
+            const email = this.value.trim();
+            if (email) {
+                checkIfUserExists(email);
+            }
+        });
+        
+        // Check if user exists with provided email
+        function checkIfUserExists(email) {
+            fetch(`/api/check-user?email=${encodeURIComponent(email)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const pinCreationFields = document.getElementById('pinCreationFields');
+                        const existingUserMessage = document.getElementById('existingUserMessage');
+                        
+                        if (data.userExists && data.hasPin) {
+                            // User already exists with a PIN
+                            pinCreationFields.style.display = 'none';
+                            existingUserMessage.style.display = 'block';
+                            
+                            // Remove required attribute from PIN fields since they won't be used
+                            document.getElementById('pin').removeAttribute('required');
+                            document.getElementById('confirmPin').removeAttribute('required');
+                        } else {
+                            // New user or user without PIN - show PIN creation fields
+                            pinCreationFields.style.display = 'block';
+                            existingUserMessage.style.display = 'none';
+                            
+                            // Add required attribute to PIN fields
+                            document.getElementById('pin').setAttribute('required', '');
+                            document.getElementById('confirmPin').setAttribute('required', '');
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking user:', error);
+                    showPopup('Error', 'An error occurred while checking your email. Please try again.');
+                });
+        }
+        
+        // Validate PIN match
+        document.getElementById('confirmPin').addEventListener('input', function() {
+            const pin = document.getElementById('pin').value;
+            const confirmPin = this.value;
+            const pinMatchMessage = document.getElementById('pinMatchMessage');
+            
+            if (pin !== confirmPin) {
+                pinMatchMessage.style.display = 'block';
+            } else {
+                pinMatchMessage.style.display = 'none';
+            }
+        });
+
+        // Handle donation form submission
+        document.getElementById('donationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Check if PINs match when PIN fields are visible
+            const pinCreationFields = document.getElementById('pinCreationFields');
+            if (pinCreationFields.style.display !== 'none') {
+                const pin = document.getElementById('pin').value;
+                const confirmPin = document.getElementById('confirmPin').value;
+                
+                if (pin !== confirmPin) {
+                    document.getElementById('pinMatchMessage').style.display = 'block';
+                    return;
+                }
+            }
+            
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                // Skip confirmPin as we don't need to store it
+                if (key !== 'confirmPin') {
+                    data[key] = value;
+                }
+            });
+            
+            fetch('/api/donations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const successMsg = document.getElementById('successMessage');
+                    successMsg.style.display = 'block';
+                    document.getElementById('donationForm').reset();
+                    
+                    // Reset custom fields display
+                    document.getElementById('pinCreationFields').style.display = 'none';
+                    document.getElementById('existingUserMessage').style.display = 'none';
+                    
+                    // Hide success message after 3 seconds
+                    setTimeout(() => {
+                        successMsg.style.display = 'none';
+                    }, 3000);
+                } else {
+                    showPopup('Error', data.message || 'Failed to submit donation. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showPopup('Error', 'An error occurred. Please try again.');
+            });
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('donorModal');
+        const editModal = document.getElementById('editModal');
+        const chatIcon = document.getElementById('chatIcon');
+        const closeBtn = document.getElementsByClassName('close')[0];
+        const editCloseBtn = document.getElementById('editModalClose');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginSection = document.getElementById('loginSection');
+        const donorDashboard = document.getElementById('donorDashboard');
+        
+        // Open modal when chat icon is clicked
+        chatIcon.onclick = function() {
+            modal.style.display = 'block';
+            
+            if (isAuthenticated) {
+                // If already authenticated, show dashboard directly
+                loginSection.style.display = 'none';
+                donorDashboard.style.display = 'block';
+                loadDonorDashboard(currentUserEmail);
+            } else {
+                // Reset login form
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPin').value = '';
+                document.getElementById('loginErrorMsg').style.display = 'none';
+                
+                // Hide dashboard and show login section
+                loginSection.style.display = 'block';
+                donorDashboard.style.display = 'none';
+            }
+        }
+        
+        // Close modal when X is clicked
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+        }
+        
+        // Close edit modal when X is clicked
+        editCloseBtn.onclick = function() {
+            editModal.style.display = 'none';
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+            if (event.target === editModal) {
+                editModal.style.display = 'none';
+            }
+        }
+        
+        // Handle donor login with PIN verification
+        loginBtn.addEventListener('click', function() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const pin = document.getElementById('loginPin').value.trim();
+            const loginErrorMsg = document.getElementById('loginErrorMsg');
+            
+            if (!email || !pin) {
+                loginErrorMsg.textContent = 'Please enter both email and PIN';
+                loginErrorMsg.style.display = 'block';
+                return;
+            }
+            
+            // Verify PIN
+            fetch('/api/verify-pin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, pin })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // PIN verified - store user info and load donor dashboard
+                    currentUserEmail = email;
+                    isAuthenticated = true;
+                    
+                    loginErrorMsg.style.display = 'none';
+                    loginSection.style.display = 'none';
+                    donorDashboard.style.display = 'block';
+                    
+                    // Load donor data
+                    loadDonorDashboard(email);
+                } else {
+                    // Invalid PIN
+                    loginErrorMsg.textContent = data.message;
+                    loginErrorMsg.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loginErrorMsg.textContent = 'An error occurred. Please try again.';
+                loginErrorMsg.style.display = 'block';
+            });
+        });
+        
+        // Load donor dashboard data
+        function loadDonorDashboard(email) {
+            fetch(`/api/donor/dashboard?email=${encodeURIComponent(email)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Display donations
+                        displayDonations(data.donations);
+                        
+                        // Display requests
+                        displayRequests(data.requests);
+                        
+                        // Display allocated donations
+                        displayAllocatedDonations(data.allocatedDonations || []);
+                    } else {
+                        showPopup('Error', data.message || 'Failed to load dashboard data.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showPopup('Error', 'An error occurred while loading your dashboard. Please try again.');
+                });
+        }
+        
+        // Display donor's donations
+        function displayDonations(donations) {
+            const donationsList = document.getElementById('donationsList');
+            
+            if (!donations || donations.length === 0) {
+                donationsList.innerHTML = '<p class="no-items-message">No donations found.</p>';
+                return;
+            }
+            
+            let html = '';
+            donations.forEach(donation => {
+                // Calculate allocated quantity
+                const allocatedQuantity = donation.quantity - donation.availableQuantity;
+                
+                html += `
+                    <div class="donation-card" data-id="${donation._id}">
+                        <div class="donation-details">
+                            <p><strong>${donation.name}</strong> - ${donation.category}</p>
+                            <p>Total Quantity: ${donation.quantity}kg</p>
+                            <p>Available: ${donation.availableQuantity}kg ${allocatedQuantity > 0 ? `(${allocatedQuantity}kg allocated)` : ''}</p>
+                            <p>Expiry: ${new Date(donation.expiryDate).toLocaleDateString()}</p>
+                        </div>
+                        <div class="donation-actions">
+                            <button class="btn btn-edit" onclick="editDonation('${donation._id}')">Edit</button>
+                            <button class="btn btn-delete" onclick="confirmDeleteDonation('${donation._id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            donationsList.innerHTML = html;
+        }
+
+        // Confirm before deleting donation
+        function confirmDeleteDonation(donationId) {
+            showPopup(
+                'Confirm Deletion', 
+                'Are you sure you want to delete this donation? This action cannot be undone.',
+                function() { deleteDonation(donationId); }
+            );
+        }
+
+        // Delete donation function
+        function deleteDonation(donationId) {
+            fetch(`/api/donations/${donationId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showPopup('Success', 'Donation deleted successfully');
+                    loadDonorDashboard(currentUserEmail); // Reload data
+                } else {
+                    showPopup('Error', data.message || 'Failed to delete donation.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showPopup('Error', 'An error occurred. Please try again.');
+            });
+        }
+        
+        // Display requests for donor's donations
+        function displayRequests(requests) {
+            const requestsList = document.getElementById('requestsList');
+            
+            if (!requests || requests.length === 0) {
+                requestsList.innerHTML = '<p class="no-items-message">No pending requests found.</p>';
+                return;
+            }
+            
+            let html = '';
+            requests.forEach(request => {
+                const donation = request.donationId;
+                html += `
+                    <div class="request-card" data-id="${request._id}">
+                        <div class="request-details">
+                            <p><strong>From:</strong> ${request.requesterName}</p>
+                            <p><strong>Requested:</strong> ${request.requestedQuantity}kg from your ${donation.category} donation</p>
+                            <p><strong>Donation Details:</strong> Total: ${donation.quantity}kg, Available: ${donation.availableQuantity}kg</p>
+                            ${request.requestSummary ? `<p><strong>Message:</strong> "${request.requestSummary}"</p>` : ''}
+                        </div>
+                        <div class="request-actions">
+                            <button class="btn btn-approve" onclick="confirmUpdateRequestStatus('${request._id}', 'approved')">Approve</button>
+                            <button class="btn btn-reject" onclick="confirmUpdateRequestStatus('${request._id}', 'rejected')">Reject</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            requestsList.innerHTML = html;
+        }
+
+        // Confirm before updating request status
+        function confirmUpdateRequestStatus(requestId, status) {
+            const action = status === 'approved' ? 'approve' : 'reject';
+            showPopup(
+                `Confirm ${action.charAt(0).toUpperCase() + action.slice(1)}`, 
+                `Are you sure you want to ${action} this request?`,
+                function() { updateRequestStatus(requestId, status); }
+            );
+        }
+        
+        // Update request status function
+        function updateRequestStatus(requestId, status) {
+            fetch(`/api/requests/${requestId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showPopup('Success', `Request ${status} successfully`);
+                    loadDonorDashboard(currentUserEmail); // Reload data
+                } else {
+                    showPopup('Error', data.message || `Failed to ${status} request.`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showPopup('Error', 'An error occurred. Please try again.');
+            });
+        }
+
+         // Fade-in animation
+         document.addEventListener("DOMContentLoaded", () => {
+            const fadeInElements = document.querySelectorAll('.fade-in');
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeInElements.forEach(el => observer.observe(el));
+        });
+
+        
+        // Display allocated donations
+// Display allocated donations
+function displayAllocatedDonations(allocations) {
+    const allocationsList = document.getElementById('allocationsList');
+    
+    if (!allocations || allocations.length === 0) {
+        allocationsList.innerHTML = '<p class="no-items-message">No allocated donations found.</p>';
+        return;
+    }
+    
+    let html = '';
+    allocations.forEach(allocation => {
+        // Convert dates to readable format
+        const requestDate = new Date(allocation.requestDate || allocation.createdAt).toLocaleString();
+        const expiryDate = allocation.donationDetails.expiryDate ? 
+            new Date(allocation.donationDetails.expiryDate).toLocaleDateString() : 'N/A';
+        const prepDate = allocation.donationDetails.prepDateTime ? 
+            new Date(allocation.donationDetails.prepDateTime).toLocaleString() : 'N/A';
+        
+        // Determine the status text and color
+        let statusText = '';
+        let statusClass = '';
+        if (allocation.status === 'completed') {
+            statusText = 'Completed';
+            statusClass = 'completed';
+        } else if (allocation.status === 'approved') {
+            statusText = 'Approved';
+            statusClass = 'approved';
+        }
+        
+        html += `
+            <div class="allocation-card">
+                <div class="allocation-details">
+                    <p><strong>Recipient:</strong> ${allocation.requesterName}</p>
+                    <p><strong>Food Type:</strong> ${allocation.donationDetails.category}</p>
+                    <p><strong>Quantity Allocated:</strong> ${allocation.requestedQuantity}kg</p>
+                    <p><strong>Status:</strong> <span class="status ${statusClass}">${statusText}</span></p>
+                    <p><strong>Requested on:</strong> ${requestDate}</p>
+                    <p><strong>Food Prepared on:</strong> ${prepDate}</p>
+                    <p><strong>Expires on:</strong> ${expiryDate}</p>
+                    ${allocation.requestSummary ? `<p><strong>Recipient's Note:</strong> "${allocation.requestSummary}"</p>` : ''}
+                    ${allocation.completedDate ? `<p><strong>Completed on:</strong> ${new Date(allocation.completedDate).toLocaleString()}</p>` : ''}
+                </div>
+                ${allocation.status === 'approved' ? `
+                <div class="allocation-actions">
+                    <button class="btn btn-donated" onclick="confirmMarkAsDonated('${allocation._id}')">
+                        <i class="fas fa-check-circle"></i> Mark as Donated
+                    </button>
+                </div>
+                ` : ''}
+            </div>
+        `;
+    });
+    
+    allocationsList.innerHTML = html;
+}
+
+        // Confirm before marking as donated
+        function confirmMarkAsDonated(requestId) {
+            showPopup(
+                'Confirm Donation', 
+                'Are you sure you want to mark this allocation as donated/completed?',
+                function() { markAsDonated(requestId); }
+            );
+        }
+
+        // Function to mark allocation as donated/completed
+        function markAsDonated(requestId) {
+            fetch(`/api/allocations/${requestId}/complete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showPopup('Success', 'Allocation marked as donated successfully');
+                    loadDonorDashboard(currentUserEmail); // Reload data
+                } else {
+                    showPopup('Error', data.message || 'Failed to mark as donated.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showPopup('Error', 'An error occurred. Please try again.');
+            });
+        }
+        
+        // Edit donation function
+        function editDonation(donationId) {
+            // Fetch donation details to populate the edit form
+            fetch(`/api/donor/dashboard?email=${encodeURIComponent(currentUserEmail)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const donation = data.donations.find(d => d._id === donationId);
+                        if (donation) {
+                            // Calculate allocated quantity
+                            const allocatedQuantity = donation.quantity - donation.availableQuantity;
+                            
+                            // Populate the edit form
+                            document.getElementById('editDonationId').value = donation._id;
+                            document.getElementById('editName').value = donation.name;
+                            document.getElementById('editPhone').value = donation.phone;
+                            document.getElementById('editCompany').value = donation.company;
+                            document.getElementById('editAddress').value = donation.address;
+                            document.getElementById('editCategory').value = donation.category;
+                            document.getElementById('editQuantity').value = donation.quantity;
+                            
+                            // Show quantity information if some is allocated
+                            const quantityNote = document.getElementById('quantityNote');
+                            if (allocatedQuantity > 0) {
+                                quantityNote.innerHTML = `<p>Note: ${allocatedQuantity}kg is already allocated to approved requests. You cannot reduce quantity below ${allocatedQuantity}kg.</p>`;
+                            } else {
+                                quantityNote.innerHTML = '';
+                            }
+                            
+                            // Format date-time for the input field
+                            const prepDate = new Date(donation.prepDateTime);
+                            const formattedPrepDate = prepDate.toISOString().slice(0, 16);
+                            document.getElementById('editPrepDateTime').value = formattedPrepDate;
+                            
+                            const expiryDate = new Date(donation.expiryDate);
+                            const formattedExpiryDate = expiryDate.toISOString().slice(0, 10);
+                            document.getElementById('editExpiry').value = formattedExpiryDate;
+                            
+                            document.getElementById('editSpecialNote').value = donation.specialNote || '';
+                            
+                            // Show the edit modal
+                            editModal.style.display = 'block';
+                        }
+                    } else {
+                        showPopup('Error', data.message || 'Failed to load donation details.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showPopup('Error', 'An error occurred while loading donation details. Please try again.');
+                });
+        }
+        
+        // Handle edit form submission
+        document.getElementById('editDonationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const donationId = document.getElementById('editDonationId').value;
+
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            fetch(`/api/donations/${donationId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showPopup('Success', 'Donation updated successfully');
+                    editModal.style.display = 'none';
+                    loadDonorDashboard(currentUserEmail); // Reload data
+                } else {
+                    showPopup('Error', data.message || 'Failed to update donation.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showPopup('Error', 'An error occurred. Please try again.');
+            });
+        });
+
+        // Tab functionality for donor dashboard
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Hide all tab content
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                // Show selected tab content
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+</script>
+</body>
+</html> 
