@@ -234,13 +234,10 @@ app.get('/register', (req, res) => {
     res.render('register');
 });
 
-<<<<<<< HEAD
 app.get('/aibot', (req, res) => {
     res.render('aibot');
 });
 
-=======
->>>>>>> debb897ac2425048bce4662c1e1a7cce42a9e430
 app.post('/register', async (req, res) => {
     try {
         const existingUser = await User.findOne({ 
